@@ -1,0 +1,276 @@
+{
+  "name": "Formulario com resposta email",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Receba agora o link para criar seu primeiro agente com n8n + IA",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Qual seu nome ?",
+              "placeholder": "Diego"
+            },
+            {
+              "fieldLabel": "Qual seu numero",
+              "fieldType": "number",
+              "placeholder": "9999999"
+            },
+            {
+              "fieldLabel": "Qual seu email",
+              "fieldType": "email",
+              "placeholder": "Deigoteste@mail.com"
+            },
+            {
+              "fieldLabel": "Voce quer receber mais informações",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Sim"
+                  },
+                  {
+                    "option": "Não"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "e3ef1c49-8f43-4a49-8084-e8bb6e8ce978",
+      "name": "Formulário inicial",
+      "webhookId": "3bb2cab7-8fe8-4443-b487-d86a5feafa20"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1TT7TdPu0npNuqXZxmLyRhenWZSYYPuwGMrtVzrSKqUQ",
+          "mode": "list",
+          "cachedResultName": "Lista de interessados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TT7TdPu0npNuqXZxmLyRhenWZSYYPuwGMrtVzrSKqUQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TT7TdPu0npNuqXZxmLyRhenWZSYYPuwGMrtVzrSKqUQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $json['Qual seu nome ?'] }}",
+            "Telefone": "={{ $json['Qual seu numero'] }}",
+            "Email": "={{ $json['Qual seu email'] }}",
+            "Ta interessado ?": "={{ $json['Voce quer receber mais informações'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ta interessado ?",
+              "displayName": "Ta interessado ?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        440,
+        0
+      ],
+      "id": "302a1a71-570e-4ff8-9e3b-c7c5c993799c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mshC3N5kwdjKyli3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "aa026bf3-92b8-4973-bc7e-0f9a5b04629a",
+              "leftValue": "={{ $json['Ta interessado ?'] }}",
+              "rightValue": "Sim",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        640,
+        0
+      ],
+      "id": "19ec3da3-9fee-44c7-b98b-f7171630d40b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Recebe agora",
+        "message": "Ola esse é o teste",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        860,
+        -100
+      ],
+      "id": "ea17844b-a4d1-432d-b026-77a007d73051",
+      "name": "Send a message",
+      "webhookId": "75d3213b-f99b-44ab-90e5-8516408366a4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "tRAAr5EJn1A85BQZ",
+          "name": "Gmail integrado"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        860,
+        100
+      ],
+      "id": "07044c2a-4f99-484e-9536-2429a1235796",
+      "name": "No Operation, do nothing"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Formulário inicial": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f2588dc5-c9ba-4f01-af3a-4b501b9952e6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "246e305018e8a8ee72fc9e2a679bd363c2798cce799f4827fd1e26b0afb9da3d"
+  },
+  "id": "LkZ57Vu4v7XbDUfp",
+  "tags": [
+    {
+      "createdAt": "2025-07-07T23:07:56.098Z",
+      "updatedAt": "2025-07-07T23:07:56.098Z",
+      "id": "Gtx6OBoDTWClpWUX",
+      "name": "Responder formulário"
+    },
+    {
+      "createdAt": "2025-07-07T23:07:42.206Z",
+      "updatedAt": "2025-07-07T23:07:42.206Z",
+      "id": "JwKrIMCB3LVgQWaf",
+      "name": "Teste N8N"
+    }
+  ]
+}
