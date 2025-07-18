@@ -62,8 +62,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        832,
-        -592
+        624,
+        -256
       ],
       "id": "21225f51-7a4c-4c03-a8b2-e5d7b6482c09",
       "name": "Add label to message",
@@ -236,8 +236,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1040,
-        -432
+        880,
+        -240
       ],
       "id": "4ebd6eb5-09ea-4192-a656-44bc19fc8cff",
       "name": "Google Gemini Chat Model2",
@@ -293,7 +293,7 @@
             },
             {
               "category": "Comprovantes e Pagamentos Realizados",
-              "description": " E-mails que servem como um registro ou prova de uma transação financeira que já foi concluída. Incluem confirmações de pagamentos efetuados, recibos de compra, notas fiscais eletrônicas (NFC-e) e avisos de depósitos recebidos. A principal característica é que eles documentam uma ação passada e servem como comprovante.  Palavras-chave que ajudam na classificação: pagamento confirmado, recebeu seu pagamento, compra aprovada, recibo, cupom, nota fiscal, NFC-e, você depositou, comprovante, transação realizada, pagamento efetuado."
+              "description": " E-mails que servem como um registro ou prova de uma transação financeira que já foi concluída. Incluem confirmações de pagamentos efetuados, recibos de compra, notas fiscais eletrônicas (NFC-e) e avisos de depósitos recebidos ou confirmação de cashback. \n\nA principal característica é que eles documentam uma ação passada e servem como comprovante.  Palavras-chave que ajudam na classificação: pagamento confirmado, recebeu seu pagamento, compra aprovada, recibo, cupom, nota fiscal, NFC-e, você depositou, comprovante, transação realizada, pagamento efetuado, cashback."
             }
           ]
         },
@@ -332,8 +332,8 @@
       "type": "@n8n/n8n-nodes-langchain.textClassifier",
       "typeVersion": 1.1,
       "position": [
-        1136,
-        -656
+        880,
+        -448
       ],
       "id": "653684cf-25a9-4760-8059-d49e3881e016",
       "name": "Classificador de estudos"
@@ -346,8 +346,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1632,
-        -592
+        1376,
+        -384
       ],
       "id": "e0233ae9-71a2-4ac8-89d7-275ba40122fd",
       "name": "Mark a message as read3",
@@ -367,8 +367,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1440,
-        -496
+        1184,
+        -288
       ],
       "id": "5685d4b0-0fff-4b6f-bb4f-c556a0188dae",
       "name": "Mark a message as read4",
@@ -392,8 +392,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        1520,
-        -976
+        1264,
+        -768
       ],
       "id": "dd8a3c07-74ca-423b-899b-3a870e3870e8",
       "name": "Agent_to_insert"
@@ -405,8 +405,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        1712,
-        -800
+        1456,
+        -592
       ],
       "id": "afb737dc-f4f4-41e4-b381-47b821fa0645",
       "name": "Structured Output Parser"
@@ -418,8 +418,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1520,
-        -800
+        1264,
+        -592
       ],
       "id": "ebbd4bd9-77f5-4f1e-977d-4dad24452cd5",
       "name": "Google Gemini Chat Model4",
@@ -447,8 +447,8 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        1888,
-        -976
+        1632,
+        -768
       ],
       "id": "148aa32b-7b39-4d92-86e4-7a66b2c0e18e",
       "name": "Create an event1",
@@ -466,8 +466,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        1600,
-        -80
+        1792,
+        96
       ],
       "id": "6795644e-4f51-4897-a404-a73317daa7a0",
       "name": "Structured Output Parser1"
@@ -479,8 +479,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1408,
-        -80
+        1600,
+        96
       ],
       "id": "f15c8af5-69a2-4bc3-81ac-17717cd51e75",
       "name": "Google Gemini Chat Model5",
@@ -510,8 +510,8 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        1776,
-        -256
+        1968,
+        -80
       ],
       "id": "dd2db070-9d56-41f2-9f77-ca2bb651bc27",
       "name": "Create an event2",
@@ -534,8 +534,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        1408,
-        -256
+        1600,
+        -80
       ],
       "id": "4012e047-49bc-439b-9cca-37aa000e50db",
       "name": "Agent_to_finance"
@@ -782,7 +782,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f3eff43f-d322-4977-bd2e-7db165d84656",
+  "versionId": "b36b2e43-dcb2-4e57-893e-ad07856fdbcc",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "5b99b7bec79d9d9f0120872a232dc1543db490c1634af853bfa1b401f25754d7"
