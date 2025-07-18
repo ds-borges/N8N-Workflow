@@ -383,7 +383,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=A seguir você receberá o conteúdo de um e-mail sobre um evento. Extraia os seguintes Campos:\n\n- titulo: O nome principal do evento, aula ou live. Seja o mais conciso possível.\n- data: A data e hora de início do evento. Se o e-mail mencionar termos como \"hoje\" ou \"amanhã\", use a \"Data de hoje\" como referência para o cálculo. O formato final deve ser AAAA-MM-DDT. Se nenhuma data for encontrada, retorne null.\n- hora: A hora de início do evento.Se o e-mail mencionar termos como \"agora\" ou \"daqui a pouco\", use a \"Hora atual\".O formato final deve ser HH:mm:ss. Se nenhuma data for encontrada, retorne null.\n- link: O link de acesso para o evento (Zoom, YouTube, etc.). Se não houver, retorne null.\n- categoria: O tipo do evento (ex: Aula, Live, Webinar, Reunião, Pessoal). Se não for possível identificar, use a categoria \"Evento\".\n- resumo: Uma frase de aviso para ser enviada por um assistente. A mensagem deve avisar sobre a aula de forma simpática e objetiva, como se fosse enviada por WhatsApp, citando o título e a data do evento.\n\n--- CONTEÚDO DO E-MAIL ---\nAssunto: {{ $('Gmail Trigger').item.json.headers.subject }}\nCorpo: {{ $('Gmail Trigger').item.json.text }}\n\nData de hoje (para referência):\n{{ $now }}\nHora atual (para referência):\n{{ $now }}",
+        "text": "=A seguir você receberá o conteúdo de um e-mail sobre um evento. Extraia os seguintes Campos:\n\n- titulo: O nome principal do evento, aula ou live. Seja o mais conciso possível.\n- data: A data e hora de início do evento. Se o e-mail mencionar termos como \"hoje\" ou \"amanhã\", use a \"Data de hoje\" como referência para o cálculo. O formato final deve ser AAAA-MM-DD. Se nenhuma data for encontrada, retorne null.\n- hora: A hora de início do evento.Se o e-mail mencionar termos como \"agora\" ou \"daqui a pouco\", use a \"Hora atual\".O formato final deve ser HH:mm:ss. Se nenhuma data for encontrada, retorne null.\n- link: O link de acesso para o evento (Zoom, YouTube, etc.). Se não houver, retorne null.\n- categoria: O tipo do evento (ex: Aula, Live, Webinar, Reunião, Pessoal). Se não for possível identificar, use a categoria \"Evento\".\n- resumo: Uma frase de aviso para ser enviada por um assistente. A mensagem deve avisar sobre a aula de forma simpática e objetiva, como se fosse enviada por WhatsApp, citando o título e a data do evento.\n\n--- CONTEÚDO DO E-MAIL ---\nAssunto: {{ $('Gmail Trigger').item.json.headers.subject }}\nCorpo: {{ $('Gmail Trigger').item.json.text }}\n\nData de hoje (para referência):\n{{ $now }}\nHora atual (para referência):\n{{ $now }}",
         "hasOutputParser": true,
         "options": {
           "systemMessage": "=Você é um assistente de produtividade e agendamento. Seu papel é interpretar e-mails sobre eventos, aulas e lives para extrair os dados essenciais (título, data, hora, link) de forma estruturada, com o objetivo de criar um evento automaticamente no calendário.\n\nAlém disso, você deve gerar uma frase de confirmação no campo \"resumo\". Esta frase deve ter um tom simpático e direto, como um assistente pessoal respondendo por mensagem. O texto deve avisar que terá um evento, citando o título e a data/hora do evento. Escreva a frase em uma única linha, sem quebras de linha."
@@ -778,11 +778,11 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "b36b2e43-dcb2-4e57-893e-ad07856fdbcc",
+  "versionId": "cc4a330b-c904-4711-b213-6cd59adabda7",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "5b99b7bec79d9d9f0120872a232dc1543db490c1634af853bfa1b401f25754d7"
