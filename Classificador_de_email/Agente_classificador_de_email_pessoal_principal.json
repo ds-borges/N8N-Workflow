@@ -1,5 +1,5 @@
 {
-  "name": "Agente classificador de email pessoal",
+  "name": "Agente_classificador_de_email_pessoal_principal",
   "nodes": [
     {
       "parameters": {
@@ -28,7 +28,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -47,7 +47,7 @@
       "credentials": {
         "googlePalmApi": {
           "id": "GTem72FJ8pbDkvM2",
-          "name": "Google Gemini(PaLM) Api account"
+          "name": "DS977"
         }
       }
     },
@@ -71,7 +71,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -95,7 +95,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -119,7 +119,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -143,7 +143,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -164,7 +164,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -185,7 +185,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -196,15 +196,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        960,
-        400
+        896,
+        336
       ],
       "id": "d354212c-9029-46df-b6cb-2e47b354c0e1",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
           "id": "GTem72FJ8pbDkvM2",
-          "name": "Google Gemini(PaLM) Api account"
+          "name": "DS977"
         }
       }
     },
@@ -225,7 +225,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -244,7 +244,7 @@
       "credentials": {
         "googlePalmApi": {
           "id": "GTem72FJ8pbDkvM2",
-          "name": "Google Gemini(PaLM) Api account"
+          "name": "DS977"
         }
       }
     },
@@ -355,7 +355,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -376,7 +376,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "6aJKArHQJeI75HLL",
-          "name": "Gmail account"
+          "name": "DS977"
         }
       }
     },
@@ -426,7 +426,7 @@
       "credentials": {
         "googlePalmApi": {
           "id": "GTem72FJ8pbDkvM2",
-          "name": "Google Gemini(PaLM) Api account"
+          "name": "DS977"
         }
       }
     },
@@ -487,7 +487,7 @@
       "credentials": {
         "googlePalmApi": {
           "id": "GTem72FJ8pbDkvM2",
-          "name": "Google Gemini(PaLM) Api account"
+          "name": "DS977"
         }
       }
     },
@@ -539,6 +539,48 @@
       ],
       "id": "4012e047-49bc-439b-9cca-37aa000e50db",
       "name": "Agent_to_finance"
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1664,
+        -880
+      ],
+      "id": "89cf5098-9b0e-4694-b8d6-6770d2db2c40",
+      "name": "Mark a message as read5",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6aJKArHQJeI75HLL",
+          "name": "DS977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1664,
+        -48
+      ],
+      "id": "487caa7f-25d0-4b40-a366-34df8f2b3c2f",
+      "name": "Mark a message as read6",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6aJKArHQJeI75HLL",
+          "name": "DS977"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -740,6 +782,11 @@
             "node": "Create an event1",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Mark a message as read5",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -773,6 +820,11 @@
             "node": "Create an event2",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Mark a message as read6",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -782,7 +834,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "b6768401-216b-4783-abe6-d77baabfdeff",
+  "versionId": "902ee7be-b193-4516-b941-0e4100c63986",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "5b99b7bec79d9d9f0120872a232dc1543db490c1634af853bfa1b401f25754d7"
