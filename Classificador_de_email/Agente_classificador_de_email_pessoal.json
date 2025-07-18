@@ -6,7 +6,7 @@
         "pollTimes": {
           "item": [
             {
-              "mode": "everyMinute"
+              "mode": "everyHour"
             },
             {}
           ]
@@ -21,7 +21,7 @@
       "typeVersion": 1.2,
       "position": [
         16,
-        32
+        416
       ],
       "id": "23aa7d4d-1673-418b-8584-e5822d9a412e",
       "name": "Gmail Trigger",
@@ -39,8 +39,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        208,
-        224
+        336,
+        704
       ],
       "id": "1e57882e-c2c7-4bbf-bdac-1d9e9410530d",
       "name": "Google Gemini Chat Model",
@@ -62,8 +62,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        624,
-        -256
+        640,
+        -416
       ],
       "id": "21225f51-7a4c-4c03-a8b2-e5d7b6482c09",
       "name": "Add label to message",
@@ -86,8 +86,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        704,
-        -32
+        640,
+        272
       ],
       "id": "675a166c-d7d6-4a0d-aeb7-17b9b1327430",
       "name": "Add label to message1",
@@ -110,8 +110,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        720,
-        272
+        640,
+        576
       ],
       "id": "10235665-8a6e-43e1-b8fd-6bbaf023d218",
       "name": "Add label to message2",
@@ -134,8 +134,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        720,
-        480
+        640,
+        768
       ],
       "id": "64304e46-48eb-4a13-a544-0d5000bd69e1",
       "name": "Add label to message3",
@@ -155,8 +155,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        944,
-        480
+        960,
+        768
       ],
       "id": "b379f01e-a75b-4810-a73e-3e96d4de4ebc",
       "name": "Mark a message as read",
@@ -176,8 +176,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1248,
-        64
+        1360,
+        416
       ],
       "id": "37cc16ba-5f69-4580-b5fc-ff14f12451f1",
       "name": "Mark a message as read1",
@@ -196,8 +196,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        912,
-        96
+        960,
+        400
       ],
       "id": "d354212c-9029-46df-b6cb-2e47b354c0e1",
       "name": "Google Gemini Chat Model1",
@@ -216,8 +216,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        944,
-        272
+        960,
+        576
       ],
       "id": "93796be6-469b-47ee-a031-238a852332b0",
       "name": "Mark a message as read2",
@@ -236,8 +236,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        880,
-        -240
+        960,
+        -160
       ],
       "id": "4ebd6eb5-09ea-4192-a656-44bc19fc8cff",
       "name": "Google Gemini Chat Model2",
@@ -276,8 +276,8 @@
       "type": "@n8n/n8n-nodes-langchain.textClassifier",
       "typeVersion": 1.1,
       "position": [
-        208,
-        0
+        240,
+        416
       ],
       "id": "6ba3c62b-544c-4efc-ab30-86c3f617d2a6",
       "name": "Classificador principal"
@@ -302,8 +302,8 @@
       "type": "@n8n/n8n-nodes-langchain.textClassifier",
       "typeVersion": 1.1,
       "position": [
-        912,
-        -32
+        864,
+        176
       ],
       "id": "6619a43b-6f58-4974-b407-fd8690845ff2",
       "name": "Classificador de finanças"
@@ -332,8 +332,8 @@
       "type": "@n8n/n8n-nodes-langchain.textClassifier",
       "typeVersion": 1.1,
       "position": [
-        880,
-        -448
+        864,
+        -416
       ],
       "id": "653684cf-25a9-4760-8059-d49e3881e016",
       "name": "Classificador de estudos"
@@ -346,8 +346,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1376,
-        -384
+        1360,
+        -368
       ],
       "id": "e0233ae9-71a2-4ac8-89d7-275ba40122fd",
       "name": "Mark a message as read3",
@@ -367,8 +367,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1184,
-        -288
+        1360,
+        -176
       ],
       "id": "5685d4b0-0fff-4b6f-bb4f-c556a0188dae",
       "name": "Mark a message as read4",
@@ -405,8 +405,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        1456,
-        -592
+        1424,
+        -544
       ],
       "id": "afb737dc-f4f4-41e4-b381-47b821fa0645",
       "name": "Structured Output Parser"
@@ -418,8 +418,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1264,
-        -592
+        1296,
+        -544
       ],
       "id": "ebbd4bd9-77f5-4f1e-977d-4dad24452cd5",
       "name": "Google Gemini Chat Model4",
@@ -447,8 +447,8 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        1632,
-        -768
+        1664,
+        -672
       ],
       "id": "148aa32b-7b39-4d92-86e4-7a66b2c0e18e",
       "name": "Create an event1",
@@ -466,8 +466,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        1792,
-        96
+        1424,
+        240
       ],
       "id": "6795644e-4f51-4897-a404-a73317daa7a0",
       "name": "Structured Output Parser1"
@@ -479,8 +479,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1600,
-        96
+        1296,
+        240
       ],
       "id": "f15c8af5-69a2-4bc3-81ac-17717cd51e75",
       "name": "Google Gemini Chat Model5",
@@ -510,8 +510,8 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        1968,
-        -80
+        1664,
+        128
       ],
       "id": "dd2db070-9d56-41f2-9f77-ca2bb651bc27",
       "name": "Create an event2",
@@ -534,8 +534,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        1600,
-        -80
+        1264,
+        16
       ],
       "id": "4012e047-49bc-439b-9cca-37aa000e50db",
       "name": "Agent_to_finance"
@@ -778,11 +778,11 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "cc4a330b-c904-4711-b213-6cd59adabda7",
+  "versionId": "b6768401-216b-4783-abe6-d77baabfdeff",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "5b99b7bec79d9d9f0120872a232dc1543db490c1634af853bfa1b401f25754d7"
