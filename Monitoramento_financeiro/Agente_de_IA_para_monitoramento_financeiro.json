@@ -1,23 +1,22 @@
 {
-  "name": "Agente de IA para monitoramento financeiro com Telegram",
+  "name": "Agente_de_IA_para_monitoramento_financeiro",
   "nodes": [
     {
       "parameters": {
-        "modelName": "models/gemini-2.5-flash",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        160,
-        220
+        944,
+        880
       ],
-      "id": "0b707d02-d6c1-4277-bae7-0188ac342179",
+      "id": "c47a8257-dc2b-4011-a829-93546edb9a26",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "U2eOOjEUX6taJ7yG",
-          "name": "Google Gemini(PaLM) Api account"
+          "id": "GTem72FJ8pbDkvM2",
+          "name": "DS977"
         }
       }
     },
@@ -26,10 +25,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        440,
-        220
+        1200,
+        880
       ],
-      "id": "51ebc36b-7c2a-4e33-8734-ae40762ffd9b",
+      "id": "25b6a6ba-7c3d-4fd0-9921-49fd56d6dddd",
       "name": "Calculator"
     },
     {
@@ -53,14 +52,14 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.6,
       "position": [
-        320,
-        220
+        1072,
+        880
       ],
-      "id": "82d30c71-1343-4967-b5b1-cae28d8a2c7b",
+      "id": "5d8b92e4-890b-4f9f-a74b-a6c1af54f7f4",
       "name": "Planilha_financeira",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "mshC3N5kwdjKyli3",
+          "id": "lU2Uab4LzHBF9O7g",
           "name": "Google Sheets account"
         }
       }
@@ -69,34 +68,34 @@
       "parameters": {
         "content": "## Leitura",
         "height": 460,
-        "width": 660
+        "width": 660,
+        "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -80,
-        -60
+        864,
+        544
       ],
       "typeVersion": 1,
-      "id": "d36d0627-6b4e-496c-88ef-2fa27af779ea",
+      "id": "fdaa4a98-b67e-4f26-9054-a4c949f3bcf3",
       "name": "Sticky Note"
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.5-flash",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        160,
-        -320
+        912,
+        320
       ],
-      "id": "d362679a-7d30-4240-a8f8-02a7e76fa7c0",
+      "id": "3bfac9d0-2935-498b-9657-9b8713085ec7",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
-          "id": "U2eOOjEUX6taJ7yG",
-          "name": "Google Gemini(PaLM) Api account"
+          "id": "GTem72FJ8pbDkvM2",
+          "name": "DS977"
         }
       }
     },
@@ -104,15 +103,16 @@
       "parameters": {
         "content": "## Escrita",
         "height": 460,
-        "width": 660
+        "width": 660,
+        "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -80,
-        -600
+        864,
+        0
       ],
       "typeVersion": 1,
-      "id": "3a46d6d2-0300-40d0-b4fc-98cb75e82f13",
+      "id": "f97365b9-841c-40a3-80a6-c515f156425a",
       "name": "Sticky Note1"
     },
     {
@@ -121,62 +121,47 @@
         "text": "=A seguir você receberá uma mensagem que ele escreve uma despesa feita. Extraia os seguintes Campos:\n\n- Valor numero (em reais)\n- Descrição resumida o que foi gasto\n- Data (A data que foi feito gasto, Caso não seja nada especificado use data de hoje, sempre assim : 2025-07-07)\n- Parcelas quantas vezes o valor total foi dividido , caso não seja informada categoria usar 1, .\n- Categoria (ex: Igreja, educação, internet e telefone, transporte, saúde, Temporario, Moradia, alimentação, Presente.), caso não seja informada categoria usar a categoria \"Temporario\"\n- Resumo da operação que foi feita, Para ser enviado via mensagem de confirmação por um assistente. A mensagem deve confirmar A operação de forma simpática e objetiva, como Se fosse enviada por um atendente no WhatsApp.\n\nMensagem:\n{{ $json.message.text }}\n\nData de hoje:\n{{ $now }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "Você é um assistente financeiro ponto final. Se o papel interpretar mensagens de texto sobre despesas e extrair dados de forma estruturada, com o objetivo de preencher automaticamente uma planilha De controle de gasto.\n\nAlém disso você deve gerar uma frase de confirmação no campo \"resumo\", em tom simpático e direto, como se fosse um atendente o mundo respondendo o WhatsApp. O texto deve confirmar que a despesa foi registrada com sucesso citando os principais dados como valor, Descrição e caso tiver também parcelas. Escreva a frase em uma única linha , sem quebras."
+          "systemMessage": "=Você é um assistente financeiro ponto final. Seu papel é interpretar mensagens de texto sobre despesas e extrair dados de forma estruturada, com o objetivo de preencher automaticamente uma planilha De controle de gasto.\n\nAlém disso você deve gerar uma frase de confirmação no campo \"resumo\", em tom simpático e direto, como se fosse um atendente o mundo respondendo o WhatsApp. O texto deve confirmar que a despesa foi registrada com sucesso citando os principais dados como valor, Descrição e caso tiver também parcelas. Escreva a frase em uma única linha , sem quebras."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        200,
-        -540
+        960,
+        96
       ],
-      "id": "733c2c08-91f1-4683-9c28-d593643906cb",
+      "id": "b527c9af-a398-4255-a2d6-54cb68673305",
       "name": "Agent_to_insert"
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "=Mensagem do usuário:\n{{ $json.message.text }}\nA data de hoje é:\n{{ $now }}",
-        "options": {
-          "systemMessage": "Você é um assistente financeiro. Sua função é responder perguntas sobre despesas anteriores, consultando uma planilha com registros diários.\nVocê tem duas ferramentas:\n- `planilha_financeira`, que retorna dados por data\n- `calculator`, que soma valores e conta registros\nSempre que a pergunta mencionar períodos como “ontem”, “hoje”, “semana passada”, converta isso para uma data exata no formato YYYY-MM-DD **antes de usar a ferramenta da planilha**.\nUse o campo `Data` da planilha para filtrar. Considere que a data de hoje é {{ $now }}.\nExemplo:  \nSe hoje for `2025-07-07` e a pergunta for “ontem”, você deve consultar registros com data igual a `2025-07-06`.\nNunca use a data de hoje se a pergunta for “ontem”.\nSempre use `calculator` para somar os valores e contar os registros encontrados.\nSua resposta final deve ser uma frase única, no estilo WhatsApp.\nSempre responda como um assistente atencioso."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2,
-      "position": [
-        200,
-        0
-      ],
-      "id": "cc201e4d-11cc-47a8-9874-2a0b054c91dd",
-      "name": "Agent_to_consult"
-    },
-    {
-      "parameters": {
-        "height": 1000,
-        "width": 360
+        "content": "## Entrada",
+        "height": 1528,
+        "width": 360,
+        "color": 2
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -940,
-        -600
+        0,
+        0
       ],
       "typeVersion": 1,
-      "id": "d0ab68ac-e330-4352-91e0-698e8ecbce7b",
+      "id": "bad50f6a-177f-43d3-b4c1-ff681e525c80",
       "name": "Sticky Note3"
     },
     {
       "parameters": {
-        "content": "## Agent_to_classifield",
-        "height": 1000,
+        "content": "## Classificação",
+        "height": 1528,
         "width": 360
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -500,
-        -600
+        448,
+        0
       ],
       "typeVersion": 1,
-      "id": "03c17a1a-a6b9-4bae-9b92-339d7f6c8843",
+      "id": "fb432f8c-5f47-4634-9bb0-08dd869591e9",
       "name": "Sticky Note4"
     },
     {
@@ -189,15 +174,15 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -900,
-        -180
+        32,
+        688
       ],
-      "id": "9960df36-5c58-414d-a4c6-5a44867eeb36",
+      "id": "e83ea2f5-45f3-4765-aeaa-f729bce2621a",
       "name": "Telegram Trigger",
       "webhookId": "d203366b-5e1d-446b-922a-31a128fe6081",
       "credentials": {
         "telegramApi": {
-          "id": "tj4qUzPPKPOOO6Iz",
+          "id": "LvogqUV4kWhwiQ27",
           "name": "Telegram account"
         }
       }
@@ -211,15 +196,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        560,
-        0
+        1312,
+        640
       ],
-      "id": "ae79beb3-0e57-4ce5-bc76-702a9355065e",
+      "id": "1d841182-a584-43d4-91d7-5d672e79236d",
       "name": "Send a text message",
       "webhookId": "7915322b-bf1b-4563-89e1-8cdec66e1f54",
       "credentials": {
         "telegramApi": {
-          "id": "tj4qUzPPKPOOO6Iz",
+          "id": "LvogqUV4kWhwiQ27",
           "name": "Telegram account"
         }
       }
@@ -251,15 +236,15 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -720,
-        -180
+        208,
+        688
       ],
-      "id": "4a23a431-569c-42a6-8755-ab4cf7e1c22c",
+      "id": "7712369b-58a9-4152-aae5-a2da391b78bd",
       "name": "If"
     },
     {
       "parameters": {
-        "inputText": "=Responda apenas com a palavra:\"registro\" ou \"consulta\"\n\nMensagem:\n {{ $json.message.text }}\n\nVocê vai receber uma mensagem de um usuário.\n\nClassifica a intenção da mensagem com base nas opções abaixo:\n- \"Registro\": Se o usuário estiver informando uma nova despesa.\n- \"Consulta\": Se Estiver pedindo para ver , consultar ou buscar informações financeiras anteriores.",
+        "inputText": "=Responda apenas com a palavra:\"registro\" ou \"consulta\"\n\nMensagem:\n {{ $json.message.text }}\n\nVocê vai receber uma mensagem de um usuário.\n\nClassifica a intenção da mensagem com base nas opções abaixo:\n- \"Registro\": Se o usuário estiver informando uma nova despesa.\n- \"Consulta\": Se Estiver pedindo para ver , consultar ou buscar informações financeiras anteriores.\n- \"Exclusão\": Se o usuário estiver pedindo para deletar, remover, apagar ou excluir um registro ou uma informação específica.",
         "categories": {
           "categories": [
             {
@@ -269,6 +254,10 @@
             {
               "category": "consulta",
               "description": "Se o usuário estiver pedindo para consultar, saber ou buscar informações sobre despesas passadas."
+            },
+            {
+              "category": "Deletar",
+              "description": "Se o usuário estiver pedindo para deletar uma informação sobre despesas passadas."
             }
           ]
         },
@@ -277,29 +266,28 @@
       "type": "@n8n/n8n-nodes-langchain.textClassifier",
       "typeVersion": 1.1,
       "position": [
-        -440,
-        -180
+        496,
+        688
       ],
-      "id": "954747bb-ea84-45cc-86f0-db2c0e999e84",
+      "id": "e4eb15d0-1b1f-4db6-8940-0b48ba31a973",
       "name": "Text Classifier"
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.5-flash",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -360,
-        40
+        544,
+        896
       ],
-      "id": "23fe24ba-4176-4f48-ad22-75798efefc54",
+      "id": "b00f5fa5-4a6e-4a9f-a950-cbfd1c4039ed",
       "name": "Google Gemini Chat Model2",
       "credentials": {
         "googlePalmApi": {
-          "id": "U2eOOjEUX6taJ7yG",
-          "name": "Google Gemini(PaLM) Api account"
+          "id": "GTem72FJ8pbDkvM2",
+          "name": "DS977"
         }
       }
     },
@@ -310,10 +298,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        440,
-        -300
+        1200,
+        336
       ],
-      "id": "b1c797a3-96aa-4e0e-aa33-8e894dfd49bf",
+      "id": "3d6d0e85-a7ea-4aa3-8786-447769726968",
       "name": "Structured Output Parser"
     },
     {
@@ -403,14 +391,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        560,
-        -540
+        1312,
+        96
       ],
-      "id": "b2883233-2e11-49e2-b0e5-1ed0c41b5591",
+      "id": "93a17669-1023-4c2f-ae3d-3f6311fab529",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "mshC3N5kwdjKyli3",
+          "id": "lU2Uab4LzHBF9O7g",
           "name": "Google Sheets account"
         }
       }
@@ -424,16 +412,189 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        560,
-        -400
+        1312,
+        240
       ],
-      "id": "eee87372-3c31-491e-80f4-b05b5190bf7a",
+      "id": "faedf4e9-25ec-4535-8d44-df4622654034",
       "name": "Send a text message1",
       "webhookId": "7915322b-bf1b-4563-89e1-8cdec66e1f54",
       "credentials": {
         "telegramApi": {
-          "id": "tj4qUzPPKPOOO6Iz",
+          "id": "LvogqUV4kWhwiQ27",
           "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Remoção",
+        "height": 460,
+        "width": 660,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        880,
+        1072
+      ],
+      "typeVersion": 1,
+      "id": "5c1475b0-fe6b-4682-b215-29c440df64f9",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        960,
+        1328
+      ],
+      "id": "c05e43eb-42c0-4d60-85b8-c94944b4a469",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "GTem72FJ8pbDkvM2",
+          "name": "DS977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "=A conta: {{ $json.output.coluna_descricao }} do dia {{ $json.output.coluna_data }}, foi deletada",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1360,
+        1312
+      ],
+      "id": "e9e2d1ba-eb3f-4d3e-9719-b9b3d5b93e1c",
+      "name": "Send a text message2",
+      "webhookId": "7915322b-bf1b-4563-89e1-8cdec66e1f54",
+      "credentials": {
+        "telegramApi": {
+          "id": "LvogqUV4kWhwiQ27",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do usuário:\n{{ $json.message.text }}\nA data de hoje é:\n{{ $now }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente financeiro. Sua função é identificar um registro de despesa específico que o usuário deseja apagar, consultando uma planilha.\n\n\n\nVocê tem uma ferramenta:\n\n- `buscar_despesa`, que localiza um registro com base em critérios como data, descrição ou valor, e retorna os dados completos da linha encontrada.\n\n\n\nSempre que a solicitação para apagar mencionar períodos como “ontem” ou “hoje”, converta isso para uma data exata no formato YYYY-MM-DD **antes de usar a ferramenta de busca**.\n\nUse o campo `Data` da planilha para filtrar. Considere que a data de hoje é {{ $now }}.\n\n\n\nExemplo:\n\nSe hoje for `2025-07-18` e a pergunta for “apague a despesa do almoço de ontem”, você deve usar a ferramenta `buscar_despesa` com os critérios `data='2025-07-17'` e `descrição='almoço'`.\n\n\n\nSua resposta final não deve ser uma frase amigável, mas sim os **dados estruturados (JSON) do registro que você encontrou**. Se não encontrar a despesa, retorne um objeto JSON vazio."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        944,
+        1136
+      ],
+      "id": "f8d0e0b6-a31f-4b2c-ac9c-ccc0d13d17d6",
+      "name": "Agent_to_insert1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"coluna_data\": \"2025-07-16\",\n  \"coluna_descricao\": \"gasolina\",\n  \"coluna_valor\": 55,\n  \"row_number\": 42 \n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1216,
+        1376
+      ],
+      "id": "c4700949-4122-4805-95a0-e8262d9f12d0",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do usuário:\n{{ $json.message.text }}\nA data de hoje é:\n{{ $now }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente financeiro. Sua função é responder perguntas sobre despesas anteriores, consultando uma planilha com registros diários.\nVocê tem duas ferramentas:\n- `planilha_financeira`, que retorna dados por data\n- `calculator`, que soma valores e conta registros\nSempre que a pergunta mencionar períodos como “ontem”, “hoje”, “semana passada”, converta isso para uma data exata no formato YYYY-MM-DD **antes de usar a ferramenta da planilha**.\nUse o campo `Data` da planilha para filtrar. Considere que a data de hoje é {{ $now }}.\nExemplo:  \nSe hoje for `2025-07-07` e a pergunta for “ontem”, você deve consultar registros com data igual a `2025-07-06`.\nNunca use a data de hoje se a pergunta for “ontem”.\nSempre use `calculator` para somar os valores e contar os registros encontrados.\nSua resposta final deve ser uma frase única, no estilo WhatsApp.\nSempre responda como um assistente atencioso."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        928,
+        640
+      ],
+      "id": "8d6eedd6-d731-434a-a890-5a0219830866",
+      "name": "Agent_to_insert3"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1SUyJWW4UcjxxBF7djsTeMd7tZ0OXOmxUegQDxHTSIac",
+          "mode": "list",
+          "cachedResultName": "Orçamento mensal ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SUyJWW4UcjxxBF7djsTeMd7tZ0OXOmxUegQDxHTSIac/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1732160294,
+          "mode": "list",
+          "cachedResultName": "Dividas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SUyJWW4UcjxxBF7djsTeMd7tZ0OXOmxUegQDxHTSIac/edit#gid=1732160294"
+        },
+        "startIndex": "={{ $json.output.row_number }}"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1360,
+        1136
+      ],
+      "id": "11996984-7ee0-4f92-8afb-9d8b98af0c51",
+      "name": "Delete rows or columns from sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lU2Uab4LzHBF9O7g",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1SUyJWW4UcjxxBF7djsTeMd7tZ0OXOmxUegQDxHTSIac",
+          "mode": "list",
+          "cachedResultName": "Orçamento mensal ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SUyJWW4UcjxxBF7djsTeMd7tZ0OXOmxUegQDxHTSIac/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1732160294,
+          "mode": "list",
+          "cachedResultName": "Dividas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SUyJWW4UcjxxBF7djsTeMd7tZ0OXOmxUegQDxHTSIac/edit#gid=1732160294"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        1088,
+        1392
+      ],
+      "id": "acee12f5-e7e2-4141-a26f-2a3c21e77cb4",
+      "name": "Planilha_financeira2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lU2Uab4LzHBF9O7g",
+          "name": "Google Sheets account"
         }
       }
     }
@@ -444,7 +605,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "Agent_to_consult",
+            "node": "Agent_to_insert3",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -455,7 +616,7 @@
       "ai_tool": [
         [
           {
-            "node": "Agent_to_consult",
+            "node": "Agent_to_insert3",
             "type": "ai_tool",
             "index": 0
           }
@@ -466,7 +627,7 @@
       "ai_tool": [
         [
           {
-            "node": "Agent_to_consult",
+            "node": "Agent_to_insert3",
             "type": "ai_tool",
             "index": 0
           }
@@ -489,17 +650,6 @@
         [
           {
             "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Agent_to_consult": {
-      "main": [
-        [
-          {
-            "node": "Send a text message",
             "type": "main",
             "index": 0
           }
@@ -539,7 +689,14 @@
         ],
         [
           {
-            "node": "Agent_to_consult",
+            "node": "Agent_to_insert3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent_to_insert1",
             "type": "main",
             "index": 0
           }
@@ -572,17 +729,87 @@
           }
         ]
       ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_insert1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent_to_insert1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_insert1": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message2": {
+      "main": [
+        []
+      ]
+    },
+    "Delete rows or columns from sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Agent_to_insert3": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planilha_financeira2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent_to_insert1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8305fdc2-e195-4bae-b467-7d97d4124ff9",
+  "versionId": "c308731a-554e-4d24-a829-ab774a6e8eff",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "246e305018e8a8ee72fc9e2a679bd363c2798cce799f4827fd1e26b0afb9da3d"
+    "instanceId": "5b99b7bec79d9d9f0120872a232dc1543db490c1634af853bfa1b401f25754d7"
   },
-  "id": "w3xbgqRocDAcJeGb",
+  "id": "b8dlAjbaE2XBFM5E",
   "tags": []
 }
