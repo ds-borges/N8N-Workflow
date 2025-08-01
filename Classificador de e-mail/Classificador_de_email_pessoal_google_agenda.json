@@ -1,0 +1,839 @@
+{
+  "name": "Classificador_de_email_pessoal_principal",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            },
+            {}
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "readStatus": "unread"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1648,
+        1328
+      ],
+      "id": "735bf193-8d3a-4b0e-87cb-c7a26d91f715",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1328,
+        1584
+      ],
+      "id": "1f66e289-ddf6-4082-af41-55e140ceb2e9",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_4614296012528125380"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1024,
+        464
+      ],
+      "id": "a31fabc1-bdf0-4df7-bc39-4df4f25af800",
+      "name": "Add label to message",
+      "webhookId": "80a0fadc-5ce1-4842-b216-99b1e2766590",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_347620088231253684"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1024,
+        1152
+      ],
+      "id": "14110072-e7de-4c4a-b7a1-488035813b31",
+      "name": "Add label to message1",
+      "webhookId": "80a0fadc-5ce1-4842-b216-99b1e2766590",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_4003378466229826748"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1024,
+        1456
+      ],
+      "id": "4086b50d-b04f-48b2-bb22-5fe0c7922c6b",
+      "name": "Add label to message2",
+      "webhookId": "80a0fadc-5ce1-4842-b216-99b1e2766590",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_2"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1024,
+        1648
+      ],
+      "id": "ae295fb7-c465-4b79-a7e6-412bb70bc1f8",
+      "name": "Add label to message3",
+      "webhookId": "80a0fadc-5ce1-4842-b216-99b1e2766590",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -704,
+        1648
+      ],
+      "id": "c80a10e3-6641-46de-ad3d-bc14dab52f35",
+      "name": "Mark a message as read",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -304,
+        1296
+      ],
+      "id": "5d4d5d0c-1f36-44ab-9177-91b79c4fbe4f",
+      "name": "Mark a message as read1",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        1216
+      ],
+      "id": "e2a281f4-f805-4284-b466-05e3de6cbdf1",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -704,
+        1456
+      ],
+      "id": "99886dd9-16c1-4ce3-963e-9a497248bac7",
+      "name": "Mark a message as read2",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -704,
+        720
+      ],
+      "id": "b9feaa67-8c0a-4b7c-bc4a-563d14b0e4c0",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "=Título: {{ $json.headers.subject }}\n\nTexto: {{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Estudos",
+              "description": "E-mails relacionados ao ciclo de vida do aluno em cursos, eventos e workshops. Incluem confirmação de inscrição, boas-vindas, avisos e links de acesso para aulas, instruções sobre processos seletivos e informações sobre certificados.\n\nPalavras-chave que ajudam na classificação: aula, curso, inscrição, certificado, link, aluno, participante, plataforma, Zoom, agendamento, módulo, projeto, documentação, seleção, horário"
+            },
+            {
+              "category": "Finanças",
+              "description": "E-mails sobre transações financeiras e movimentações de conta. Incluem confirmações de pagamento, avisos de transferência, recibos de compra, cupons fiscais e lembretes de faturas em aberto ou cobranças.  \n\nPalavras-chave que ajudam na classificação: fatura, pagamento, transferência, compra, doação, pix, boleto, valor, R$, vencimento, cobrança, cupom, recibo, nota fiscal, confirmado"
+            },
+            {
+              "category": "Itens salvos",
+              "description": "E-mails usados como arquivo ou backup pessoal, enviados pelo próprio usuário (Diego Sousa, Diego Borges) ou por familiares (Cidasousals, Maisa Faria, nascimento123). Caracterizam-se por ter pouco ou nenhum texto e um título simples como \"Salvar\", com o foco principal no arquivo anexado.  \nPalavras-chave que ajudam na classificação: Salvar, anexo, documento, arquivo, pdf, comprovante, foto, imagem, cópia, scan, Fwd, Enc, certificado"
+            },
+            {
+              "category": "Arquivo morto",
+              "description": "E-mails automáticos de empresas, serviços e aplicativos. Incluem newsletters, promoções, pesquisas de satisfação, códigos de verificação de uso único, lembretes de apps, ofertas e comunicados gerais como atualizações de termos de uso ou editais. \nPalavras-chave que ajudam na classificação: newsletter, promoção, oferta, bônus, desconto, pesquisa, código, verificação, lembrete, edital, comunicado, termos de uso, assine, aproveite, não perca, cancelar inscrição"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -1424,
+        1296
+      ],
+      "id": "4fdb85d4-b8ff-46a7-86cb-7b46a618620e",
+      "name": "Classificador principal"
+    },
+    {
+      "parameters": {
+        "inputText": "=Título: {{ $('Gmail Trigger').item.json.headers.subject }}\n\nTexto: {{ $('Gmail Trigger').item.json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Pagamento Futuro",
+              "description": "E-mails que representam uma obrigação financeira futura, como contas, faturas ou boletos que precisam ser pagos. A característica principal é a presença de uma data de vencimento futura e um valor a ser pago, diferenciando-se de recibos ou confirmações de pagamentos já realizados.\n\nPalavras-chave que ajudam na classificação: vencimento, fatura, sua conta, boleto, vence em, a pagar, código de barras, pague com, valor a pagar, disponível para pagamento."
+            },
+            {
+              "category": "Comprovantes e Pagamentos Realizados",
+              "description": " E-mails que servem como um registro ou prova de uma transação financeira que já foi concluída. Incluem confirmações de pagamentos efetuados, recibos de compra, notas fiscais eletrônicas (NFC-e) e avisos de depósitos recebidos ou confirmação de cashback. \n\nA principal característica é que eles documentam uma ação passada e servem como comprovante.  Palavras-chave que ajudam na classificação: pagamento confirmado, recebeu seu pagamento, compra aprovada, recibo, cupom, nota fiscal, NFC-e, você depositou, comprovante, transação realizada, pagamento efetuado, cashback."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        1056
+      ],
+      "id": "41a98330-b759-427e-a881-c98e06ad6d1e",
+      "name": "Classificador de finanças"
+    },
+    {
+      "parameters": {
+        "inputText": "=Título: {{ $('Gmail Trigger').item.json.headers.subject }}\nTexto: {{ $('Gmail Trigger').item.json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Futuro",
+              "description": "E-mails que funcionam como lembretes para eventos com data e hora marcadas, como aulas ao vivo, lives, webinars ou workshops. São caracterizados pela urgência e por conterem um link de acesso para participação imediata ou em um futuro muito próximo (mesmo dia ou dia seguinte).\n\nPalavras-chave que ajudam na classificação: hoje, amanhã, agora, ao vivo, daqui a pouco, às, live, webinar, link de acesso, Zoom, participe, não perca, lembrete, é hoje, começa em, estamos ao vivo."
+            },
+            {
+              "category": "Confirmação de Inscrição e Engajamento",
+              "description": "E-mails que confirmam a inscrição em um curso ou evento, mas sem a data ou link de acesso final. O objetivo é dar as boas-vindas e solicitar uma ação secundária para engajar o participante, como responder a uma pesquisa ou confirmar o recebimento de futuros comunicados.\n\nPalavras-chave que ajudam na classificação: inscrição confirmada, parabéns, seja bem-vindo, próximos passos, sua vaga está garantida, pesquisa, responda este e-mail, grupo, comunidade, o que esperar, sua inscrição foi realizada."
+            },
+            {
+              "category": "Entrega e Disponibilidade de Certificados",
+              "description": "E-mails enviados após a conclusão de um curso ou evento, com o objetivo de entregar o certificado de participação. A entrega acontece de duas maneiras: com o documento diretamente em anexo para download, ou através de um link e instruções para acessá-lo em uma plataforma.\n\nPalavras-chave que ajudam na classificação: certificado, certificados, seu certificado, disponível, conclusão, parabéns, baixar, download, plataforma, em anexo, completou o curso."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        464
+      ],
+      "id": "a31d69d1-44e1-4a14-b517-2ae71357a5a8",
+      "name": "Classificador de estudos"
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -304,
+        512
+      ],
+      "id": "35bd7b11-136b-4caf-87fe-f297730947a6",
+      "name": "Mark a message as read3",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -304,
+        704
+      ],
+      "id": "436061a9-8c96-45ff-8026-fc2364d9ba85",
+      "name": "Mark a message as read4",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=A seguir você receberá o conteúdo de um e-mail sobre um evento. Extraia os seguintes Campos:\n\n- titulo: O nome principal do evento, aula ou live. Seja o mais conciso possível.\n- data: A data e hora de início do evento. Se o e-mail mencionar termos como \"hoje\" ou \"amanhã\", use a \"Data de hoje\" como referência para o cálculo. O formato final deve ser AAAA-MM-DD. Se nenhuma data for encontrada, retorne null.\n- hora: A hora de início do evento.Se o e-mail mencionar termos como \"agora\" ou \"daqui a pouco\", use a \"Hora atual\".O formato final deve ser HH:mm:ss. Se nenhuma data for encontrada, retorne null.\n- link: O link de acesso para o evento (Zoom, YouTube, etc.). Se não houver, retorne null.\n- categoria: O tipo do evento (ex: Aula, Live, Webinar, Reunião, Pessoal). Se não for possível identificar, use a categoria \"Evento\".\n- resumo: Uma frase de aviso para ser enviada por um assistente. A mensagem deve avisar sobre a aula de forma simpática e objetiva, como se fosse enviada por WhatsApp, citando o título e a data do evento.\n\n--- CONTEÚDO DO E-MAIL ---\nAssunto: {{ $('Gmail Trigger').item.json.headers.subject }}\nCorpo: {{ $('Gmail Trigger').item.json.text }}\n\nData de hoje (para referência):\n{{ $now }}\nHora atual (para referência):\n{{ $now }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente de produtividade e agendamento. Seu papel é interpretar e-mails sobre eventos, aulas e lives para extrair os dados essenciais (título, data, hora, link) de forma estruturada, com o objetivo de criar um evento automaticamente no calendário.\n\nAlém disso, você deve gerar uma frase de confirmação no campo \"resumo\". Esta frase deve ter um tom simpático e direto, como um assistente pessoal respondendo por mensagem. O texto deve avisar que terá um evento, citando o título e a data/hora do evento. Escreva a frase em uma única linha, sem quebras de linha."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        112
+      ],
+      "id": "63f3ad18-6ebe-49a2-927d-298078b54b50",
+      "name": "Agent_to_insert"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"titulo\": \"Aula 4: Agente de IA para leitura de documentos\",\n  \"data\": \"2025-07-15\",\n  \"hora\": \"20:00:00\",\n  \"link\": \"https://us06web.zoom.us/meeting/register/b7D1HlEAQRy-706zW8nyWQ\",\n  \"categoria\": \"Aula\",\n  \"resumo\": \"Sua 'Aula 4: Agente de IA' está marcada para o dia 15/07 às 20:00. Bons estudos! 🚀\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -240,
+        336
+      ],
+      "id": "8769c8cf-5017-421a-b658-b544232fae5c",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        336
+      ],
+      "id": "37fa32ed-9152-47a2-8bc0-64ea1d585a72",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "diegosousa977@gmail.com",
+          "mode": "list",
+          "cachedResultName": "diegosousa977@gmail.com"
+        },
+        "start": "={{ DateTime.fromISO($json.output.data + \"T\" + $json.output.hora).toISO() }}",
+        "end": "={{ DateTime.fromISO($json.output.data + \"T\" + $json.output.hora).plus({hours: 1}).toISO() }}",
+        "additionalFields": {
+          "description": "={{ $json.output.resumo }}\n\nLink de acesso: {{ $json.output.link }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        208
+      ],
+      "id": "d88e2e04-6350-4ce3-9a19-87a299bd8241",
+      "name": "Create an event1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "wYHbsxdf3AuOr8xY",
+          "name": "Google Calendar D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"descricao\": \"Conta de Luz Equatorial\",\n  \"valor\": 188.77,\n  \"data_vencimento\": \"2025-07-02\",\n  \"categoria\": \"Moradia\",\n  \"resumo\": \"Lembrete: Sua 'Conta de Luz Equatorial' no valor de R$188,77 vence no dia 02/07/2025. Não se esqueça! 💡\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -240,
+        1120
+      ],
+      "id": "fe8e1ce7-abdb-42eb-b529-f20130d9e1fe",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        1120
+      ],
+      "id": "5d614808-90ec-4c9d-a102-965830138394",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "diegosousa977@gmail.com",
+          "mode": "list",
+          "cachedResultName": "diegosousa977@gmail.com"
+        },
+        "start": "={{ $json.output.data_vencimento }}",
+        "end": "={{ $json.output.data_vencimento }}",
+        "useDefaultReminders": false,
+        "additionalFields": {
+          "allday": "yes",
+          "description": "={{ $json.output.resumo }}\n\nLembre-se a data máxima de pagamento é: {{ $json.output.data_vencimento }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        1008
+      ],
+      "id": "6e0bb7f0-2212-4c5b-ba33-566d1ee9809f",
+      "name": "Create an event2",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "wYHbsxdf3AuOr8xY",
+          "name": "Google Calendar D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=A seguir você receberá o conteúdo de um e-mail sobre uma conta ou fatura a ser paga. Extraia os seguintes Campos:\n- categoria: A categoria da despesa (ex: Igreja, educação, internet e telefone, transporte, saúde, Temporario, Moradia, alimentação, Presente.), caso não seja informada categoria usar a categoria \"Temporario\"\n- descricao: O nome principal da conta (ex: Conta de Luz Equatorial, Fatura do Cartão, Boleto da Internet). Seja o mais conciso possível.\n- valor: O valor numérico exato a ser pago, sem o 'R$'. Use virgula como separador decimal (ex: 188,77).\n- data_vencimento: A data de vencimento da conta. Procure pelo termo \"VENCIMENTO\". O formato final deve ser AAAA-MM-DD. Se nenhuma data for encontrada, retorne null.\n- resumo: Uma frase de lembrete para ser enviada por um assistente. A mensagem deve lembrar sobre a conta a pagar de forma amigável, como se fosse enviada por WhatsApp, citando a descrição, o valor e o vencimento.\n\n--- CONTEÚDO DO E-MAIL ---\nAssunto: {{ $('Gmail Trigger').item.json.headers.subject }}\nCorpo: {{ $('Gmail Trigger').item.json.text }}\n\nData de hoje (para referência):\n{{ $now }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente financeiro pessoal. Seu papel é interpretar e-mails sobre contas, faturas e boletos a pagar para extrair os dados essenciais (descrição, valor, data de vencimento) de forma estruturada, com o objetivo de registrar essa obrigação financeira em um sistema de controle.\nAlém disso, você deve gerar uma frase de confirmação no campo \"resumo\". Esta frase deve ter um tom simpático e direto, como um assistente pessoal respondendo por mensagem. O texto deve avisar que terá um evento, citando o título e a data/hora do evento. Escreva a frase em uma única linha, sem quebras de linha."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        896
+      ],
+      "id": "51491dfc-6f50-42ad-966b-5089d0e0797e",
+      "name": "Agent_to_finance"
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4e9ef4e6-9444-4408-88b9-5091dc25b3cc",
+      "name": "Mark a message as read5",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        832
+      ],
+      "id": "8d714aae-523a-4a2b-a030-e3fd1870692f",
+      "name": "Mark a message as read6",
+      "webhookId": "9bcdefbf-20c0-4c8c-a1ca-c5a46370ea34",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GMIwmI9AtvLvB8HW",
+          "name": "Gmail D977"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Classificador principal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classificador principal",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add label to message": {
+      "main": [
+        [
+          {
+            "node": "Classificador de estudos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add label to message3": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add label to message2": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classificador de finanças",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add label to message1": {
+      "main": [
+        [
+          {
+            "node": "Classificador de finanças",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classificador de estudos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificador principal": {
+      "main": [
+        [
+          {
+            "node": "Add label to message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add label to message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add label to message2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add label to message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificador de finanças": {
+      "main": [
+        [
+          {
+            "node": "Agent_to_finance",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark a message as read1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificador de estudos": {
+      "main": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark a message as read3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark a message as read4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_insert": {
+      "main": [
+        [
+          {
+            "node": "Create an event1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mark a message as read5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent_to_finance",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_finance",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_finance": {
+      "main": [
+        [
+          {
+            "node": "Create an event2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mark a message as read6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2718a39e-52de-4192-8f81-763b9d47bfc5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "zlCknoaUDC9BJWJf",
+  "tags": []
+}
