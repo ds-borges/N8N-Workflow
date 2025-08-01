@@ -1,0 +1,233 @@
+{
+  "name": "Agente_rag_Universidade",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=Você é um assistente acadêmico virtual. Sua função é fornecer informações precisas sobre regulamentos, procedimentos, prazos e vida no campus da universidade, com base estritamente nos documentos oficiais que lhe são fornecidos.\n\nPara cada pergunta do usuário, você receberá um contexto com trechos dos regulamentos e documentos relevantes da universidade. Sua resposta DEVE ser construída exclusivamente a partir desse contexto.\n\n**Regras Obrigatórias:**\n1.  **Use Apenas o Contexto:** Baseie 100% da sua resposta nas informações fornecidas. É estritamente proibido usar conhecimento prévio ou informações da internet.\n2.  **Seja Direto e Prestativo:** Responda de forma clara, objetiva e prestativa, como um funcionário da secretaria acadêmica auxiliando um aluno, sem usar burocracia excessiva.\n3.  **Cite a Fonte:** Se o contexto fornecido incluir o nome do documento, manual ou regulamento de onde a informação foi extraída, cite-o no final da sua resposta para dar credibilidade. Exemplo: \"(Fonte: Regulamento Geral de Graduação, Seção 5.2)\" ou \"(Conforme o Manual do Aluno 2025)\".\n4.  **Informação Não Encontrada:** Se o contexto fornecido não contiver informações suficientes para responder à pergunta, responda de forma clara e útil: \"Com base nos documentos consultados, não encontrei informações sobre este assunto. Recomendo que você entre em contato diretamente com a secretaria do seu curso para mais detalhes.\"\n\nResponda à pergunta do usuário a seguir, aplicando todas as regras acima."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0f10026f-2ccd-416c-a5bc-a64fc836adf6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "ae6118c5-6653-4111-bcf4-39bf5fae5f3a",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.from.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "e6ca594c-23a5-4ed3-9217-52209072450d",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "OnDbRoT10JZhZvd4",
+          "name": "Postgres agente_rag_universidade"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use o documento anexo para responder sobre o funcionamento da faculdade",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 16,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        336,
+        224
+      ],
+      "id": "7aada65f-01d9-4688-9366-99b6cd4b2d7c",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "bkOMe4eHWMDTqtej",
+          "name": "agente_rag_universidade"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        416,
+        384
+      ],
+      "id": "762178e5-2a2d-4338-95c3-6b84dbc8977d",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "bd8e15cc-8730-4f8f-8e9b-400219930790",
+      "name": "Telegram Trigger",
+      "webhookId": "22352dc4-65bd-4c78-a619-16a18e15b046",
+      "credentials": {
+        "telegramApi": {
+          "id": "bLiLR9iWpVvBbprm",
+          "name": "Telegram AgenteRag_Universidade"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "8646a1c1-b28e-490d-aae4-68c97f76eeb5",
+      "name": "Send a text message",
+      "webhookId": "c14272a9-af3a-4812-8ba2-c4b353db0fa4",
+      "credentials": {
+        "telegramApi": {
+          "id": "bLiLR9iWpVvBbprm",
+          "name": "Telegram AgenteRag_Universidade"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d7d24c2c-5a37-40cf-8d37-354dffbaaebc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "uwshHj2XaCycus8c",
+  "tags": []
+}

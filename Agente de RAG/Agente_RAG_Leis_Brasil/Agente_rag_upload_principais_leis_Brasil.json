@@ -1,0 +1,945 @@
+{
+  "name": "Agente_rag_upload_principais_leis_Brasil",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "rag_leis",
+          "mode": "list",
+          "cachedResultName": "rag_leis"
+        },
+        "options": {
+          "queryName": "match_rag_leis"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        2240,
+        48
+      ],
+      "id": "14254186-6db8-4648-9605-98c108e65608",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "KMDKPkGaEfIIfjHs",
+          "name": "Supabase pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        2384,
+        256
+      ],
+      "id": "fc3ba31b-7520-44cf-9e12-ceb088e77535",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 2000,
+        "chunkOverlap": 250,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        384
+      ],
+      "id": "17943a5f-6b5e-4941-b583-52fd4aa01f35",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        272
+      ],
+      "id": "1f12a787-688a-4b99-b842-0ac5ca8dda62",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7cVvQtTUhKtlt9LH",
+          "name": "Google Gemini D97S"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        880,
+        80
+      ],
+      "id": "50ae2f99-02c4-4100-ac9f-f3b122cc0429",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://consumidor.gov.br/pages/conteudo/publico/102",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        368
+      ],
+      "id": "a05177ef-cdfa-4883-b951-b9cbcfbbc920",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "leis_federal",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1648,
+        -464
+      ],
+      "id": "6f93466e-50bc-43d2-adab-f36d2d4a2a4b",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.1 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        -464
+      ],
+      "id": "61d1c139-ffe2-4c83-86b2-4b26fe89de55",
+      "name": "HTTP Request1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {
+          "encoding": "iso88591"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        -464
+      ],
+      "id": "705ac829-326d-4322-9085-af5b1bf5e03f",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "leis_consumidor",
+              "cssSelector": ".pag-generica"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1632,
+        368
+      ],
+      "id": "32942436-76ee-4e4e-826c-6d2dcd7b91b0",
+      "name": "HTML1"
+    },
+    {
+      "parameters": {
+        "content": "## Constituição federal",
+        "height": 240,
+        "width": 592
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        -528
+      ],
+      "typeVersion": 1,
+      "id": "23615e6f-6fbf-488d-b73d-29c290b57d25",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Código de defesa do consumidor",
+        "height": 240,
+        "width": 576,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "c66113ae-b8c8-480d-a25b-a4c78ba40bfd",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.1 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        -192
+      ],
+      "id": "21c9787e-d838-4928-a6b0-d46ab0bbbdec",
+      "name": "HTTP Request2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {
+          "encoding": "iso88591"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        -192
+      ],
+      "id": "95a4fd33-c2ea-4943-810c-2d1b46978abc",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "content": "## Código civil",
+        "height": 240,
+        "width": 592,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "5c14ff8d-b934-4e93-ac2b-55e1465c7ed2",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "leis_do_trabalho",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1648,
+        64
+      ],
+      "id": "9b8e529f-3e8f-4a2c-9b64-0eaf8545f780",
+      "name": "HTML3"
+    },
+    {
+      "parameters": {
+        "url": "https://www.planalto.gov.br/ccivil_03/decreto-lei/del5452.htm",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.1 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        64
+      ],
+      "id": "b15ab217-8193-43a9-aa93-f92d8ad0f59a",
+      "name": "HTTP Request3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {
+          "encoding": "iso88591"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        64
+      ],
+      "id": "0547b8af-5f0f-426e-89ec-c69e6a777cfe",
+      "name": "Extract from File2"
+    },
+    {
+      "parameters": {
+        "content": "## Consolidação das Leis do Trabalho.",
+        "height": 240,
+        "width": 576,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "d8f2ae31-4e15-4867-8a0a-23e4d4ac6e14",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega o texto bruto que veio do nó anterior\nconst rawText = $input.item.json.leis_do_trabalho;\n\n// Define a palavra-chave que marca o início da lei\nconst startMarker = \"Presidência\";\n\n// Encontra a posição onde a palavra-chave começa\nconst startIndex = rawText.indexOf(startMarker);\n\n// Corta o texto, mantendo tudo a partir da palavra-chave\n// (Se não encontrar a palavra-chave, retorna o texto original para não dar erro)\nconst cleanedText = startIndex > -1 ? rawText.substring(startIndex) : rawText;\n\n// Retorna o resultado em um novo campo chamado \"texto_limpo\"\nreturn { texto_limpo: cleanedText };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        64
+      ],
+      "id": "32c3adbc-f57d-4757-b0bb-e4eb7a2514fb",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.1 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1376,
+        672
+      ],
+      "id": "0e4b091b-696a-4644-a80b-1b2529c53f9f",
+      "name": "HTTP Request4",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {
+          "encoding": "iso88591"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        672
+      ],
+      "id": "b5da02dc-e7e3-433c-9537-5e6990e50f0b",
+      "name": "Extract from File3"
+    },
+    {
+      "parameters": {
+        "content": "## Lei Geral de Proteção de Dados Pessoais (LGPD)",
+        "height": 240,
+        "width": 576,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "f4fe3847-00f5-4d45-8e1d-193f70591e2b",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "leis_protecao_dados",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1632,
+        672
+      ],
+      "id": "b7fd648f-6474-4843-9b08-ab01f32cd604",
+      "name": "HTML4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega o texto bruto que veio do nó anterior\nconst rawText = $input.item.json.leis_protecao_dados;\n\n// Define a palavra-chave que marca o início da lei\nconst startMarker = \"Presidência\";\n\n// Encontra a posição onde a palavra-chave começa\nconst startIndex = rawText.indexOf(startMarker);\n\n// Corta o texto, mantendo tudo a partir da palavra-chave\n// (Se não encontrar a palavra-chave, retorna o texto original para não dar erro)\nconst cleanedText = startIndex > -1 ? rawText.substring(startIndex) : rawText;\n\n// Retorna o resultado em um novo campo chamado \"texto_limpo\"\nreturn { texto_limpo: cleanedText };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        672
+      ],
+      "id": "a72e32db-1ffc-4629-b69b-ef70c7ea1fec",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega o texto bruto que veio do nó anterior\nconst rawText = $input.item.json.leis_federal;\n\n// Define a palavra-chave que marca o início da lei\nconst startMarker = \"Presidência\";\n\n// Encontra a posição onde a palavra-chave começa\nconst startIndex = rawText.indexOf(startMarker);\n\n// Corta o texto, mantendo tudo a partir da palavra-chave\n// (Se não encontrar a palavra-chave, retorna o texto original para não dar erro)\nconst cleanedText = startIndex > -1 ? rawText.substring(startIndex) : rawText;\n\n// Retorna o resultado em um novo campo chamado \"texto_limpo\"\nreturn { texto_limpo: cleanedText };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        -464
+      ],
+      "id": "f3323c28-4f7b-40a9-ab9a-db8ea661f2c6",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega o texto bruto que veio do nó anterior\nconst rawText = $input.item.json.leis_civil;\n\n// Define a palavra-chave que marca o início da lei\nconst startMarker = \"Presidência\";\n\n// Encontra a posição onde a palavra-chave começa\nconst startIndex = rawText.indexOf(startMarker);\n\n// Corta o texto, mantendo tudo a partir da palavra-chave\n// (Se não encontrar a palavra-chave, retorna o texto original para não dar erro)\nconst cleanedText = startIndex > -1 ? rawText.substring(startIndex) : rawText;\n\n// Retorna o resultado em um novo campo chamado \"texto_limpo\"\nreturn { texto_limpo: cleanedText };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        -192
+      ],
+      "id": "a98da028-e0bf-4420-a736-f49c5b983d8b",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "leis_civil",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1648,
+        -192
+      ],
+      "id": "d3022bf9-38e3-4855-9671-e5bcf62e6ff1",
+      "name": "HTML5"
+    },
+    {
+      "parameters": {
+        "content": "## Guarda tudo na tabela vetorial",
+        "height": 576,
+        "width": 512,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2160,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "ea6d89c7-2eab-42e7-afaa-c12baaaf989c",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Inicia limpando a tabela vetorial",
+        "height": 304,
+        "width": 416,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "851f20d5-9bab-4b7f-aafb-9025e74c37cd",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "rag_leis",
+          "mode": "list",
+          "cachedResultName": "rag_leis"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1088,
+        80
+      ],
+      "id": "c153ce48-0fae-42d4-af44-e6093ac93192",
+      "name": "Delete table or rows",
+      "credentials": {
+        "postgres": {
+          "id": "n0pVJuetcmVGDDI6",
+          "name": "Postgres pessoal"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Delete table or rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML1": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "HTML5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Extract from File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File2": {
+      "main": [
+        [
+          {
+            "node": "HTML3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML3": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Extract from File3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File3": {
+      "main": [
+        [
+          {
+            "node": "HTML4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML4": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML5": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete table or rows": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6447a105-ef03-4913-b429-82aaefb79e02",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "qLFen042OtfheesK",
+  "tags": []
+}
