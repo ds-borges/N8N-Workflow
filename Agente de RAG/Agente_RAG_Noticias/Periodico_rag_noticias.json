@@ -1,0 +1,864 @@
+{
+  "name": "Periodico_rag_noticias",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Sua única e exclusiva tarefa é extrair e retornar uma URL, e nada mais.\n\nVocê é um assistente de IA especialista em extração de dados. Analise o conteúdo fornecido e siga as regras estritamente.\n\n**Regras de Execução:**\n\n1.  **Analisar o Conteúdo:** Inspecione os dados em `{{ $json.data }}` para encontrar uma lista de notícias e seus links.\n2.  **Filtrar por Palavras-chave:** Encontre a **primeira notícia da lista** cujo título contenha pelo menos uma das seguintes palavras:\n    * `Presidente`\n    * `STF`\n    * `Supremo`\n    * `Senado`\n    * `Camara`\n    * `Deputados`\n    * `Congresso`\n3.  **Extrair a URL completa:** Isole a URL completa correspondente a essa notícia.\n\n**Formato de Saída Obrigatório:**\n\n* **A resposta deve conter APENAS a URL completa.**\n* **NÃO inclua absolutamente nenhum texto adicional**, explicações, introduções, aspas, ou qualquer outra formatação.\n* Se você escrever qualquer coisa além da URL, a tarefa será considerada uma falha.\n\nExemplo de saída:\n- `https://www.cnnbrasil.com.br/economia/macroeconomia/reciproca-e-verdadeira-diz-haddad-apos-trump-sinalizar-abertura-de-dialogo/`\n- `https://g1.globo.com/mundo/noticia/2025/08/01/lula-pode-falar-comigo-o-momento-que-quiser-diz-trump.ghtml`\n- `https://www.gazetadopovo.com.br/vozes/fernando-jasper/tarifaco-brasil-de-lula-e-moraes-e-o-adversario-ideal-de-trump-e-o-jogo-esta-longe-de-acabar/`",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        -32
+      ],
+      "id": "0f79abf1-0361-41bd-b531-203243792d3f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        256,
+        128
+      ],
+      "id": "c40413a7-b54a-41bf-bbed-3f88e1fefce1",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é o assistente de notícias e analista político, \"Syan\" e sua missão é enviar um resumo diário das principais notícias do Brasil e do mundo para uma pessoa chamada `Diego`, sempre às 7h da manhã. Utilize as notícias coletadas via scraping dos sites de design e organize o conteúdo de forma clara, objetiva e dinâmica, com o uso de emojis que reflitam o tema e o tom de cada notícia.\n\nInformações do scraping: {{ $json.data }}\n\n**Informações Detalhadas:**\n\n1.  **Extração e Formatação das Notícias:**\n    * **Título da Notícia:** Apresente um título curto, impactante e adicione emojis relacionados ao tema.\n        * *Exemplos:*\n            * Notícias sobre o Governo Federal (Executivo): 🇧🇷, 🏛️\n            * Decisões do Congresso (Legislativo): 📜, 🗣️\n            * Julgamentos do STF (Judiciário): ⚖️,  gavel\n            * Notícias sobre eleições: 🗳️, 📊\n            * Impacto na economia: 💰, 💹, 📉\n    * **Descrição e Análise:** Forneça resumos e análises conforme a estrutura abaixo, complementando com emojis que ressaltem a ideia central (ex: 🚨 para algo urgente, 📌 para um ponto importante).\n    * **Link:** Inclua a URL completa para a fonte original.\n\n2.  **Estrutura da Mensagem:**\n    * Organize cada notícia no formato detalhado no exemplo abaixo.\n    * Caso haja diferentes categorias nos dados de entrada (ex: \"Executivo\", \"Legislativo\", \"Judiciário\"), divida as notícias em seções para facilitar a leitura.\n    * Use o número aleatório gerado pelo nó de código em Javascript para variar a ordem das notícias ou selecionar emojis, garantindo dinamismo na apresentação.\n\n3.  **Exemplo de Saída (Formato Obrigatório):**\n\n    ---\n    [TÍTULO IMPACTANTE DA NOTÍCIA COM EMOJI]\n\n    📌 **Resumo da Notícia:**\n    [Resumo breve da notícia, focando nos principais atores políticos e nas decisões tomadas. Use 1 ou 2 frases diretas.]\n\n    🤔 **Por que isso é importante?**\n    [Explicação do impacto da notícia no cenário político, na economia ou na vida dos cidadãos. Qual a consequência prática do fato?]\n\n    🗣️ **Pontos-chave:**\n    • [Ponto 1 sobre a notícia, ex: o argumento principal do relator]\n    • [Ponto 2 sobre a notícia, ex: a reação da oposição]\n    • [Ponto 3 sobre a notícia, ex: o próximo passo do processo]\n\n    🧠 **Nossa Análise:**\n    [Breve comentário analítico sobre o desdobramento, possíveis consequências futuras ou o contexto histórico do acontecimento.]\n\n    📰 **Leia na íntegra:**\n    🔗 [Link completo da notícia]\n\n**Notas Adicionais:**\n* Mantenha a linguagem objetiva na descrição dos fatos e opinativa apenas na seção \"Nossa Análise\".\n* Seja direto e evite jargões excessivos para que a informação seja acessível a todos no grupo.\n* Envie a mensagem exatamente nesse formato, garantindo clareza e profundidade na cobertura política.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        992,
+        -32
+      ],
+      "id": "ebb26ed4-24a8-460a-9abf-eae5df5b1ec6",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        992,
+        144
+      ],
+      "id": "b51825ec-7dbf-4085-b2eb-c27b6ca62a70",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7cVvQtTUhKtlt9LH",
+          "name": "Google Gemini D97S"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://r.jina.ai/{{ $json.output }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "={{ $json.random_user_agent }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        768,
+        -32
+      ],
+      "id": "9a5c567e-b7a0-4eb3-9500-b0f5c2978530",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "url": "https://r.jina.ai/https://istoedinheiro.com.br/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "={{ $('Code_user_desktop').item.json.random_user_agent }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        336
+      ],
+      "id": "0bad34b7-5c24-4a50-a404-dcd1200d2b8d",
+      "name": "Istoédinheiro"
+    },
+    {
+      "parameters": {
+        "url": "https://r.jina.ai/https://www.gazetadopovo.com.br/economia/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "={{ $('Code_user_desktop').item.json.random_user_agent }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        -304
+      ],
+      "id": "3034e7da-a33e-4578-9c5b-edc9f9fe4423",
+      "name": "Gazeta do povo"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            },
+            {
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -896,
+        16
+      ],
+      "id": "7cb21a66-6f85-486a-ad43-f9acfa36f23e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## Pegar a ultima URL sobre notícias da política do portal selecionado.",
+        "height": 480,
+        "width": 688,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "fd60cd75-b943-4f7e-91fb-48f96a71a56f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Escolhe aleatório o portal de notícias",
+        "height": 384,
+        "width": 368,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "54d2ee46-5188-4200-b849-5893b281c227",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Code_switch').item.json.numero }}",
+                    "rightValue": 1,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "fd9ee341-1d81-48f2-826c-a817fd2e4b89"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1121b06c-0f43-4fca-858e-ffbff5c00008",
+                    "leftValue": "={{ $('Code_switch').item.json.numero }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "dateTime",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a8ec3990-d71a-47e5-af07-4f41456c6ea4",
+                    "leftValue": "={{ $('Code_switch').item.json.numero }}",
+                    "rightValue": 3,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "577c8bc4-62fa-4bc5-a60d-5de211394d7d",
+                    "leftValue": "={{ $('Code_switch').item.json.numero }}",
+                    "rightValue": 4,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -320,
+        -16
+      ],
+      "id": "dcf46e25-fb99-4e66-9aa3-d7fe7fed864a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "content": "## Portais de notícias",
+        "height": 864,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -112,
+        -368
+      ],
+      "typeVersion": 1,
+      "id": "a0b157f4-fb0f-4da2-a47e-e38eaf463372",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "url": "https://r.jina.ai/https://www.cnnbrasil.com.br/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "={{ $('Code_user_desktop').item.json.random_user_agent }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        -144
+      ],
+      "id": "bc908d9b-336c-4337-a05f-77a7f13acb7d",
+      "name": "CNN"
+    },
+    {
+      "parameters": {
+        "content": "## Resumi a notícia selecionada.",
+        "height": 480,
+        "width": 352,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        944,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "0827e010-967c-4154-90bc-5491cc56c86a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Gatilho agendado diariamente",
+        "height": 384,
+        "width": 224,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -960,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "1765b3c6-af66-4d1e-b7b9-84a9b2d53834",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://waha-diego:3000/api/sendText",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=chatId",
+              "value": "=556493174450@c.us"
+            },
+            {
+              "name": "=text",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "session",
+              "value": "=default"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1376,
+        112
+      ],
+      "id": "96311e42-e6fa-4fbc-b1b1-a36b3216b094",
+      "name": "Send to Whatsapp WAHA"
+    },
+    {
+      "parameters": {
+        "chatId": "7006144067",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1376,
+        -128
+      ],
+      "id": "fcb4c828-81c1-44e3-a7d1-411320b7f2a6",
+      "name": "Send to Telegram",
+      "webhookId": "86fc6043-43c9-43d8-a75d-c4ece4111b72",
+      "credentials": {
+        "telegramApi": {
+          "id": "ckBftXPqYhF7h8hj",
+          "name": "Telegram Assistente Borges"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://r.jina.ai/https://www.cartacapital.com.br/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "={{ $('Code_user_desktop').item.json.random_user_agent }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        176
+      ],
+      "id": "8c8cdf10-93f7-4411-ba43-df350a4c0d1a",
+      "name": "CartaCapital"
+    },
+    {
+      "parameters": {
+        "url": "https://r.jina.ai/https://www.poder360.com.br/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "={{ $('Code_user_desktop').item.json.random_user_agent }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        16
+      ],
+      "id": "7544ec31-2061-4914-bfd5-e5e0556cd62e",
+      "name": "Poder360"
+    },
+    {
+      "parameters": {
+        "jsCode": "const min = 1;\nconst max = 4;\n\nconst numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;\n\nreturn {\n  numero: numeroAleatorio\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        16
+      ],
+      "id": "1a009935-2101-4926-8871-fcbbef45c505",
+      "name": "Code_switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "const userAgents = [\n// Android (Chrome em um Google Pixel)\n\"Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36\",\n// Android (Chrome em um Samsung Galaxy)\n\"Mozilla/5.0 (Linux; Android 15; SM-S938U1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36\",\n// Android (Firefox)\n\"Mozilla/5.0 (Android 15; Mobile; rv:136.0) Gecko/136.0 Firefox/136.0\",\n// iOS (Safari em um iPhone)\n\"Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Mobile/15E148 Safari/604.1\"\n];\nconst randomIndex = Math.floor(Math.random() * userAgents.length);\nconst randomUserAgent = userAgents[randomIndex];\n\n// Retorna o User-Agent para ser usado no próximo nó\nreturn { 'random_user_agent': randomUserAgent };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        -32
+      ],
+      "id": "7a52fc87-6899-4eca-aa5c-ed942b0b0663",
+      "name": "Code_user_mobile"
+    },
+    {
+      "parameters": {
+        "jsCode": "const userAgents = [\n  \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36\",\n  \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0\",\n  \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0\",\n  \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36\",\n  \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15\",\n  \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36\"\n];\nconst randomIndex = Math.floor(Math.random() * userAgents.length);\nconst randomUserAgent = userAgents[randomIndex];\n\n// Retorna o User-Agent para ser usado no próximo nó\nreturn { 'random_user_agent': randomUserAgent };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        16
+      ],
+      "id": "6ff26a5f-cdb9-4dc9-a559-020220b0c949",
+      "name": "Code_user_desktop",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "content": "## Enviar para WhatsApp",
+        "height": 240,
+        "width": 288,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        48
+      ],
+      "id": "31fb4267-1f9a-434b-af31-17f290af65ea",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Enviar para a Telegram",
+        "height": 224,
+        "width": 288,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        -192
+      ],
+      "id": "332e604a-ee64-41dc-a367-3d8c0c94fa33",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Criar User_agent aleatório",
+        "height": 384,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -112
+      ],
+      "id": "e0a94d4a-acbb-4e14-9262-31da99c040fa",
+      "name": "Sticky Note7"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code_user_mobile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send to Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send to Whatsapp WAHA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Istoédinheiro": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gazeta do povo": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code_user_desktop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Gazeta do povo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CNN",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Poder360",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CartaCapital",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CNN": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CartaCapital": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Poder360": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_switch": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_user_mobile": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_user_desktop": {
+      "main": [
+        [
+          {
+            "node": "Code_switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "74bfe368-9e4f-47aa-91c1-e9b4231eefe0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "r3BE1te4iav8FRSd",
+  "tags": []
+}
