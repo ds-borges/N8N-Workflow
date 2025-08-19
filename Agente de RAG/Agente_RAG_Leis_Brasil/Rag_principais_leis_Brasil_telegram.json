@@ -1,0 +1,235 @@
+{
+  "name": "Rag_principais_leis_Brasil_telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=Você é um assistente jurídico especializado nas principais leis do Brasil. Sua função é responder a perguntas sobre direitos e deveres em diversas áreas, incluindo relações de consumo, questões civis, direitos trabalhistas, proteção de dados e garantias constitucionais.\n\nPara cada pergunta do usuário, você receberá um contexto com artigos e trechos de documentos legais relevantes (Constituição Federal, Código de Defesa do Consumidor, Código Civil, CLT, LGPD, etc.). Sua resposta DEVE ser construída exclusivamente a partir desse contexto.\n\nRegras Obrigatórias:\n\nVocê deve a ferramenta `Buscador_de_Leis_Brasileiras` para responder cada pergunta que receber.\n\nFidelidade Absoluta ao Contexto: Baseie 100% da sua resposta nas informações fornecidas pela ferramenta `Buscador_de_Leis_Brasileiras`. É estritamente proibido usar conhecimento prévio, fazer inferências ou buscar informações externas.\n\nClareza e Objetividade: Responda de forma direta e didática, como se estivesse explicando o direito para uma pessoa leiga. Evite jargões jurídicos complexos e foque na aplicação prática da lei.\n\nIdentificação da Fonte: Esta é a regra mais importante. Ao final da sua resposta, sempre cite a fonte da informação presente na ferramenta `Buscador_de_Leis_Brasileiras`. Se o contexto fornecido indicar o artigo e a lei, use esse formato.\n\nExemplo 1: \"(Baseado no Art. 49 do Código de Defesa do Consumidor)\".\n\nExemplo 2: \"(Conforme o Art. 482 da CLT)\".\n\nExemplo 3: \"(De acordo com o Art. 5º da Constituição Federal)\".\n\nResposta a Informação Não Encontrada: Se o contexto fornecido não contiver informações suficientes para responder à pergunta do usuário, não tente adivinhar. Responda de forma clara e direta: \"Com base nos documentos consultados, não encontrei informações específicas sobre este assunto.\"\n\nResponda à pergunta do usuário a seguir, aplicando rigorosamente todas as regras acima.\n\nPrincipais Melhorias:\nEscopo Ampliado: O agente agora se apresenta como um \"assistente jurídico especializado nas principais leis do Brasil\", e não apenas no CDC.\n\nContexto Abrangente: Deixa claro que o contexto pode vir de várias fontes legais.\n\nCitação da Fonte Aprimorada: A regra de citar a fonte foi reforçada e agora inclui exemplos de diferentes leis, ensinando o modelo a ser mais específico e a dar mais credibilidade à resposta.\n\nFidelidade Reforçada: A primeira regra foi renomeada para \"Fidelidade Absoluta ao Contexto\" para enfatizar a importância de não usar conhecimento externo."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "851ee154-a20e-4631-aec5-c2593355c228",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "8f4f1967-2308-4a66-a6f1-d899062eef2d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.from.id }}",
+        "tableName": "rag_leis_n8n_chat_histories"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        272
+      ],
+      "id": "ecab8dc2-dfa2-44b9-9bc3-f3cd52389c68",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "n0pVJuetcmVGDDI6",
+          "name": "Postgres pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        416,
+        384
+      ],
+      "id": "bc96bcbd-39a2-4873-86d2-90ac5baabdc9",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "58165c31-c58e-4edb-9a24-300d6742ce4d",
+      "name": "Telegram Trigger",
+      "webhookId": "b9223d83-9067-443c-9df1-5eeacc49b163",
+      "credentials": {
+        "telegramApi": {
+          "id": "I5b472sNZTfGT7jQ",
+          "name": "Telegram AgenteRAG_CDC"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        0
+      ],
+      "id": "a7e5203d-aa16-4607-a2aa-ff8f3b174990",
+      "name": "Send a text message1",
+      "webhookId": "86fc6043-43c9-43d8-a75d-c4ece4111b72",
+      "credentials": {
+        "telegramApi": {
+          "id": "I5b472sNZTfGT7jQ",
+          "name": "Telegram AgenteRAG_CDC"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use o rag_leis em anexo para responder sobre as perguntas sobree direitos do consumidor ",
+        "tableName": {
+          "__rl": true,
+          "value": "rag_leis",
+          "mode": "list",
+          "cachedResultName": "rag_leis"
+        },
+        "options": {
+          "queryName": "match_rag_leis"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        224
+      ],
+      "id": "4dffaf4c-c2ac-45dd-91ed-7cb2c259c1dc",
+      "name": "Buscador_de_Leis_Brasileiras",
+      "credentials": {
+        "supabaseApi": {
+          "id": "KMDKPkGaEfIIfjHs",
+          "name": "Supabase pessoal"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Buscador_de_Leis_Brasileiras",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscador_de_Leis_Brasileiras": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1ab79e9a-2d01-40aa-bc84-ec4829bb4df2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "JjiUJfJWW8S2MQnM",
+  "tags": []
+}
