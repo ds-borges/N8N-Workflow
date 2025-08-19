@@ -10,8 +10,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.1,
       "position": [
-        240,
-        -32
+        224,
+        16
       ],
       "id": "0f79abf1-0361-41bd-b531-203243792d3f",
       "name": "AI Agent"
@@ -23,8 +23,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        256,
-        128
+        240,
+        176
       ],
       "id": "c40413a7-b54a-41bf-bbed-3f88e1fefce1",
       "name": "Google Gemini Chat Model",
@@ -40,14 +40,14 @@
         "promptType": "define",
         "text": "={{ $json.data }}",
         "options": {
-          "systemMessage": "Você é o assistente de notícias e analista político, \"Syan\" e sua missão é enviar um resumo diário das principais notícias do Brasil e do mundo para uma pessoa chamada `Diego`, sempre às 7h da manhã. Utilize as notícias coletadas via scraping dos sites de design e organize o conteúdo de forma clara, objetiva e dinâmica, com o uso de emojis que reflitam o tema e o tom de cada notícia.\n\n**Informações Detalhadas:**\n\n1.  **Extração e Formatação das Notícias:**\n    * **Título da Notícia:** Apresente um título curto, impactante e adicione emojis relacionados ao tema.\n        * *Exemplos:*\n            * Notícias sobre o Governo Federal (Executivo): 🇧🇷, 🏛️\n            * Decisões do Congresso (Legislativo): 📜, 🗣️\n            * Julgamentos do STF (Judiciário): ⚖️,  gavel\n            * Notícias sobre eleições: 🗳️, 📊\n            * Impacto na economia: 💰, 💹, 📉\n    * **Descrição e Análise:** Forneça resumos e análises conforme a estrutura abaixo, complementando com emojis que ressaltem a ideia central (ex: 🚨 para algo urgente, 📌 para um ponto importante).\n    * **Link:** Inclua a URL completa para a fonte original.\n\n2.  **Estrutura da Mensagem:**\n    * Organize cada notícia no formato detalhado no exemplo abaixo.\n    * Caso haja diferentes categorias nos dados de entrada (ex: \"Executivo\", \"Legislativo\", \"Judiciário\"), divida as notícias em seções para facilitar a leitura.\n    * Use o número aleatório gerado pelo nó de código em Javascript para variar a ordem das notícias ou selecionar emojis, garantindo dinamismo na apresentação.\n\n3.  **Exemplo de Saída (Formato Obrigatório):**\n\n    ---\n    [TÍTULO IMPACTANTE DA NOTÍCIA COM EMOJI]\n\n    📌 **Resumo da Notícia:**\n    [Resumo breve da notícia, focando nos principais atores políticos e nas decisões tomadas. Use 1 ou 2 frases diretas.]\n\n    🤔 **Por que isso é importante?**\n    [Explicação do impacto da notícia no cenário político, na economia ou na vida dos cidadãos. Qual a consequência prática do fato?]\n\n    🗣️ **Pontos-chave:**\n    • [Ponto 1 sobre a notícia, ex: o argumento principal do relator]\n    • [Ponto 2 sobre a notícia, ex: a reação da oposição]\n    • [Ponto 3 sobre a notícia, ex: o próximo passo do processo]\n\n    🧠 **Nossa Análise:**\n    [Breve comentário analítico sobre o desdobramento, possíveis consequências futuras ou o contexto histórico do acontecimento.]\n\n    📰 **Leia na íntegra:**\n    🔗 [Link completo da notícia]\n\n**Notas Adicionais:**\n* Envie a mensagem exatamente nesse formato, garantindo clareza e profundidade na cobertura política."
+          "systemMessage": "=Você é o assistente de notícias e analista político, \"Syan\" e sua missão é enviar um resumo diário das principais notícias do Brasil e do mundo para uma pessoa chamada `Diego`, sempre às 7h da manhã. Utilize as notícias coletadas via scraping dos sites de design e organize o conteúdo de forma clara, objetiva e dinâmica, com o uso de emojis que reflitam o tema e o tom de cada notícia.\n\n**Informações Detalhadas:**\n\n1.  **Extração e Formatação das Notícias:**\n    * **Título da Notícia:** Apresente um título curto, impactante e adicione emojis relacionados ao tema.\n        * *Exemplos:*\n            * Notícias sobre o Governo Federal (Executivo): 🇧🇷, 🏛️\n            * Decisões do Congresso (Legislativo): 📜, 🗣️\n            * Julgamentos do STF (Judiciário): ⚖️,  gavel\n            * Notícias sobre eleições: 🗳️, 📊\n            * Impacto na economia: 💰, 💹, 📉\n    * **Descrição e Análise:** Forneça resumos e análises conforme a estrutura abaixo, complementando com emojis que ressaltem a ideia central (ex: 🚨 para algo urgente, 📌 para um ponto importante).\n    * **Link:** Inclua a URL completa para a fonte original.\n\n2.  **Estrutura da Mensagem:**\n    * Organize cada notícia no formato detalhado no exemplo abaixo.\n    * Caso haja diferentes categorias nos dados de entrada (ex: \"Executivo\", \"Legislativo\", \"Judiciário\"), divida as notícias em seções para facilitar a leitura.\n    * Use o número aleatório gerado pelo nó de código em Javascript para variar a ordem das notícias ou selecionar emojis, garantindo dinamismo na apresentação.\n\n3.  **Exemplo de Saída (Formato Obrigatório):**\n\n    ---\n    [TÍTULO IMPACTANTE DA NOTÍCIA COM EMOJI]\n\n    📌 **Resumo da Notícia:**\n    [Resumo breve da notícia, focando nos principais atores políticos e nas decisões tomadas. Use 1 ou 2 frases diretas.]\n\n    🤔 **Por que isso é importante?**\n    [Explicação do impacto da notícia no cenário político, na economia ou na vida dos cidadãos. Qual a consequência prática do fato?]\n\n    🗣️ **Pontos-chave:**\n    • [Ponto 1 sobre a notícia, ex: o argumento principal do relator]\n    • [Ponto 2 sobre a notícia, ex: a reação da oposição]\n    • [Ponto 3 sobre a notícia, ex: o próximo passo do processo]\n\n    🧠 **Nossa Análise:**\n    [Breve comentário analítico sobre o desdobramento, possíveis consequências futuras ou o contexto histórico do acontecimento.]\n\n    📰 **Leia na íntegra:**\n    🔗 [Link completo da notícia]\n\n**Notas Adicionais:**\n* Envie a mensagem exatamente nesse formato, garantindo clareza e profundidade na cobertura política."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.1,
       "position": [
-        992,
-        -32
+        944,
+        16
       ],
       "id": "ebb26ed4-24a8-460a-9abf-eae5df5b1ec6",
       "name": "AI Agent1"
@@ -60,8 +60,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        992,
-        144
+        944,
+        192
       ],
       "id": "b51825ec-7dbf-4085-b2eb-c27b6ca62a70",
       "name": "Google Gemini Chat Model1",
@@ -105,8 +105,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        768,
-        -32
+        752,
+        16
       ],
       "id": "9a5c567e-b7a0-4eb3-9500-b0f5c2978530",
       "name": "HTTP Request1"
@@ -144,8 +144,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -48,
-        336
+        -32,
+        352
       ],
       "id": "0bad34b7-5c24-4a50-a404-dcd1200d2b8d",
       "name": "Istoédinheiro"
@@ -183,7 +183,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -48,
+        -32,
         -304
       ],
       "id": "3034e7da-a33e-4578-9c5b-edc9f9fe4423",
@@ -194,10 +194,12 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 6
+              "triggerAtHour": 6,
+              "triggerAtMinute": 5
             },
             {
-              "triggerAtHour": 18
+              "triggerAtHour": 18,
+              "triggerAtMinute": 5
             }
           ]
         }
@@ -205,7 +207,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -896,
+        -1072,
         16
       ],
       "id": "7cb21a66-6f85-486a-ad43-f9acfa36f23e",
@@ -220,8 +222,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        208,
-        -192
+        192,
+        -144
       ],
       "typeVersion": 1,
       "id": "fd60cd75-b943-4f7e-91fb-48f96a71a56f",
@@ -334,6 +336,28 @@
                 ],
                 "combinator": "and"
               }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c3fdcbd3-ff8f-4e2a-80b8-70e86182cd9e",
+                    "leftValue": "={{ $('Code_switch').item.json.numero }}",
+                    "rightValue": 5,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
             }
           ]
         },
@@ -343,7 +367,7 @@
       "typeVersion": 3.2,
       "position": [
         -320,
-        -16
+        -32
       ],
       "id": "dcf46e25-fb99-4e66-9aa3-d7fe7fed864a",
       "name": "Switch"
@@ -351,56 +375,17 @@
     {
       "parameters": {
         "content": "## Portais de notícias",
-        "height": 864,
+        "height": 880,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -112,
+        -96,
         -368
       ],
       "typeVersion": 1,
       "id": "a0b157f4-fb0f-4da2-a47e-e38eaf463372",
       "name": "Sticky Note2"
-    },
-    {
-      "parameters": {
-        "url": "https://r.jina.ai/https://www.cnnbrasil.com.br/",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Accept-Language",
-              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
-            },
-            {
-              "name": "Accept",
-              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
-            },
-            {
-              "name": "Accept-Encoding",
-              "value": "gzip, deflate, br"
-            },
-            {
-              "name": "User-Agent",
-              "value": "={{ $('Code_user_desktop').item.json.random_user_agent }}"
-            }
-          ]
-        },
-        "options": {
-          "redirect": {
-            "redirect": {}
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -48,
-        -144
-      ],
-      "id": "bc908d9b-336c-4337-a05f-77a7f13acb7d",
-      "name": "CNN"
     },
     {
       "parameters": {
@@ -411,8 +396,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        944,
-        -192
+        896,
+        -144
       ],
       "typeVersion": 1,
       "id": "0827e010-967c-4154-90bc-5491cc56c86a",
@@ -422,12 +407,12 @@
       "parameters": {
         "content": "## Gatilho agendado diariamente",
         "height": 384,
-        "width": 224,
+        "width": 400,
         "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -960,
+        -1136,
         -112
       ],
       "typeVersion": 1,
@@ -447,7 +432,7 @@
             },
             {
               "name": "=text",
-              "value": "={{ $json.output }}"
+              "value": "={{ $json.text }}"
             },
             {
               "name": "session",
@@ -460,8 +445,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1376,
-        112
+        1552,
+        160
       ],
       "id": "96311e42-e6fa-4fbc-b1b1-a36b3216b094",
       "name": "Send to Whatsapp WAHA"
@@ -469,7 +454,7 @@
     {
       "parameters": {
         "chatId": "7006144067",
-        "text": "={{ $json.output }}",
+        "text": "={{ $json.text }}",
         "additionalFields": {
           "parse_mode": "HTML"
         }
@@ -477,8 +462,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1376,
-        -128
+        1552,
+        -80
       ],
       "id": "fcb4c828-81c1-44e3-a7d1-411320b7f2a6",
       "name": "Send to Telegram",
@@ -523,8 +508,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -48,
-        176
+        -32,
+        16
       ],
       "id": "8c8cdf10-93f7-4411-ba43-df350a4c0d1a",
       "name": "CartaCapital"
@@ -562,15 +547,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -48,
-        16
+        -32,
+        -144
       ],
       "id": "7544ec31-2061-4914-bfd5-e5e0556cd62e",
       "name": "Poder360"
     },
     {
       "parameters": {
-        "jsCode": "const min = 1;\nconst max = 4;\n\nconst numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;\n\nreturn {\n  numero: numeroAleatorio\n};"
+        "jsCode": "const min = 1;\nconst max = 5;\n\nconst numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;\n\nreturn {\n  numero: numeroAleatorio\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -588,8 +573,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        592,
-        -32
+        576,
+        16
       ],
       "id": "7a52fc87-6899-4eca-aa5c-ed942b0b0663",
       "name": "Code_user_mobile"
@@ -618,8 +603,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1312,
-        48
+        1472,
+        96
       ],
       "id": "31fb4267-1f9a-434b-af31-17f290af65ea",
       "name": "Sticky Note5"
@@ -634,8 +619,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1312,
-        -192
+        1472,
+        -144
       ],
       "id": "332e604a-ee64-41dc-a367-3d8c0c94fa33",
       "name": "Sticky Note6"
@@ -654,6 +639,87 @@
       ],
       "id": "e0a94d4a-acbb-4e14-9262-31da99c040fa",
       "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Dividi mensagens longas.",
+        "height": 480,
+        "width": 192,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        -144
+      ],
+      "id": "bd352d1f-32c3-4fba-8f81-57e65918f72a",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.item.json.output;\nconst limit = 4096;\nconst messages = [];\n\n// Adiciona o texto de introdução na primeira mensagem\nlet initialText = \"Olá Diego, aqui está seu resumo diário de notícias. Bye! Falou! 👋\\n---\\n\";\nlet remainingText = text;\n\n// Calcula o espaço restante para a primeira mensagem\nlet firstChunkLimit = limit - initialText.length;\nmessages.push({\n  json: {\n    text: initialText + remainingText.substring(0, firstChunkLimit)\n  }\n});\nremainingText = remainingText.substring(firstChunkLimit);\n\n// Divide o resto do texto em mais mensagens, se necessário\nwhile (remainingText.length > 0) {\n  const chunk = remainingText.substring(0, limit);\n  messages.push({\n    json: {\n      text: chunk\n    }\n  });\n  remainingText = remainingText.substring(limit);\n}\n\nreturn messages;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1296,
+        16
+      ],
+      "id": "c22de2fb-cccb-47e4-a99d-17babd5a5c62",
+      "name": "Code_factory"
+    },
+    {
+      "parameters": {
+        "url": "https://r.jina.ai/https://revistaoeste.com/politica/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "User-Agent",
+              "value": "={{ $('Code_user_desktop').item.json.random_user_agent }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -32,
+        192
+      ],
+      "id": "bf03cecd-623d-48f0-ad63-c5e30e2e11b4",
+      "name": "RevistaOeste"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Função que cria uma pausa (em milissegundos)\nconst sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));\n// Simular um acesso totalmente aleatório ao site.\n\n// Gera um número aleatório de milissegundos entre 0 e 180.000 (3 minutos)\nconst randomDelayInMs = Math.floor(Math.random() * 180001);\n\n// Log para você saber quanto tempo esperou (opcional)\nconsole.log(`Aguardando por ${Math.round(randomDelayInMs / 1000)} segundos...`);\n\n// Pausa a execução pelo tempo sorteado\nawait sleep(randomDelayInMs);\n\n// Retorna um objeto para o próximo nó poder continuar\nreturn {};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -896,
+        16
+      ],
+      "id": "b5b05031-8cc0-421b-adbe-c9c953addced",
+      "name": "Code_wait_start"
     }
   ],
   "pinData": {},
@@ -684,12 +750,7 @@
       "main": [
         [
           {
-            "node": "Send to Telegram",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Send to Whatsapp WAHA",
+            "node": "Code_factory",
             "type": "main",
             "index": 0
           }
@@ -744,7 +805,7 @@
       "main": [
         [
           {
-            "node": "Code_user_desktop",
+            "node": "Code_wait_start",
             "type": "main",
             "index": 0
           }
@@ -762,13 +823,6 @@
         ],
         [
           {
-            "node": "CNN",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
             "node": "Poder360",
             "type": "main",
             "index": 0
@@ -780,14 +834,17 @@
             "type": "main",
             "index": 0
           }
-        ]
-      ]
-    },
-    "CNN": {
-      "main": [
+        ],
         [
           {
-            "node": "AI Agent",
+            "node": "RevistaOeste",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Istoédinheiro",
             "type": "main",
             "index": 0
           }
@@ -848,6 +905,44 @@
           }
         ]
       ]
+    },
+    "Code_factory": {
+      "main": [
+        [
+          {
+            "node": "Send to Whatsapp WAHA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RevistaOeste": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_wait_start": {
+      "main": [
+        [
+          {
+            "node": "Code_user_desktop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -856,7 +951,7 @@
     "timezone": "America/Sao_Paulo",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "26f19047-e529-49c6-b5b5-d3814f235dbf",
+  "versionId": "a76e7cce-d136-460c-920d-a132a2d4e19b",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
