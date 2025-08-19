@@ -1,0 +1,211 @@
+{
+  "name": "Rag_resumos_semanais_upload",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1hwJOmtPZ3padQggOnbapXgzKKLDqQ1OxwDXpSQboyM8",
+          "mode": "list",
+          "cachedResultName": "the_eternal_family_rel_200_class_preparation_material_2022-2",
+          "cachedResultUrl": "https://docs.google.com/document/d/1hwJOmtPZ3padQggOnbapXgzKKLDqQ1OxwDXpSQboyM8/edit?usp=drivesdk"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        272,
+        256
+      ],
+      "id": "09963f0e-9e1c-48bd-a6c0-c0a6c70ceb1a",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ITikVjB1nI1CODPD",
+          "name": "Google Drive D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        448,
+        256
+      ],
+      "id": "726b8463-c778-4893-a9ed-4bf5c87e04e6",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        256
+      ],
+      "id": "546aa1fe-df38-4faa-9056-f8e2f4af99a8",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "livro_resumos",
+          "mode": "list",
+          "cachedResultName": "livro_resumos"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        96,
+        256
+      ],
+      "id": "a5a48a39-7936-4b43-8974-a2dfee9d38d9",
+      "name": "Delete table or rows",
+      "credentials": {
+        "postgres": {
+          "id": "n0pVJuetcmVGDDI6",
+          "name": "Postgres pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst fullText = items[0].json.data;\n\nif (!fullText || typeof fullText !== 'string') {\n  throw new Error(\"ERRO: O texto não foi encontrado no input.\");\n}\n\nconst allLessonsStructured = [];\n// A RegEx que separa o texto em lições\nconst lessonsRaw = fullText.split(/\\n(?=lição \\d+: material para preparação da aula)/i);\n\nfor (const lessonText of lessonsRaw) {\n  const trimmedLessonText = lessonText.trim();\n  if (trimmedLessonText === \"\") continue;\n\n  const lessonPattern = /lição (\\d+):\\s*material para preparação da aula\\s*\\n([^\\n\\r]*)/i;\n  const match = trimmedLessonText.match(lessonPattern);\n\n  if (match && match[1] && match[2]) {\n    const lessonNumber = parseInt(match[1], 10);\n    let lessonTitle = match[2].replace(/(.*?)\\.{2,}.*$/, '$1').trim();\n\n    // Adiciona a lição inteira como um único documento\n    allLessonsStructured.push({\n      json: {\n        pageContent: trimmedLessonText,\n        metadata: {\n          numero_aula: lessonNumber,\n          titulo_licao: lessonTitle,\n          fonte_documento: \"Vem, e Segue-Me - 2022\"\n        }\n      }\n    });\n  }\n}\n\nif (allLessonsStructured.length === 0) {\n    throw new Error(\"ERRO: Nenhuma lição foi encontrada com o formato esperado.\");\n}\n\nreturn allLessonsStructured;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        256
+      ],
+      "id": "a933d146-0da2-4836-bd39-553db033a3ac",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "tableId": "livro_resumos",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "numero_aula",
+              "fieldValue": "={{ $json.metadata.numero_aula }}"
+            },
+            {
+              "fieldId": "titulo_licao",
+              "fieldValue": "={{ $json.metadata.titulo_licao }}"
+            },
+            {
+              "fieldId": "conteudo_completo",
+              "fieldValue": "={{ $json.pageContent }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        832,
+        256
+      ],
+      "id": "90077ea8-d6d7-4c57-a600-c7d385bddcb1",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "KMDKPkGaEfIIfjHs",
+          "name": "Supabase pessoal"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Delete table or rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete table or rows": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3685fe2a-57b6-43c0-b3aa-a48ce9eaf112",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "fj3FhZt9AnV8KsJx",
+  "tags": []
+}

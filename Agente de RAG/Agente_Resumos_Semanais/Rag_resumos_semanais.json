@@ -1,0 +1,508 @@
+{
+  "name": "Rag_resumos_semanais",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                2
+              ],
+              "triggerAtHour": 6
+            },
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                3
+              ],
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -896,
+        16
+      ],
+      "id": "c0b2a075-fae7-4459-8245-4e9b1c793909",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Este código irá correr UMA VEZ para todos os itens que chegarem ao nó.\n\n// 1. Pega no array completo de itens que vêm do nó anterior.\nconst todosOsItens = $input.all();\n\n// 2. VERIFICAÇÃO DE SEGURANÇA: Garante que temos pelo menos dois itens para processar.\nif (todosOsItens.length < 1) {\n  // Se houver menos de 2 itens, devolve um array vazio para não dar erro.\n  return [];\n}\n\n// 3. A MUDANÇA PRINCIPAL: Usa .slice(-2) para pegar APENAS os dois últimos itens do array.\n//    Isto só funciona porque garantimos que os dados vêm ordenados do Supabase.\nconst ultimosDoisItens = todosOsItens.slice(-2);\n\n// 4. Agora, faz o loop (.map()) apenas nos dois itens que selecionámos.\nconst resultados = ultimosDoisItens.map(item => {\n  \n  // 5. Para cada item, extrai o número da aula.\n  const numeroAulaAtual = item.json.numero_aula;\n  \n  // 6. Soma 2 ao número da aula.\n  const novoNumeroAula = numeroAulaAtual + 1;\n  \n  // 7. Cria o objeto de saída com os novos valores.\n  const novoItem = {\n    numero_aula_calculado: novoNumeroAula,\n    booleano_zero: false,\n    id_original: item.json.id\n  };\n\n  // 8. Devolve o novo objeto já no formato que o n8n espera.\n  return {\n    json: novoItem\n  };\n});\n\n// 9. Devolve o array final, que agora terá apenas 2 itens.\nreturn resultados;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -304,
+        416
+      ],
+      "id": "0ea159d7-1a05-4c7b-b3ed-edf3128a32df",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## Busca o número da lição a ser resumida",
+        "height": 384,
+        "width": 256,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -672,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "4a6fcdcb-72b2-4675-b40c-a1f5f3053bd8",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Gatilho agendado diariamente",
+        "height": 384,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -944,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "ec237d9b-f010-4141-9def-ae94d7fd44f5",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Aula_instituto",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "ministrada",
+              "condition": "eq",
+              "keyValue": "0"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        16
+      ],
+      "id": "9d940eb5-c73f-400f-937a-6d5155a8ae82",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "KMDKPkGaEfIIfjHs",
+          "name": "Supabase pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "Aula_instituto",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "numero_aula",
+              "fieldValue": "={{ $json.numero_aula_calculado }}"
+            },
+            {
+              "fieldId": "ministrada",
+              "fieldValue": "={{ $json.booleano_zero }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        64,
+        496
+      ],
+      "id": "e0a2f7a1-9fb8-4b87-b385-dddc3c7e20fb",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "KMDKPkGaEfIIfjHs",
+          "name": "Supabase pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Aula_instituto",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id_original }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ministrada",
+              "fieldValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        64,
+        352
+      ],
+      "id": "a35c9e3f-ad58-45ac-a4d3-b4ca101e5842",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "KMDKPkGaEfIIfjHs",
+          "name": "Supabase pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=numero_licao: {{ $('Get many rows').item.json.numero_aula }}",
+        "options": {
+          "systemMessage": "=Você é o \"Resumidor de Lições\", um assistente de IA focado e preciso, cuja única função é buscar o conteúdo de uma lição na tabela `public.livro_resumos` de um banco de dados PostgreSQL e, a partir dele, criar um resumo.\n\n## Esquema da Tabela\nA sua única fonte de conhecimento é a tabela `public.livro_resumos`, que contém os seguintes campos:\n- `id` (int)\n- `numero_aula` (int)\n- `titulo_licao` (text)\n- `conteudo_completo` (text)\n\n## Objetivo Principal\nSua missão é receber um número de lição e gerar uma consulta SQL para extrair as informações necessárias para criar um resumo. Você responderá apenas com a consulta SQL.\n\n## Regras Obrigatórias\n1.  Você DEVE SEMPRE usar a coluna `numero_aula` para filtrar a lição correta.\n2.  Sua consulta SQL DEVE buscar as colunas `titulo_licao` e `conteudo_completo`.\n3.  NÃO invente informações. Sua análise para o resumo final (que será feita em um passo seguinte pelo sistema) deve ser baseada **exclusivamente** no `conteudo_completo` que for retornado pela sua consulta.\n\n## Exemplo de Funcionamento\n\n**Cenário 1:** O usuário pede o resumo da lição 4.\n**Sua ÚNICA resposta deve ser o código SQL:**\n```sql\nSELECT titulo_licao, conteudo_completo FROM public.livro_resumos WHERE numero_aula = 4;\nCenário 2: O usuário pede para ver a lição 15.\nSua ÚNICA resposta deve ser o código SQL:\n\nSQL\n\nSELECT titulo_licao, conteudo_completo FROM public.livro_resumos WHERE numero_aula = 15;\nSobre a Resposta Final para o Usuário\nO sistema que te utiliza irá pegar o resultado da sua consulta SQL e, em um passo SEPARADO, irá gerar uma resposta final para o usuário. Essa resposta seguirá o formato abaixo, usando o titulo_licao e um resumo do conteudo_completo:\n\nOlá, classe! ✍️\n\nPara nos prepararmos para nossa próxima discussão, gostaria de compartilhar alguns dos principais insights da lição desta semana.\n\n📜 **Lição [Número da Lição]: [Título da Lição]**\n\n📌 **Tópicos Principais:**\n* [Síntese do primeiro tópico-chave que você identificou.]\n* [Síntese do segundo tópico-chave que você identificou.]\n* [Síntese do terceiro tópico-chave, se for relevante.]\n\n🤔 **Pergunta para a Classe:**\n[Insira aqui a pergunta do conteudo.]\n\nAguardo ansiosamente para ouvir as ideias e experiências de vocês sobre isso. Tenham uma ótima semana de estudos!"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -288,
+        -32
+      ],
+      "id": "fbfd7565-0926-4b58-9565-1a73376303a5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        128
+      ],
+      "id": "f01c8b88-e1e1-4306-ae96-a321308aff07",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Gerador de resumos semanais",
+        "height": 384,
+        "width": 496
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        -128
+      ],
+      "id": "8bbfa436-bd92-4bd6-8af8-99b5695cbb6f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Atualizar lista de lições",
+        "height": 352,
+        "width": 288,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        288
+      ],
+      "id": "01dfc206-599d-4f93-92e8-bd8e183bc71a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "name": "Monitoramento_financeiro_query_executor_subsubworkflow",
+        "description": "Call this tool to execute a query. Remember that it should be in a postgreSQL query structure.",
+        "workflowId": {
+          "__rl": true,
+          "value": "OoeFE85VUha9fJec",
+          "mode": "list",
+          "cachedResultName": "query_executor_subsubworkflow"
+        },
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sql\": {\n      \"type\": \"string\",\n      \"description\": \"A SQL query based on the users question and database schema.\"\n    }\n  }\n}\n"
+      },
+      "id": "161fb6d3-c4c0-4aab-a0ea-d7c04326b67b",
+      "name": "execute_query_tool",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -112,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://waha-diego:3000/api/sendText",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=chatId",
+              "value": "=556493174450@c.us"
+            },
+            {
+              "name": "=text",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "name": "session",
+              "value": "=default"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        352
+      ],
+      "id": "6e28cd81-36c3-477e-907a-fd140cee5b7a",
+      "name": "Send to Whatsapp WAHA"
+    },
+    {
+      "parameters": {
+        "chatId": "7006144067",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        48
+      ],
+      "id": "2281bd6b-245a-4900-9ed1-677b5ad905c5",
+      "name": "Send to Telegram",
+      "webhookId": "86fc6043-43c9-43d8-a75d-c4ece4111b72",
+      "credentials": {
+        "telegramApi": {
+          "id": "ckBftXPqYhF7h8hj",
+          "name": "Telegram Assistente Borges"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Enviar para WhatsApp",
+        "height": 240,
+        "width": 288,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        320,
+        288
+      ],
+      "id": "d78141bf-92b6-4a9b-a94f-0034ab5e7ed9",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Enviar para a Telegram",
+        "height": 224,
+        "width": 288,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -16
+      ],
+      "id": "fda47a01-06b1-43ca-ab0a-c236aa70545e",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Dividi mensagens longas.",
+        "height": 384,
+        "width": 160,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        128,
+        -128
+      ],
+      "id": "fb5c0e20-fac1-4be7-a1eb-d74f39d88928",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.item.json.output;\nconst limit = 4096;\nconst messages = [];\n\n// Adiciona o texto de introdução na primeira mensagem\nlet initialText = \"Olá Diego, aqui está seu resumo semanal do livro. Bye! Falou! 👋\\n---\\n\";\nlet remainingText = text;\n\n// Calcula o espaço restante para a primeira mensagem\nlet firstChunkLimit = limit - initialText.length;\nmessages.push({\n  json: {\n    text: initialText + remainingText.substring(0, firstChunkLimit)\n  }\n});\nremainingText = remainingText.substring(firstChunkLimit);\n\n// Divide o resto do texto em mais mensagens, se necessário\nwhile (remainingText.length > 0) {\n  const chunk = remainingText.substring(0, limit);\n  messages.push({\n    json: {\n      text: chunk\n    }\n  });\n  remainingText = remainingText.substring(limit);\n}\n\nreturn messages;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        48
+      ],
+      "id": "c1152378-7983-4132-b2ab-d3d4ca59b65e",
+      "name": "Code_factory"
+    },
+    {
+      "parameters": {
+        "content": "## Gera o numero da próxima lição",
+        "height": 352,
+        "width": 256,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        288
+      ],
+      "id": "a474b721-ce3f-44dc-b730-1e1c80047b63",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code_factory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "execute_query_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_factory": {
+      "main": [
+        [
+          {
+            "node": "Send to Whatsapp WAHA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "f3d7b9df-c0ba-43f3-9011-adc1db216286",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "VCC7LegotsxGp1pK",
+  "tags": []
+}
