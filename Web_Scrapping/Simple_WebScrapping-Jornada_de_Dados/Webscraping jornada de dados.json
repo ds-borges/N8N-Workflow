@@ -1,0 +1,115 @@
+{
+  "name": "Webscraping jornada de dados",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        736,
+        -288
+      ],
+      "id": "d751e276-f59b-454e-9e17-d4c5d3efa062",
+      "name": "When chat message received",
+      "webhookId": "f31d9923-4783-4548-a7cc-20d088ecbc36"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Você é um agente inteligente com acesso a uma ferramenta de scraping do site www.suajornadadedados.com.\n\nSempre que receber uma pergunta relacionada à Jornada de Dados — como programação de cursos, datas de workshops, professores, trilhas, links de aulas ou eventos — utilize a ferramenta \"suajornadadedados\" para buscar a resposta diretamente do site.\n\nAo responder:\n- Retorne apenas as **3 informações mais relevantes**.\n- Comece sua resposta com: \"Pesquisa realizada em: [data atual no formato DD/MM/AAAA]\".\n- Cada item deve conter um título claro e um parágrafo objetivo.\n- Se nenhuma informação útil for encontrada, diga: \"Não encontrei informações recentes sobre esse assunto.\"\n\nNunca invente respostas. Use exclusivamente as informações reais coletadas pela ferramenta \"suajornadadedados\".\n\nData de hoje: {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -320
+      ],
+      "id": "d6594a9f-2907-44d0-bbf2-4284a1f5adfb",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        -176
+      ],
+      "id": "75d44a36-fd8f-4a69-bbd6-e47dd2cda7ed",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Site suajornadadedados",
+        "url": "https://suajornadadedados.com.br/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1280,
+        -80
+      ],
+      "id": "f73b37cc-30f6-40f9-b60b-f5bb17938f05",
+      "name": "suajornadadedados"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "suajornadadedados": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7a12a043-48d4-4bd5-9ca4-eea19d52d5c8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "Y7evjGGfnk9CVC4K",
+  "tags": []
+}
