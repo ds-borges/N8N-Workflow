@@ -28,6 +28,8 @@ Agents focused on automating **ETL (Extract, Transform, Load)** tasks. These wor
 * **Highlights include:** An agent that manages a book database on Supabase, an email classifier that organizes your Google Calendar, and a social media bot for Instagram.
 <br>
 ➡️ [**Explore ETL Agents**](./ETL_Agent)
+➡️ **[Explorar Agentes ETL](./ETL_Agent)**
+
 
 ### RAG_Agent
 Implementations of the **RAG (Retrieval-Augmented Generation)** architecture. This technique connects Large Language Models to private vector databases, enabling them to answer questions based on specific, reliable documents.
