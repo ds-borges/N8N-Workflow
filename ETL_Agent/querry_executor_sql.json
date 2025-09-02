@@ -1,0 +1,98 @@
+{
+  "name": "querry_executor_sql",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7b9137b0-2424-415c-ac48-079c25ce57a1",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.query.sql }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f47d2163-f820-44d2-8d85-42c5ef6c5150",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "U1sc0k5xYPVV4mdK",
+          "name": "Postgres MariaLSDP_Livros"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b9964086-38a1-4395-ba6f-abc9cb187b8c",
+              "name": "response",
+              "value": "={{  $items() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "69ed941c-7e48-40d2-a55d-6e8fb573a5dd",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0d6a38cf-5e9a-4493-8945-4f0cc660b287",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c5ea7b474f1c706755550be5c08f3725ec0c4d919b2446cd90e4f509caa58fcb"
+  },
+  "id": "C4vqA0df7HzQKxYZ",
+  "tags": []
+}
