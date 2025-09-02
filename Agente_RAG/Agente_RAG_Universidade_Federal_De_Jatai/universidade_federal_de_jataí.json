@@ -1,10 +1,10 @@
 {
-  "name": "Agente_rag_Universidade",
+  "name": "Rag_universidade_federal_de_jataí",
   "nodes": [
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $json.message.text }}",
+        "text": "={{$json.text}}",
         "options": {
           "systemMessage": "=Você é um assistente acadêmico virtual. Sua função é fornecer informações precisas sobre regulamentos, procedimentos, prazos e vida no campus da universidade, com base estritamente nos documentos oficiais que lhe são fornecidos.\n\nPara cada pergunta do usuário, você receberá um contexto com trechos dos regulamentos e documentos relevantes da universidade. Sua resposta DEVE ser construída exclusivamente a partir desse contexto.\n\n**Regras Obrigatórias:**\n1.  **Use Apenas o Contexto:** Baseie 100% da sua resposta nas informações fornecidas. É estritamente proibido usar conhecimento prévio ou informações da internet.\n2.  **Seja Direto e Prestativo:** Responda de forma clara, objetiva e prestativa, como um funcionário da secretaria acadêmica auxiliando um aluno, sem usar burocracia excessiva.\n3.  **Cite a Fonte:** Se o contexto fornecido incluir o nome do documento, manual ou regulamento de onde a informação foi extraída, cite-o no final da sua resposta para dar credibilidade. Exemplo: \"(Fonte: Regulamento Geral de Graduação, Seção 5.2)\" ou \"(Conforme o Manual do Aluno 2025)\".\n4.  **Informação Não Encontrada:** Se o contexto fornecido não contiver informações suficientes para responder à pergunta, responda de forma clara e útil: \"Com base nos documentos consultados, não encontrei informações sobre este assunto. Recomendo que você entre em contato diretamente com a secretaria do seu curso para mais detalhes.\"\n\nResponda à pergunta do usuário a seguir, aplicando todas as regras acima."
         }
@@ -39,36 +39,18 @@
     },
     {
       "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $json.message.from.id }}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
-      "typeVersion": 1.3,
-      "position": [
-        224,
-        208
-      ],
-      "id": "e6ca594c-23a5-4ed3-9217-52209072450d",
-      "name": "Postgres Chat Memory",
-      "credentials": {
-        "postgres": {
-          "id": "OnDbRoT10JZhZvd4",
-          "name": "Postgres agente_rag_universidade"
-        }
-      }
-    },
-    {
-      "parameters": {
         "mode": "retrieve-as-tool",
         "toolDescription": "Use o documento anexo para responder sobre o funcionamento da faculdade",
         "tableName": {
           "__rl": true,
-          "value": "documents",
+          "value": "rag_bcc_ufj",
           "mode": "list",
-          "cachedResultName": "documents"
+          "cachedResultName": "rag_bcc_ufj"
         },
         "topK": 16,
-        "options": {}
+        "options": {
+          "queryName": "match_rag_bcc_ufj"
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
@@ -80,8 +62,8 @@
       "name": "Supabase Vector Store",
       "credentials": {
         "supabaseApi": {
-          "id": "bkOMe4eHWMDTqtej",
-          "name": "agente_rag_universidade"
+          "id": "KMDKPkGaEfIIfjHs",
+          "name": "Supabase pessoal"
         }
       }
     },
@@ -104,50 +86,40 @@
     },
     {
       "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
+        "inputSource": "passthrough"
       },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.2,
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
       "position": [
-        -48,
+        -16,
         0
       ],
-      "id": "bd8e15cc-8730-4f8f-8e9b-400219930790",
-      "name": "Telegram Trigger",
-      "webhookId": "22352dc4-65bd-4c78-a619-16a18e15b046",
-      "credentials": {
-        "telegramApi": {
-          "id": "bLiLR9iWpVvBbprm",
-          "name": "Telegram AgenteRag_Universidade"
-        }
-      }
+      "id": "62320947-7283-4b4f-b041-38c6cc90aaf3",
+      "name": "When Executed by Another Workflow"
     },
     {
       "parameters": {
-        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
-        "text": "={{ $json.output }}",
-        "additionalFields": {
-          "parse_mode": "HTML"
-        }
+        "assignments": {
+          "assignments": [
+            {
+              "id": "192efbe4-74b3-44a9-85dd-2f420cd7d17a",
+              "name": "message",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
       },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
-        560,
+        544,
         0
       ],
-      "id": "8646a1c1-b28e-490d-aae4-68c97f76eeb5",
-      "name": "Send a text message",
-      "webhookId": "c14272a9-af3a-4812-8ba2-c4b353db0fa4",
-      "credentials": {
-        "telegramApi": {
-          "id": "bLiLR9iWpVvBbprm",
-          "name": "Telegram AgenteRag_Universidade"
-        }
-      }
+      "id": "253e08b9-5548-4861-93d9-a40481db6104",
+      "name": "Edit Fields4"
     }
   ],
   "pinData": {},
@@ -158,17 +130,6 @@
           {
             "node": "AI Agent",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Postgres Chat Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -196,7 +157,18 @@
         ]
       ]
     },
-    "Telegram Trigger": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
       "main": [
         [
           {
@@ -206,24 +178,13 @@
           }
         ]
       ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Send a text message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "d7d24c2c-5a37-40cf-8d37-354dffbaaebc",
+  "versionId": "7766fe4c-8df1-417b-af16-02a2ef93c17c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"

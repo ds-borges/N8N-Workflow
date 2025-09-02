@@ -1,0 +1,149 @@
+{
+  "name": "Rag_universidade_federal_de_jataí-Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1040,
+        1536
+      ],
+      "id": "378862b7-abb8-4d68-a9fa-3fc904b8267b",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.from.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -592,
+        1536
+      ],
+      "id": "8640307c-d60a-4a94-a5d8-eeaa801d9e45",
+      "name": "Send a text message",
+      "webhookId": "f7d8e2ae-a434-4c22-9e70-0cead01f6815",
+      "credentials": {
+        "telegramApi": {
+          "id": "bLiLR9iWpVvBbprm",
+          "name": "Telegram AgenteRag_Universidade"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "uwshHj2XaCycus8c",
+          "mode": "list",
+          "cachedResultName": "Rag_universidade_federal_de_jataí"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        1536
+      ],
+      "id": "fd9264fe-8ed9-449c-a7eb-0400312ce499",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1248,
+        1536
+      ],
+      "id": "2517c917-ee4a-4481-9fc8-b1f87a7367c4",
+      "name": "Telegram Trigger1",
+      "webhookId": "22352dc4-65bd-4c78-a619-16a18e15b046",
+      "credentials": {
+        "telegramApi": {
+          "id": "bLiLR9iWpVvBbprm",
+          "name": "Telegram AgenteRag_Universidade"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "eac7f1c7-368c-4831-baa4-bf8a4855779b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "O1bSvaHs6z6BTh4r",
+  "tags": []
+}
