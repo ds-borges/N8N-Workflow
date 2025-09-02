@@ -1,12 +1,12 @@
-# Repositório de Agentes de IA e Automações 🤖
+# AI Agents and Automations Repository 🤖
 
-Bem-vindo ao meu portfólio de projetos práticos de Inteligência Artificial e automação. Este repositório é uma coleção de agentes desenvolvidos para resolver problemas reais, organizados em categorias que demonstram diferentes técnicas e aplicações de IA, desde o processamento de dados (ETL) até a extração de informações da web e a geração de respostas com base em conhecimento específico (RAG).
+Welcome to my portfolio of practical Artificial Intelligence and automation projects. This repository is a collection of agents developed to solve real-world problems, organized into categories that demonstrate different AI techniques and applications, from data processing (ETL) to web scraping and answer generation based on specific knowledge (RAG).
 
-Sinta-se à vontade para explorar cada diretório para ver os detalhes técnicos de cada projeto.
+Feel free to explore each directory to see the technical details of every project.
 
-## 🛠️ Ecossistema de Tecnologias
+## 🛠️ Core Technologies
 
-Estes projetos foram desenvolvidos utilizando um conjunto de ferramentas modernas para automação, processamento de dados e IA:
+These projects were developed using a set of modern tools for automation, data processing, and AI:
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
@@ -19,29 +19,32 @@ Estes projetos foram desenvolvidos utilizando um conjunto de ferramentas moderna
 
 ---
 
-## 📂 Estrutura do Repositório
+## 📂 Repository Structure
 
-O repositório está dividido em quatro categorias principais. Cada pasta contém seu próprio `README.md` com a documentação detalhada dos projetos.
+The repository is divided into four main categories. Each folder contains its own `README.md` with detailed project documentation.
 
 ###  ETL_Agent
-Agentes focados em automação de tarefas de **ETL (Extração, Transformação e Carga)**. Inclui projetos para gerenciamento de dados em bancos de dados, classificação de e-mails, monitoramento financeiro e automação de redes sociais.
+Agents focused on automating **ETL (Extract, Transform, Load)** tasks. These workflows connect various APIs and services to automate repetitive processes and manage data flows.
+* **Highlights include:** An agent that manages a book database on Supabase, an email classifier that organizes your Google Calendar, and a social media bot for Instagram.
 <br>
-➡️ **[Explorar Agentes ETL](./ETL_Agent)**
+➡️ **[Explore ETL Agents](./ETL_Agent)**
 
 ### RAG_Agent
-Implementações da arquitetura **RAG (Retrieval-Augmented Generation)**. Estes agentes são especializados em responder perguntas com base em bases de conhecimento específicas, como legislação brasileira e documentos acadêmicos, utilizando bancos de dados vetoriais.
+Implementations of the **RAG (Retrieval-Augmented Generation)** architecture. This technique connects Large Language Models to private vector databases, enabling them to answer questions based on specific, reliable documents.
+* **Projects:** A legal assistant trained on Brazilian laws and a virtual academic advisor for university regulations, both using Supabase Vector DB to ensure factual answers.
 <br>
-➡️ **[Explorar Agentes RAG](./RAG_Agent)**
+➡️ **[Explore RAG Agents](./RAG_Agent)**
 
 ### Web_Scraping
-Projetos de **Web Scraping** para extração de informações da internet. Inclui automações para criar newsletters de notícias, monitorar a previsão do tempo e interagir com websites de forma inteligente para responder perguntas.
+**Web Scraping** projects designed to extract live information from the internet. These agents fetch data from websites and APIs, use AI to process it, and deliver timely insights through messaging apps.
+* **Examples:** A daily news summarizer that scrapes political websites and a weather bot that provides local forecasts for Jataí-GO via WhatsApp and Telegram.
 <br>
-➡️ **[Explorar Agentes de Web Scraping](./Web_Scraping)**
+➡️ **[Explore Web Scraping Agents](./Web_Scraping)**
 
 ### Others_Agent
-Uma pasta para projetos e experimentos diversos que não se encaixam nas categorias principais. Serve como um espaço para novas ideias, testes e estudos pontuais em diferentes áreas da IA e automação.
+A folder for miscellaneous projects and experiments. This directory serves as a sandbox for testing new ideas, developing one-off scripts, or building prototypes that don't fit neatly into the other categories.
 <br>
-➡️ **[Explorar Outros Projetos](./Others_Agent)**
+➡️ **[Explore Other Projects](./Others_Agent)**
 
 ---
 
