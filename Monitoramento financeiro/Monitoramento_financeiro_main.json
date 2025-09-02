@@ -1,0 +1,1122 @@
+{
+  "name": "Monitoramento_financeiro_main",
+  "nodes": [
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        912,
+        800
+      ],
+      "id": "dd3376ae-37ae-4efe-9f59-4ac3abf0d0f2",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        816
+      ],
+      "id": "126dc513-a2ee-470e-88bf-b1e7cebb5caa",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "content": "## Leitura",
+        "height": 460,
+        "width": 756,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        544
+      ],
+      "typeVersion": 1,
+      "id": "5edb1e76-9843-4408-b6e8-cd1284c07730",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        976,
+        320
+      ],
+      "id": "c4f2153b-2be5-4252-8228-96a585f63ea2",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Escrita",
+        "height": 460,
+        "width": 756,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "4f0ef1b5-dbce-4ae5-bfd7-1d2d1be6ab85",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Input Subworkflow",
+        "height": 424,
+        "width": 360,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "cfb43f37-c4a3-4f8d-b0fe-e8cd7b79261c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Classificação",
+        "height": 1528,
+        "width": 392
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "19138235-378a-4eec-92e5-0322f1011b79",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"valor\": 299,\n  \"descricao\": \"Hospedagem para evento\",\n  \"data\": \"2025-07-07\",\n  \"parcelas\": \"5/10\",\n  \"categoria\": \"Moradia\",\n  \"resumo\": \"Despesa registrada R$:299, em 'Hospedagem para evento', em 1 vez, na categoria Moradia.\"  \n  \n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1168,
+        320
+      ],
+      "id": "8968aed5-b848-4722-8906-da2e65bf84a7",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "content": "## Remoção",
+        "height": 492,
+        "width": 756,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "73875d64-2f46-4402-a944-93b43ecf6f8a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        896,
+        1328
+      ],
+      "id": "1f459907-9e9d-4581-842e-5f5122f36c3a",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "controle_financeiro",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "data",
+              "fieldValue": "={{ $json.output.data }}"
+            },
+            {
+              "fieldId": "descrição",
+              "fieldValue": "={{ $json.output.descricao }}"
+            },
+            {
+              "fieldId": "valor",
+              "fieldValue": "={{ $json.output.valor }}"
+            },
+            {
+              "fieldId": "categoria",
+              "fieldValue": "={{ $json.output.categoria }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "Whatsapp"
+            },
+            {
+              "fieldId": "parcelas",
+              "fieldValue": "={{ $json.output.parcelas }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        96
+      ],
+      "id": "9cd920ac-98ab-44cb-b7bc-4393d39f1442",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "KMDKPkGaEfIIfjHs",
+          "name": "Supabase pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "query_executor_subworkflow",
+        "description": "Call this tool to execute a query. Remember that it should be in a postgreSQL query structure.",
+        "workflowId": {
+          "__rl": true,
+          "value": "OoeFE85VUha9fJec",
+          "mode": "list",
+          "cachedResultName": "query_executor_subworkflow"
+        },
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sql\": {\n      \"type\": \"string\",\n      \"description\": \"A SQL query based on the users question and database schema.\"\n    }\n  }\n}\n"
+      },
+      "id": "d2718ef2-7ffd-458f-b07a-f7af32360f12",
+      "name": "execute_query_tool",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1072,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do usuário:\n{{$json.text}}\nA data de hoje é:\n{{ $now }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente inteligente de confirmação de dados. Sua função é identificar o ID de um registro na tabela `public.controle_financeiro` e, em seguida, formatar uma resposta clara para o usuário, confirmando o ID encontrado e o critério utilizado na busca.\n\n## Esquema da Tabela\nA tabela `public.controle_financeiro` contém os seguintes campos:\n- `id` (int8)\n- `data` (date)\n- `descrição` (varchar)\n- `valor` (float)\n- `parcelas` (int8)\n- `categoria` (varchar)\n\n## Seu Processo de Trabalho\n1.  **Analisar o Pedido:** Analise a frase do usuário (ex: \"Deletar conta geladeira\") e extraia a parte mais importante para a busca (o critério, ex: \"geladeira\").\n2.  **Buscar o ID:** Use o critério para gerar internamente uma consulta SQL e executá-la (via ferramenta) para obter o `id` do registro. A consulta deve sempre buscar o ID único mais provável.\n3.  **Formatar a Resposta:** Construa a resposta final usando a frase original do usuário, o ID encontrado e o critério que você usou na busca.\n\n## Regras para a Busca Interna\n- A consulta SQL gerada por você deve ser precisa: `SELECT id FROM public.controle_financeiro WHERE descrição ILIKE '%criterio%' ORDER BY data DESC LIMIT 1;`\n- Para casos que filtram por categoria e parcelas, a lógica é: `SELECT id FROM public.controle_financeiro WHERE categoria ILIKE '...' AND parcelas > 1 LIMIT 1;`\n\n## Formato da Resposta Final\nSua resposta final NÃO deve ser apenas o número do ID. Ela deve seguir **exatamente** este formato:\n`[Frase original do usuário] : Id [ID retornado], criterio '[critério usado na busca]'`\n\n### Exemplo de Execução 1\n- **Input do Usuário:** \"Deletar conta geladeira\"\n- **Sua Resposta Final:** `Deletar conta geladeira : Id= 5, criterio= 'geladeira', valor= 495`\n\n### Exemplo de Execução 2\n- **Input do Usuário:** \"Deletar compra teclado na papelaria ajato\"\n- **Sua Resposta Final:** `Deletar compra teclado na papelaria ajato : Id= 20, criterio= 'teclado na papelaria ajato', valor= 42`\n\n### Exemplo de Execução 3\n- **Input do Usuário:** \"Deletar contas temporarias parceladas\"\n- **Sua Resposta Final:** `Deletar contas temporarias parceladas : Id 15, criterio 'categoria: Temporario, parcelas > 1', valor= 200`\n\nSe não encontrar conta definir Id 0."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        928,
+        1168
+      ],
+      "id": "36078dfc-5ecd-4554-8ec4-aa795b7c4c3e",
+      "name": "Agent_to_delete"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "controle_financeiro",
+          "mode": "list",
+          "cachedResultName": "controle_financeiro"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $json.output.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1440,
+        1072
+      ],
+      "id": "9532e0be-b92c-4744-b75d-6c13c446b3f7",
+      "name": "Delete table or rows",
+      "credentials": {
+        "postgres": {
+          "id": "n0pVJuetcmVGDDI6",
+          "name": "Postgres pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=A seguir você receberá uma mensagem que ele escreve uma despesa feita. Extraia os seguintes Campos:\n\n- Valor numero (em reais)\n- Descrição resumida o que foi gasto\n- Data (A data que foi feito gasto, Caso não seja nada especificado use data de hoje, sempre assim : 2025-07-07)\n- Parcelas quantas vezes o valor total foi dividido , caso não seja informada categoria usar 1, .\n- Categoria (ex: Igreja, educação, internet e telefone, transporte, saúde, Temporario, Moradia, alimentação, Presente.), caso não seja informada categoria usar a categoria \"Temporario\"\n- Resumo da operação que foi feita, Para ser enviado via mensagem de confirmação por um assistente. A mensagem deve confirmar A operação de forma simpática e objetiva, como Se fosse enviada por um atendente no WhatsApp.\n\nMensagem:\n{{$json.text}}\nData de hoje:\n{{ $now }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente financeiro ponto final. Seu papel é interpretar mensagens de texto sobre despesas e extrair dados de forma estruturada, com o objetivo de preencher automaticamente uma planilha De controle de gasto.\n\nAlém disso você deve gerar uma frase de confirmação no campo \"resumo\", em tom simpático e direto, como se fosse um atendente o mundo respondendo o WhatsApp. O texto deve confirmar que a despesa foi registrada com sucesso citando os principais dados como valor, Descrição e caso tiver também parcelas. Escreva a frase em uma única linha , sem quebras."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        976,
+        160
+      ],
+      "id": "c278f212-227e-48a0-883e-d99b74f1fe8f",
+      "name": "Agent_to_insert"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do usuário:\n{{$json.text}}\nA data de hoje é:\n{{ $now }}",
+        "options": {
+          "systemMessage": "=Você é um Assistente Financeiro Pessoal que entende perguntas sobre gastos e finanças e responde com base na tabela `public.controle_financeiro` em um banco PostgreSQL.\n## Esquema da Tabela\nA tabela `public.controle_financeiro` contém os seguintes campos:\n- `id` (int8)\n- `data` (date)\n- `descrição` (varchar)\n- `valor` (float)\n- `parcelas` (int8)\n- `categoria` (varchar)\n- `created_at` (timestamp, default: now())\n- `source` (varchar)\n\n## Objetivo\nResponder perguntas como:\n- \"Quanto eu gastei essa semana?\"\n- \"Quais foram os gastos com alimentação em junho?\"\n- \"Quanto foi gasto no projeto X em maio?\"\n## Boas práticas\n- Use `data` para filtros de tempo, não `created_at`\n- Use SUM para totalizar gastos\n- Se a frase do usuário contiver uma das seguintes palavras-chave: `Igreja`, `Educação`, `Internet e Telefone`, `Transporte`, `Saúde`, `Temporario`, `Moradia`, `Alimentação`, `Presente`, sua busca DEVE ser feita no campo `categoria`. Caso contrário, use o critério 'descrição'\n\n## Exemplo\n\n1. Quanto eu gastei com alimentação?\n```\nSELECT SUM(valor) AS total_gasto\nFROM public.controle_financeiro\nWHERE categoria ILIKE '%Alimentação%';\n```\n\n2. Quais gastos foram maior que 200 reais ?\n```\nSELECT descrição, categoria, valor, data\nFROM public.controle_financeiro\nWHERE valor > 200;\n```\n\n3.Qual o total de despesas hospital que foram parceladas ?\n```\nSELECT SUM(valor) AS total\nFROM public.controle_financeiro\nWHERE descrição ILIKE '%hospital'  AND parcelas > 1 ;\n```\n\n\n\n## Como responder\n\n1. Mostre o valor total (ou média, contagem, etc.)\n2. Explique o filtro aplicado (ex: mês, categoria, etc.)\n3. Seja direto e humano: \"Você gastou R\\$ X com alimentação em junho.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        928,
+        640
+      ],
+      "id": "96c0b66f-08c9-49e3-a827-92b1cc7da760",
+      "name": "Agent_to_consult"
+    },
+    {
+      "parameters": {
+        "name": "Monitoramento_financeiro_query_executor_subsubworkflow",
+        "description": "Call this tool to execute a query. Remember that it should be in a postgreSQL query structure.",
+        "workflowId": {
+          "__rl": true,
+          "value": "OoeFE85VUha9fJec",
+          "mode": "list",
+          "cachedResultName": "Monitoramento_financeiro_query_executor_subsubworkflow"
+        },
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sql\": {\n      \"type\": \"string\",\n      \"description\": \"A SQL query based on the users question and database schema.\"\n    }\n  }\n}\n"
+      },
+      "id": "e401c072-78eb-498b-b944-b4eab4b28be6",
+      "name": "execute_query_delete",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1056,
+        1344
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6a53084f-40ff-4ffb-854c-eaeab1178a68",
+              "leftValue": "={{ $json.output.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        1168
+      ],
+      "id": "f5e75720-d9d4-4540-ad03-7aad40af4c75",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"id\": 5,\n  \"criterio\": \"Claro flex\",\n  \"valor\": 40\n  \n  \n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1184,
+        1328
+      ],
+      "id": "1c6f73a6-c9ba-4c1d-bf2e-a43832bd92b6",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        720
+      ],
+      "id": "d172fe4e-c575-491b-8ef1-b589968336c4",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "={{ $json.output}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1296,
+        640
+      ],
+      "id": "6d1c34c1-aa86-46fa-8462-4e6998fbecb6",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "={{ $json.output.resumo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1344,
+        256
+      ],
+      "id": "ab67431f-f688-4485-b0ef-6c320e188c00",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "=Sua conta {{ $json.output.criterio}} no valor de R$ {{$json.output.valor}}, foi deletada com sucesso.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        1200
+      ],
+      "id": "4e301d68-573a-44d0-ac01-ac7e95927afc",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "=Não foram encontrados gastos com: {{ $json.output.criterio }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        1344
+      ],
+      "id": "6e954abe-b874-4779-b4d5-ce91a2a58572",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "inputText": "=Responda apenas com a palavra:\"registro\", \"consulta\" ou \"Deletar\"\n\nMensagem:\n{{$json.text}}\n\nVocê vai receber uma mensagem de um usuário.\n\nClassifica a intenção da mensagem com base nas opções abaixo:\n- \"Registro\": Se o usuário estiver informando uma nova despesa.\n- \"Consulta\": Se Estiver pedindo para ver , consultar ou buscar informações financeiras anteriores.\n- \"Exclusão\": Se o usuário estiver pedindo para deletar, remover, apagar ou excluir um registro ou uma informação específica.",
+        "categories": {
+          "categories": [
+            {
+              "category": "registro de contas",
+              "description": "Se o usuário estiver informando uma nova despesa"
+            },
+            {
+              "category": "consulta de contas",
+              "description": "Se o usuário estiver pedindo para consultar, saber ou buscar informações sobre despesas passadas."
+            },
+            {
+              "category": "Deletar contas",
+              "description": "Se o usuário estiver pedindo para deletar uma informação sobre despesas passadas."
+            },
+            {
+              "category": "Nada",
+              "description": "Se o texto do usuário não tiver relação com livros, autores e/ou categoria de livros. Por exemplo está falando de contas."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        608
+      ],
+      "id": "1393d3ce-a0c3-4d4e-a5b4-ca1c6d5c975d",
+      "name": "Classificação de operação"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        480,
+        848
+      ],
+      "id": "ed4bab16-3a6c-453d-9c8a-b10b13925dd6",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2579c46d-780a-4d3c-87e8-f54f9de43cf8",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        400
+      ],
+      "id": "bc987bbf-23b2-4dd8-9dda-5a68b0faa380",
+      "name": "Webhook",
+      "webhookId": "2579c46d-780a-4d3c-87e8-f54f9de43cf8"
+    },
+    {
+      "parameters": {
+        "respondWith": "noData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -32,
+        400
+      ],
+      "id": "387dbb70-b710-4383-81cd-4d2e3e695d81",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://whatsapp-gerencia.dsbdocker.shop/message/sendText/whatsapp-diego",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "F7F37AF3F173-4309-9ED5-C8384E69CE8D"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "=json",
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "jsonBody": "={\n  \"number\": \"{{ $('Webhook').item.json.body.data.key.remoteJid }}\",\n    \"text\": {{ JSON.stringify($json.message) }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1776,
+        704
+      ],
+      "id": "e7fcdeef-0a6f-4431-b3f3-cf2f04de5847",
+      "name": "Send_text1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "192efbe4-74b3-44a9-85dd-2f420cd7d17a",
+              "name": "text",
+              "value": "={{ $('Webhook').item.json.body.data.message.conversation }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        400
+      ],
+      "id": "15ce5644-410c-4597-a00a-d498bce2a043",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "## Input",
+        "height": 256,
+        "width": 656
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        320
+      ],
+      "id": "e4df7fef-16a9-46fd-ab63-252a5a20e082",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Output subworkflow",
+        "height": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        624
+      ],
+      "id": "16f89d3a-84bc-4a3e-b351-51b110e2ed2c",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "headers": {
+            "connection": "keep-alive",
+            "host": "n8n-diego.dsbdocker.shop",
+            "x-forwarded-scheme": "https",
+            "x-forwarded-proto": "https",
+            "x-forwarded-for": "172.18.0.1",
+            "x-real-ip": "172.18.0.1",
+            "content-length": "3092",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "WAHA/2025.7.8",
+            "x-webhook-request-id": "01K19SPDRM8MAYFK89F7A908AS",
+            "x-webhook-timestamp": "1753749337875",
+            "accept-encoding": "gzip, compress, deflate, br"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": "evt_01k19spdrj4eqfy6j9en925v4k",
+            "timestamp": 1753749337875,
+            "event": "message",
+            "session": "default",
+            "metadata": {},
+            "me": {
+              "id": "556496538016@c.us",
+              "pushName": "ds-docker"
+            },
+            "payload": {
+              "id": "false_556493174450@c.us_E4046F12F95DF8D4242DA478BF009A7D",
+              "timestamp": 1753749337,
+              "from": "556493174450@c.us",
+              "fromMe": false,
+              "source": "app",
+              "to": "556496538016@c.us",
+              "body": "Quanto gastei com alimentação?",
+              "hasMedia": false,
+              "media": null,
+              "ack": 1,
+              "ackName": "SERVER",
+              "vCards": [],
+              "_data": {
+                "id": {
+                  "fromMe": false,
+                  "remote": "556493174450@c.us",
+                  "id": "E4046F12F95DF8D4242DA478BF009A7D",
+                  "_serialized": "false_556493174450@c.us_E4046F12F95DF8D4242DA478BF009A7D"
+                },
+                "viewed": false,
+                "body": "Quanto gastei com alimentação?",
+                "type": "chat",
+                "t": 1753749337,
+                "notifyName": "Diego Borges",
+                "from": "556493174450@c.us",
+                "to": "556496538016@c.us",
+                "ack": 1,
+                "invis": false,
+                "isNewMsg": true,
+                "star": false,
+                "kicNotified": false,
+                "recvFresh": true,
+                "isFromTemplate": false,
+                "thumbnail": "",
+                "richPreviewType": 0,
+                "pollInvalidated": false,
+                "isSentCagPollCreation": false,
+                "latestEditMsgKey": null,
+                "latestEditSenderTimestampMs": null,
+                "mentionedJidList": [],
+                "groupMentions": [],
+                "isEventCanceled": false,
+                "eventInvalidated": false,
+                "isVcardOverMmsDocument": false,
+                "labels": [],
+                "hasReaction": false,
+                "ephemeralDuration": 7776000,
+                "ephemeralSettingTimestamp": 1731805198,
+                "disappearingModeInitiator": "chat",
+                "disappearingModeTrigger": "account_settings",
+                "disappearingModeInitiatedByMe": true,
+                "viewMode": "VISIBLE",
+                "messageSecret": {
+                  "0": 151,
+                  "1": 130,
+                  "2": 1,
+                  "3": 218,
+                  "4": 146,
+                  "5": 199,
+                  "6": 216,
+                  "7": 245,
+                  "8": 254,
+                  "9": 40,
+                  "10": 237,
+                  "11": 82,
+                  "12": 207,
+                  "13": 242,
+                  "14": 41,
+                  "15": 138,
+                  "16": 23,
+                  "17": 68,
+                  "18": 251,
+                  "19": 251,
+                  "20": 33,
+                  "21": 234,
+                  "22": 96,
+                  "23": 81,
+                  "24": 195,
+                  "25": 39,
+                  "26": 58,
+                  "27": 177,
+                  "28": 14,
+                  "29": 91,
+                  "30": 240,
+                  "31": 9
+                },
+                "inviteGrpType": "DEFAULT",
+                "productHeaderImageRejected": false,
+                "lastPlaybackProgress": 0,
+                "isDynamicReplyButtonsMsg": false,
+                "isCarouselCard": false,
+                "parentMsgId": null,
+                "callSilenceReason": null,
+                "isVideoCall": false,
+                "callDuration": null,
+                "callCreator": null,
+                "callParticipants": null,
+                "isCallLink": null,
+                "callLinkToken": null,
+                "isMdHistoryMsg": false,
+                "stickerSentTs": 0,
+                "isAvatar": false,
+                "lastUpdateFromServerTs": 0,
+                "invokedBotWid": null,
+                "bizBotType": null,
+                "botResponseTargetId": null,
+                "botPluginType": null,
+                "botPluginReferenceIndex": null,
+                "botPluginSearchProvider": null,
+                "botPluginSearchUrl": null,
+                "botPluginSearchQuery": null,
+                "botPluginMaybeParent": false,
+                "botReelPluginThumbnailCdnUrl": null,
+                "botMessageDisclaimerText": null,
+                "botMsgBodyType": null,
+                "reportingTokenInfo": {
+                  "reportingToken": {
+                    "0": 25,
+                    "1": 101,
+                    "2": 112,
+                    "3": 168,
+                    "4": 255,
+                    "5": 17,
+                    "6": 187,
+                    "7": 193,
+                    "8": 46,
+                    "9": 211,
+                    "10": 117,
+                    "11": 116,
+                    "12": 133,
+                    "13": 187,
+                    "14": 98,
+                    "15": 211
+                  },
+                  "version": 2,
+                  "reportingTag": {
+                    "0": 1,
+                    "1": 9,
+                    "2": 154,
+                    "3": 114,
+                    "4": 147,
+                    "5": 44,
+                    "6": 116,
+                    "7": 132,
+                    "8": 106,
+                    "9": 88,
+                    "10": 174,
+                    "11": 255,
+                    "12": 148,
+                    "13": 50,
+                    "14": 210,
+                    "15": 117,
+                    "16": 161,
+                    "17": 25,
+                    "18": 245,
+                    "19": 99
+                  }
+                },
+                "requiresDirectConnection": null,
+                "bizContentPlaceholderType": null,
+                "hostedBizEncStateMismatch": false,
+                "senderOrRecipientAccountTypeHosted": false,
+                "placeholderCreatedWhenAccountIsHosted": false,
+                "links": []
+              }
+            },
+            "engine": "WEBJS",
+            "environment": {
+              "version": "2025.7.8",
+              "engine": "WEBJS",
+              "tier": "CORE",
+              "browser": "/usr/bin/chromium"
+            }
+          },
+          "webhookUrl": "https://n8n-diego.dsbdocker.shop/webhook-test/2579c46d-780a-4d3c-87e8-f54f9de43cf8",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_consult",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent_to_consult",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_delete",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "execute_query_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent_to_consult",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_delete": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete table or rows": {
+      "main": [
+        []
+      ]
+    },
+    "Agent_to_insert": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_consult": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "execute_query_delete": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent_to_delete",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Delete table or rows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent_to_delete",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Classificação de operação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classificação de operação",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificação de operação": {
+      "main": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent_to_consult",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent_to_delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9248ae94-1f50-4752-aaf9-b7b20b0c15a1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "i8XaUBkcQj4fOkP6",
+  "tags": []
+}

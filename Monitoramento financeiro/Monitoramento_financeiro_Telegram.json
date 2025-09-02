@@ -1,0 +1,149 @@
+{
+  "name": "Monitoramento_financeiro_Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1040,
+        1536
+      ],
+      "id": "7eab8d0c-7462-472f-9ead-1dacee5fc78c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.from.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -592,
+        1536
+      ],
+      "id": "bdffa1dc-f39f-4e24-979b-59da65602c87",
+      "name": "Send a text message",
+      "webhookId": "046062d6-645f-41e8-8034-5caa02b30737",
+      "credentials": {
+        "telegramApi": {
+          "id": "gg6bq1yxahRh4RWq",
+          "name": "BOT_Financeiro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "uwshHj2XaCycus8c",
+          "mode": "list",
+          "cachedResultName": "Rag_universidade_federal_de_jataí"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        1536
+      ],
+      "id": "a2a8ea76-0527-4c88-ae34-992e8124d6c1",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1248,
+        1536
+      ],
+      "id": "58d382b8-47a9-4efc-ada5-a7c678c3349a",
+      "name": "Telegram Trigger1",
+      "webhookId": "c5251268-e5f2-4534-be5b-489c84d558f2",
+      "credentials": {
+        "telegramApi": {
+          "id": "gg6bq1yxahRh4RWq",
+          "name": "BOT_Financeiro"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "51305ed8-b189-4a62-ac06-48c8b4a9f2a8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "wsxa4Ic3HivTuz84",
+  "tags": []
+}
