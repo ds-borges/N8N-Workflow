@@ -27,30 +27,30 @@ The repository is divided into four main categories. Each folder contains its ow
 Agents focused on automating **ETL (Extract, Transform, Load)** tasks. These workflows connect various APIs and services to automate repetitive processes and manage data flows.
 * **Highlights include:** An agent that manages a book database on Supabase, an email classifier that organizes your Google Calendar, and a social media bot for Instagram.
 <br>
-➡️ **[Explore ETL Agents](./ETL_Agent)**
+➡️ [**Explore ETL Agents**](./ETL_Agent)
 
 ### RAG_Agent
 Implementations of the **RAG (Retrieval-Augmented Generation)** architecture. This technique connects Large Language Models to private vector databases, enabling them to answer questions based on specific, reliable documents.
 * **Projects:** A legal assistant trained on Brazilian laws and a virtual academic advisor for university regulations, both using Supabase Vector DB to ensure factual answers.
 <br>
-➡️ **[Explore RAG Agents](./RAG_Agent)**
+➡️ [**Explore RAG Agents**](./RAG_Agent)
 
 ### Web_Scraping
 **Web Scraping** projects designed to extract live information from the internet. These agents fetch data from websites and APIs, use AI to process it, and deliver timely insights through messaging apps.
 * **Examples:** A daily news summarizer that scrapes political websites and a weather bot that provides local forecasts for Jataí-GO via WhatsApp and Telegram.
 <br>
-➡️ **[Explore Web Scraping Agents](./Web_Scraping)**
+➡️ [**Explore Web Scraping Agents**](./Web_Scraping)
 
 ### Others_Agent
 A folder for miscellaneous projects and experiments. This directory serves as a sandbox for testing new ideas, developing one-off scripts, or building prototypes that don't fit neatly into the other categories.
 <br>
-➡️ **[Explore Other Projects](./Others_Agent)**
+➡️ [**Explore Other Projects**](./Others_Agent)
 
 ---
 
 ## Author
 
-**Diego Sousa Borges.**
+**Diego Sousa Borges**
 
 * **LinkedIn:** [in/ds-borges](https://www.linkedin.com/in/ds-borges/)
 * **GitHub:** [ds-borges](https://github.com/ds-borges)
