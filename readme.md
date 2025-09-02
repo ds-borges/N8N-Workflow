@@ -50,7 +50,7 @@ A folder for miscellaneous projects and experiments. This directory serves as a 
 
 ## Author
 
-**Diego Sousa Borges**
+**Diego Sousa Borges.**
 
 * **LinkedIn:** [in/ds-borges](https://www.linkedin.com/in/ds-borges/)
 * **GitHub:** [ds-borges](https://github.com/ds-borges)
