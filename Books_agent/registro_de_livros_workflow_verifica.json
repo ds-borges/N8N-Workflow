@@ -1,0 +1,273 @@
+{
+  "name": "registro_de_livros_workflow_verifica",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d614deeb-2992-4293-a531-307bb12cb1e4",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "## Verifica repetição",
+        "height": 588,
+        "width": 788,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "7a468615-75fd-4254-ad68-59313a227f9f",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        256,
+        192
+      ],
+      "id": "e2681301-783a-48bf-b531-eae44a28e348",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "td0ue0fDCpwBO3jP",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"Nome_do_livro\": \"O grande rabanete\",\n    \"Nome_do_autor\": \"Tatiane Belink\",\n    \"Tema_trabalhado\": \"Cooperação\",\n    \"Letra_de_referencia\": \"R\",\n    \"existe\": 1\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        240
+      ],
+      "id": "bf4c5564-9b67-434f-bbe7-db6af05f0a14",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6a53084f-40ff-4ffb-854c-eaeab1178a68",
+              "leftValue": "={{ $json.output.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        0
+      ],
+      "id": "1519bc52-f783-4162-8b7f-c741d5b49a1a",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "repetido",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        -48
+      ],
+      "id": "171efbe2-329c-4322-af01-18a42106867d",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "alert",
+              "value": "=O livro: {{ $json.output.Nome_do_livro }}, não foi encontrado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        128
+      ],
+      "id": "ae0e76d0-93ed-450f-a5a3-1d6034d76cbb",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "name": "registros_de_livros_subsubsworkflow",
+        "description": "Call this tool to execute a query. Remember that it should be in a postgreSQL query structure.",
+        "workflowId": {
+          "__rl": true,
+          "value": "C4vqA0df7HzQKxYZ",
+          "mode": "list",
+          "cachedResultName": "registro_de_livros_subsubworkflow"
+        },
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sql\": {\n      \"type\": \"string\",\n      \"description\": \"A SQL query based on the users question and database schema.\"\n    }\n  }\n}\n"
+      },
+      "id": "1ceb3c73-0d5d-485e-9e61-4bb5a714ad20",
+      "name": "registro_de_livros_subsubworkflow",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do usuário:\n{{$json.text}}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente inteligente de verificação de dados. Sua função é verificar se um livro específico, descrito pelo usuário, já existe na tabela public.marialsdp_livros e retornar o resultado em formato JSON.\n\nEsquema da Tabela\nA tabela public.marialsdp_livros contém os seguintes campos:\nid (int8)\nNome_do_livro (varchar)\nNome_do_autor (varchar)\nTema_trabalhado (varchar)\nLetra_de_referencia (varchar)\n\nSeu Processo de Trabalho\n1.  **Analisar o Pedido:** Analise a frase do usuário (ex: \"Verificar se o livro O Piquenique já existe\") para extrair os critérios de busca.\n2.  **Gerar a Query:** Use os critérios para gerar internamente uma consulta SQL para buscar os dados do livro.\n3.  **Formatar a Resposta:** Construa a resposta final como um objeto JSON.\n\nRegras para a Busca Interna (Geração de Query)\n* A consulta SQL gerada por você deve ser precisa: `SELECT Nome_do_livro, Nome_do_autor FROM public.marialsdp_livros WHERE ... LIMIT 1;`\n* Use `ILIKE '%criterio%'` para buscas em texto para ignorar maiúsculas/minúsculas.\n* Se o usuário fornecer múltiplos critérios (ex: nome do livro e nome do autor), use `AND` para tornar a busca mais específica.\n* Sempre use `LIMIT 1` para otimizar a busca.\n\nFormato da Resposta Final\n* Sua resposta final NÃO deve ser uma frase amigável.\n* Ela deve ser APENAS um objeto JSON.\n* **Se o livro for encontrado**, retorne um objeto indicando que existe e incluindo os dados do livro encontrado:\n    `{\"existe\": 1, \"Nome_do_livro\": \"[O nome do livro retornado]\", \"Nome_do_autor\": \"[O nome do autor retornado]\"}`\n* **Se o livro NÃO for encontrado**, retorne um objeto indicando que não existe:\n    `{\"existe\": 0}`\n\nExemplo de Execução 1\nInput do Usuário: \"Checar se o livro O Piquenique já foi cadastrado\"\nSua Resposta Final: `{\"existe\": 1, \"Nome_do_livro\": \"O Piquenique\", \"Nome_do_autor\": \"Mary França\"}`\n\nExemplo de Execução 2\nInput do Usuário: \"Verificar o livro O vento da autora Mary França\"\nSua Resposta Final: `{\"existe\": 1, \"Nome_do_livro\": \"O Vento\", \"Nome_do_autor\": \"Mary França\"}`\n\nExemplo de Execução 3 (Livro não encontrado)\nInput do Usuário: \"Verificar livro que não existe\"\nSua Resposta Final: `{\"existe\": 0}`"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "3c1736e4-03d4-4d01-8f11-474467271b4f",
+      "name": "Agent_to_verifica"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Agent_to_verifica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_verifica",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent_to_verifica",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "registro_de_livros_subsubworkflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent_to_verifica",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_verifica": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ed498456-bb07-41b7-9535-8808bb7388c3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c5ea7b474f1c706755550be5c08f3725ec0c4d919b2446cd90e4f509caa58fcb"
+  },
+  "id": "b7RqLR6pWOvclm4w",
+  "tags": []
+}

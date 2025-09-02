@@ -1,0 +1,1103 @@
+{
+  "name": "registro_de_livros_workflow_main",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        128,
+        512
+      ],
+      "id": "5c0b172b-eb21-4b8e-a47d-32e0b83aea96",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "td0ue0fDCpwBO3jP",
+          "name": "Google Gemini_CidaSousaLS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## New_book",
+        "height": 540,
+        "width": 900,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "71f916b6-1c39-405e-b146-8ebd7d793f9a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do usuário:\n{{$json.text}}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=MISSÃO PRINCIPAL\nVocê é um assistente de pré-processamento de dados. Sua única missão é analisar a mensagem de um usuário, extrair os detalhes de um livro, verificar se ele já existe no banco de dados e retornar um objeto JSON estruturado com os dados extraídos e o status da verificação. Você NÃO insere dados, apenas prepara-os para a próxima etapa do fluxo de trabalho.\n\nREGRA CRÍTICA: SEPARAR AÇÃO DOS DADOS\nSua tarefa mais importante é diferenciar a Ação do Usuário (o que ele quer fazer, ex: \"registrar\", \"salvar\", \"cadastrar\") do Dado Principal (o nome do livro em si). O campo Nome_do_livro NUNCA deve incluir verbos de comando.\n\nERRADO: Se o usuário diz \"salvar o livro o vento\", o Nome_do_livro NÃO é \"salvar o livro o vento\".\n\nCORRETO: Se o usuário diz \"salvar o livro o vento\", o Nome_do_livro é \"o vento\".\n\nFLUXO DE TRABALHO OBRIGATÓRIO\n\nExtrair Detalhes: Leia a mensagem do usuário e extraia meticulosamente todos os campos do livro, aplicando a regra crítica acima.\n\nVerificar Duplicidade: Formule uma consulta interna (SELECT) para verificar se um livro com o mesmo nome e autor já existe na tabela public.marialsdp_livros.\n\nDecidir Ação, Gerar Resumo e Formatar Saída JSON:\n\nSe o livro já existe: Retorne um objeto JSON com existe: 1, os dados extraídos e um resumo informativo.\n\nSe o livro é novo: Retorne um objeto JSON com existe: 0, todos os dados extraídos e um resumo de sucesso.\n\nCAMPOS PARA EXTRAÇÃO E REGRAS\n\nNome_do_livro: O nome completo do livro. NÃO INCLUIR COMANDOS.\n\nNome_do_autor: O nome completo do autor.\n\nTema_trabalhado: Um dos seguintes: \"Alimentação\", \"Cooperação\", \"Data comemorativa\", \"Diversidades\", \"Meio ambiente\", \"Musicalização\", \"Quantidade\", \"Valores\", \"Fabulas\", \"Outros\". Se não especificado, use null.\n\nRecurso_pedagogico: \"Sim\" ou \"Não\". O padrão é \"Não\" se não for mencionado.\n\nFORMATO DA RESPOSTA E EXEMPLOS PRÁTICOS\nSua resposta final deve ser APENAS o objeto JSON, sem nenhuma frase ou explicação adicional.\n\nExemplo 1 (Livro JÁ EXISTE)\n\nInput do Usuário: \"quero registrar o livro A Lebre e a Tartaruga da Jõao Diego, o tema é sobre cooperação e a letra de referência é A.\"\n\nSua Lógica Interna: SELECT id FROM public.marialsdp_livros WHERE Nome_do_livro ILIKE '%A Lebre e a Tartaruga%' AND Nome_do_autor ILIKE '%Jõao Diego%' LIMIT 1; (Encontra um resultado)\n\nSua Resposta Final:\n\nJSON\n\n{\n  \"existe\": 1,\n  \"Nome_do_livro\": \"A Lebre e a Tartaruga\",\n  \"Nome_do_autor\": \"Jõao Diego\",\n  \"Tema_trabalhado\": \"Cooperação\",\n  \"Letra_de_referencia\": \"A\",\n  \"Recurso_pedagogico\": \"Não\",\n  \"resumo\": \"❌ Erro: O livro 'A Lebre e a Tartaruga' já se encontra no acervo.\"\n}\nExemplo 2 (Livro é NOVO e pronto para inserir)\n\nInput do Usuário: \"registrar o livro A Menina Bonita do Laço de Fita, da autora Ana Maria Machado. O tema é identidade, a letra é M e possui recurso pedagógico.\"\n\nSua Lógica Interna: SELECT id FROM public.marialsdp_livros WHERE Nome_do_livro ILIKE '%A Menina Bonita do Laço de Fita%' AND Nome_do_autor ILIKE '%Ana Maria Machado%' LIMIT 1; (Retorna vazio)\n\nSua Resposta Final:\n\nJSON\n\n{\n  \"existe\": 0,\n  \"Nome_do_livro\": \"A Menina Bonita do Laço de Fita\",\n  \"Nome_do_autor\": \"Ana Maria Machado\",\n  \"Tema_trabalhado\": \"identidade\",\n  \"Letra_de_referencia\": \"M\",\n  \"Recurso_pedagogico\": \"Sim\",\n  \"resumo\": \"✅ Sucesso! O livro 'A Menina Bonita do Laço de Fita' foi catalogado com sucesso.\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        112,
+        336
+      ],
+      "id": "858fc7ae-c85b-49e6-bcad-c2bc05f495c6",
+      "name": "Agent_to_insert",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"Nome_do_livro\": \"O Grande Rabanete\",\n    \"Nome_do_autor\": \"Tatiane Belink\",\n    \"Tema_trabalhado\": \"Cooperação\",\n    \"Letra_de_referencia\": \"R\",\n    \"Recurso_pedagogico\": \"Não\",\n    \"Existe\": 0,\n \"resumo\": \"Livro cadastrado com sucesso\"\n  \n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        528
+      ],
+      "id": "16038662-f99b-4fb2-bff8-897f6a7cb100",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "content": "## Removing a book",
+        "height": 556,
+        "width": 916,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        1264
+      ],
+      "typeVersion": 1,
+      "id": "e4ad0d46-f862-43cc-9827-83df53b57486",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"Nome_do_livro\": \"O grande rabanete\",\n    \"Nome_do_autor\": \"Tatiane Belink\",\n    \"Tema_trabalhado\": \"Cooperação\",\n    \"Letra_de_referencia\": \"R\",\n    \"id\": 42\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        1648
+      ],
+      "id": "ef0d2afb-c51c-4568-940c-86886758c57e",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do usuário:\n{{$json.text}}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente inteligente de confirmação de dados. Sua função é identificar o id de um livro específico na tabela public.marialsdp_livros que o usuário deseja remover e, em seguida, retornar APENAS o ID em formato JSON.\n\nEsquema da Tabela\nA tabela public.marialsdp_livros contém os seguintes campos:\n\nid (int8)\n\nNome_do_livro (varchar)\n\nNome_do_autor (varchar)\n\nTema_trabalhado (varchar)\n\nLetra_de_referencia (varchar)\n\nSeu Processo de Trabalho\nAnalisar o Pedido: Analise a frase do usuário (ex: \"Deletar o livro O Piquenique\") para extrair os critérios de busca.\n\nGerar a Query: Use os critérios para gerar internamente uma consulta SQL para obter o id do livro.\n\nFormatar a Resposta: Construa a resposta final como um objeto JSON contendo apenas o ID.\n\nRegras para a Busca Interna (Geração de Query)\nA consulta SQL gerada por você deve ser precisa: SELECT id FROM public.marialsdp_livros WHERE ... LIMIT 1;\n\nUse ILIKE '%criterio%' para buscas em texto.\n\nSe o usuário fornecer múltiplos critérios (ex: nome do livro e nome do autor), use AND para tornar a busca mais específica.\n\nSempre use LIMIT 1 para garantir que apenas um livro seja selecionado para deleção.\n\nFormato da Resposta Final\nSua resposta final NÃO deve ser uma frase amigável. Ela deve ser APENAS um objeto JSON contendo o ID do livro a ser deletado.\n\nSiga exatamente este formato: {\"id\": [ID retornado], \"Nome_do_livro\": [O nome do livro retornado], \"Nome_do_autor\": [O nome do autor retornado] }\n\nSe o livro não for encontrado, o ID deve ser 0.\n\nExemplo de Execução 1\nInput do Usuário: \"Deletar o livro O Piquenique\"\n\nSua Resposta Final: {\"id\": 4, \"Nome_do_livro\": O Piquenique, \"Nome_do_autor\": Mary França }\n\nExemplo de Execução 2\nInput do Usuário: \"Remover o livro O vento da autora Mary França\"\n\nSua Lógica Interna: SELECT id FROM public.marialsdp_livros WHERE Nome_do_livro ILIKE '%O vento%' AND Nome_do_autor ILIKE '%Mary França%' LIMIT 1;\n\nSua Resposta Final: {\"id\": 2, \"Nome_do_livro\": O grande rabanete, \"Nome_do_autor\": Tatiane Belinky}\n\nExemplo de Execução 3 (Livro não encontrado)\nInput do Usuário: \"Deletar livro São Jõao\"\n\nSua Resposta Final: {\"id\": 0, \"Nome_do_livro\": São Jõao}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        176,
+        1408
+      ],
+      "id": "1a2eaf70-8ed6-483f-a3c7-acc1370e51e5",
+      "name": "Agent_to_remove",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do usuário:\n{{$json.text}}",
+        "options": {
+          "systemMessage": "=Você é um Assistente de Biblioteca especialista e proativo chamado \"Syan\". Sua função é responder perguntas sobre o acervo, consultando a tabela public.marialsdp_livros em um banco de dados PostgreSQL e retornando informações detalhadas.\n\nEsquema da Tabela\nA tabela public.marialsdp_livros contém os seguintes campos:\n\nnome_do_livro (text)\n\nnome_do_autor (text)\n\ntema_trabalhado (text)\n\nletra_de_referencia (text)\n\nObjetivo e Lógica de Atendimento\nSeu objetivo é gerar consultas SQL precisas com base na pergunta do usuário. Você opera de duas maneiras principais:\n\n1. Caminho 1: Busca por Conteúdo Geral (Autor, Título, Tema)\n\nQuando usar: Quando a pergunta for sobre o nome de um livro, autor ou tema.\n\nO que retornar: Você deve exibir o nome_do_livro, nome_do_autor e tema_trabalhado.\n\nComo buscar: Use o operador ILIKE '%termo%' nos campos nome_do_livro, nome_do_autor ou tema_trabalhado.\n\n2. Caminho 2: Busca por Letra-Chave (Iniciais)\n\nQuando usar: Quando a pergunta for sobre uma letra específica de referência (ex: \"livros com a letra R\").\n\nO que retornar: Você deve exibir o nome_do_livro, nome_do_autor e tema_trabalhado.\n\nComo buscar: Use uma busca de texto na coluna letra_de_referencia.\n\nExemplos de Consultas SQL Corretas\nCaminho 1: Exemplo\n\nInput: \"Quais livros da Tatiane Belinky eu tenho?\"\n\nSQL Gerado:\n\nSQL\n\nSELECT nome_do_livro, nome_do_autor, tema_trabalhado FROM public.marialsdp_livros WHERE nome_do_autor ILIKE '%Tatiane Belinky%';\nCaminho 2: Exemplo\n\nInput: \"Quais livros trabalham com a letra R?\"\n\nSQL Gerado:\n\nSQL\n\n-- Esta busca é robusta pois procura pela letra 'R' com espaços ao redor,\n-- garantindo que encontre a letra isolada (ex: em \"G R\") e não no meio de outra (ex: em \"TR\").\nSELECT nome_do_livro, nome_do_autor, tema_trabalhado FROM public.marialsdp_livros WHERE ' ' || letra_de_referencia || ' ' ILIKE '% R %';\n\n* Como Responder (Formato Obrigatório) *\n\n- Comece sempre com uma frase introdutória amigável.\n- Apresente os resultados em formato de lista com marcadores (bullet points). Liste TODOS os livros encontrados.\n- Para cada livro, informe o autor e o tema em linhas separadas.\n- Se a consulta não retornar nenhum livro, informe ao usuário que nada foi encontrado.\n- Finalize com uma pergunta proativa, como \"Posso ajudar com mais alguma busca?\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        192,
+        848
+      ],
+      "id": "77068710-5e83-4182-819e-30d9aaa4bd5a",
+      "name": "Agent_to_consult",
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "executeOnce": false,
+      "notesInFlow": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Found a book",
+        "height": 444,
+        "width": 900,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        784
+      ],
+      "typeVersion": 1,
+      "id": "fd6a2d7e-8de9-4c63-bda9-32bb257eb0aa",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        176,
+        1072
+      ],
+      "id": "62f504b3-b5a6-43a9-b472-4fcbf56df103",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "td0ue0fDCpwBO3jP",
+          "name": "Google Gemini_CidaSousaLS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "marialsdp_livros",
+          "mode": "list",
+          "cachedResultName": "marialsdp_livros"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $json.output.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        720,
+        1312
+      ],
+      "id": "f204feeb-8458-4fe2-8c43-96bfb2e57e63",
+      "name": "Delete table or rows",
+      "credentials": {
+        "postgres": {
+          "id": "U1sc0k5xYPVV4mdK",
+          "name": "Postgres MariaLSDP_Livros"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6a53084f-40ff-4ffb-854c-eaeab1178a68",
+              "leftValue": "={{ $json.output.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        1312
+      ],
+      "id": "3983ad9d-7a8b-4056-8cf7-c2b1f11f92c3",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "=O livro {{ $json.output.Nome_do_livro}} do autor(a) {{$json.output.Nome_do_autor}}, foi removido com sucesso.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        1440
+      ],
+      "id": "1882da06-98ba-4b61-9140-c72375022fd6",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "=O livro: {{ $json.output.Nome_do_livro }}, não foi encontrado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        1600
+      ],
+      "id": "d0a5fc02-cbf3-4f81-b772-9897745eab86",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "tableId": "marialsdp_livros",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nome_do_livro",
+              "fieldValue": "={{ $json.nome_do_livro_corrigido }}"
+            },
+            {
+              "fieldId": "nome_do_autor",
+              "fieldValue": "={{ $json.nome_do_autor_corrigido }}"
+            },
+            {
+              "fieldId": "tema_trabalhado",
+              "fieldValue": "={{ $json.output.Tema_trabalhado }}"
+            },
+            {
+              "fieldId": "letra_de_referencia",
+              "fieldValue": "={{ $json.iniciais_nome_do_livro }}"
+            },
+            {
+              "fieldId": "recurso_pedagogico",
+              "fieldValue": "={{ $json.output.Recurso_pedagogico }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        720,
+        224
+      ],
+      "id": "3f907076-58f3-4d18-b033-b61fdb047723",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "1ZB8Uwr4cqt1mjY3",
+          "name": "Supabase MariaLSDP_Livros"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "={{ $json.output.resumo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        384
+      ],
+      "id": "7f8e15c1-13c5-4e90-a034-9df14ca3a0f7",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "={{ $json.output}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        800
+      ],
+      "id": "33008b93-14be-4981-bea0-a19215930640",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "content": "## Input with sub workflow",
+        "height": 296,
+        "width": 520,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1072,
+        448
+      ],
+      "typeVersion": 1,
+      "id": "04f5e2fe-199b-423a-9a9b-56d929c8fa90",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Classification",
+        "height": 488,
+        "width": 536
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -528,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "d6aeeff7-d69d-4d04-b73c-a51cfeac3b99",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6a53084f-40ff-4ffb-854c-eaeab1178a68",
+              "leftValue": "={{ $json.output.Existe }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        256
+      ],
+      "id": "12b3f390-0f2d-4cea-af1f-8bf7142ef747",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "={{ $json.output.resumo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        560
+      ],
+      "id": "1c09b2ac-f28c-4b28-bd6f-5293ffed1992",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "inputText": "=Responda apenas com a palavra:\"registro\", \"consulta\" \"Exclusão\"\n\nMensagem:\n{{$json.text}}\n\nVocê vai receber uma mensagem de um usuário.\n\nClassifica a intenção da mensagem com base nas opções abaixo:\n- \"Registro\": Se o usuário estiver informando registro, pedindo para cadastrar ou avisando que comprou um novo livro.\n- \"Consulta\": Se Estiver pedindo para ver , consultar ou buscar informações sobre um livro, um autor, uma letra específica ou sobre um tema.\n- \"Exclusão\": Se o usuário estiver pedindo para deletar, remover, apagar ou excluir um livro específico.",
+        "categories": {
+          "categories": [
+            {
+              "category": "registro de livros",
+              "description": "Se o usuário estiver informando um novo livro"
+            },
+            {
+              "category": "consulta de livros",
+              "description": "Se o usuário estiver pedindo para consultar, saber ou buscar informações sobre um livro"
+            },
+            {
+              "category": "Deletar livros",
+              "description": "Se o usuário estiver pedindo para deletar, apagar ou remover um livro já registrado"
+            },
+            {
+              "category": "Nada",
+              "description": "Se o texto do usuário não tiver relação com dinheiro, despesas, consultas de contas, ou deletar registros de contas. Por exemplo está falando de livros."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -480,
+        848
+      ],
+      "id": "29a98e07-f82b-40fd-8fb2-5de6cc08fe26",
+      "name": "Text Classifier",
+      "executeOnce": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        1088
+      ],
+      "id": "169cefdd-fa4f-4395-995e-f1a064007a41",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "td0ue0fDCpwBO3jP",
+          "name": "Google Gemini_CidaSousaLS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ====================================================================================\n// FUNÇÕES DE APOIO\n// Nenhuma alteração aqui, as funções já são robustas.\n// ====================================================================================\n\n/**\n * Função para formatar um texto, colocando a primeira letra de cada palavra em maiúscula.\n * Exemplo: \"o grande rabanete\" -> \"O Grande Rabanete\"\n * @param {string} titulo - O texto de entrada a ser formatado.\n * @returns {string} O texto formatado.\n */\nfunction formatarTitulo(titulo) {\n  // Garante que a função não quebre se receber um valor que não seja texto.\n  if (typeof titulo !== 'string' || !titulo) {\n    return '';\n  }\n  \n  // Executa a formatação em cadeia:\n  return titulo\n    .trim() // 1. Remove espaços em branco do início e do fim.\n    .split(/\\s+/) // 2. Divide o texto em um array de palavras (ex: [\"o\", \"grande\", \"rabanete\"]). O \\s+ lida com múltiplos espaços.\n    // 3. Itera sobre cada palavra do array para transformá-la.\n    .map(palavra => \n      // Pega a primeira letra, coloca em maiúscula (ex: \"g\" -> \"G\")\n      palavra.charAt(0).toUpperCase() + \n      // Pega o resto da palavra, coloca em minúscula (ex: \"GRANDE\" -> \"rande\")\n      palavra.slice(1).toLowerCase()\n    )\n    .join(' '); // 4. Junta as palavras formatadas de volta em um único texto, separadas por espaço.\n}\n\n/**\n * Função para extrair as iniciais de palavras com mais de 2 letras de um texto.\n * Exemplo: \"O grande rabanete\" -> ['G', 'R']\n * @param {string} titulo - O texto de entrada para análise.\n * @returns {string[]} Um array com as iniciais encontradas.\n */\nfunction extrairIniciaisRobusta(titulo) {\n  // Garante que a função não quebre se o valor de entrada não for um texto.\n  if (typeof titulo !== 'string') {\n    return [];\n  }\n  \n  // Primeiro, removemos pontuações que poderiam interferir na lógica.\n  const tituloLimpo = titulo.replace(/[.,!?;:]/g, '');\n  \n  // Executa a extração das iniciais em cadeia:\n  return tituloLimpo\n    .trim() // 1. Remove espaços em branco do início e do fim.\n    .split(/\\s+/) // 2. Divide o texto em um array de palavras.\n    .filter(palavra => palavra.length > 2) // 3. Filtra a lista, mantendo apenas palavras com mais de 2 letras.\n    .map(palavra => palavra[0].toUpperCase()); // 4. Da lista filtrada, pega apenas a primeira letra de cada palavra e a coloca em maiúscula.\n}\n\n\n// ====================================================================================\n// PROCESSAMENTO PRINCIPAL DO NÓ\n// Este é o código que o n8n executa. Ele usa as funções acima.\n// ====================================================================================\n\n// O n8n passa os dados de entrada como um array chamado 'items'. Este loop 'for'\n// processa cada item que chega do nó anterior, um de cada vez.\nfor (const item of items) {\n\n  // --- Etapa 1: Processar o Título do Livro ---\n\n  // Pega o valor do campo 'Nome_do_livro' e JÁ CONVERTE para minúsculas.\n  const nomeDoLivroDoInput = item.json.output.Nome_do_livro.toLowerCase();\n\n  // Usa a função 'formatarTitulo' para corrigir o nome do livro e o salva em um novo campo.\n  item.json.nome_do_livro_corrigido = formatarTitulo(nomeDoLivroDoInput);\n\n\n  // --- Etapa 2: Processar o Nome do Autor (de forma condicional) ---\n\n  // Pega o valor do campo 'Nome_do_autor' que veio do nó anterior.\n  const nomeDoAutorDoInput = item.json.output.Nome_do_autor;\n\n  // VERIFICA se o nome do autor é um texto válido antes de tentar formatá-lo.\n  if (nomeDoAutorDoInput && typeof nomeDoAutorDoInput === 'string' && nomeDoAutorDoInput.toUpperCase() !== 'EMPTY') {\n    // Se for um nome válido, PRIMEIRO CONVERTE para minúsculas e DEPOIS formata.\n    item.json.nome_do_autor_corrigido = formatarTitulo(nomeDoAutorDoInput.toLowerCase());\n  } else {\n    // Se não for um nome válido, define o campo como 'null' (vazio).\n    item.json.nome_do_autor_corrigido = null;\n  }\n  \n  \n  // --- Etapa 3: Calcular e Salvar as Iniciais do Livro ---\n\n  // Usa a função 'extrairIniciaisRobusta' (usando o nome do livro já em minúsculas) para calcular as iniciais,\n  // junta-as com espaço (ex: \"G R\") e salva em um campo novo.\n  item.json.iniciais_nome_do_livro = extrairIniciaisRobusta(nomeDoLivroDoInput).join(' ');  \n}\n\n// Ao final do loop, retorna a lista de 'items' (agora com os novos campos)\n// para que possam ser usados no próximo nó do seu fluxo de trabalho no n8n.\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        240
+      ],
+      "id": "0bd8d635-7a92-47b7-b25a-6667d9da137f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2579c46d-780a-4d3c-87e8-f54f9de43cf8",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1040,
+        560
+      ],
+      "id": "e0443f91-7af3-4285-b3a8-13553dc8097a",
+      "name": "Webhook",
+      "webhookId": "2579c46d-780a-4d3c-87e8-f54f9de43cf8"
+    },
+    {
+      "parameters": {
+        "respondWith": "noData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -864,
+        560
+      ],
+      "id": "4c208be6-93b7-4e54-8900-b27ad4de6c2e",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "192efbe4-74b3-44a9-85dd-2f420cd7d17a",
+              "name": "text",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -688,
+        560
+      ],
+      "id": "40845ee1-51ef-40df-a43f-811c7396117d",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "content": "## Input",
+        "height": 296,
+        "width": 232,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -784,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "88cafb08-e733-4095-9771-ef1244ffab88",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -736,
+        880
+      ],
+      "id": "1f90376f-a979-4e93-b1e7-118afc8811db",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        160,
+        1600
+      ],
+      "id": "a5166cb9-9fce-43d7-9022-c6077ce68a78",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "td0ue0fDCpwBO3jP",
+          "name": "Google Gemini_CidaSousaLS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "=\"Desculpa estou com algum problema, acho que estou um pouco cansado\"",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        448
+      ],
+      "id": "5ce908d0-f969-4a42-8cdf-e60f0fb4438c",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "=\"Desculpa estou com algum problema, acho que estou um pouco cansado\"",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        1456
+      ],
+      "id": "0ceebb3f-f466-4ae1-8db5-fd58fbb643b3",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "=\"Desculpa estou com algum problema, acho que estou um pouco cansado\"",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        976
+      ],
+      "id": "5c1f1b20-4f9f-466c-9593-966aee26dec7",
+      "name": "Edit Fields9"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c1ec186-1c63-40b8-b7c7-89571f4c41d4",
+              "name": "message",
+              "value": "=Desculpa estou com algum problema, acho que estou um pouco cansado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -192,
+        1088
+      ],
+      "id": "902e7a85-f713-4216-aed0-8e4590319bda",
+      "name": "Edit Fields10"
+    },
+    {
+      "parameters": {
+        "name": "registro_de_livros_subworkflow",
+        "description": "Call this tool to execute a query. Remember that it should be in a postgreSQL query structure.",
+        "workflowId": {
+          "__rl": true,
+          "value": "C4vqA0df7HzQKxYZ",
+          "mode": "list",
+          "cachedResultName": "querry_executor_sql"
+        },
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sql\": {\n      \"type\": \"string\",\n      \"description\": \"A SQL query based on the users question and database schema.\"\n    }\n  }\n}\n"
+      },
+      "id": "31e48f71-c164-4f73-a4c7-567c56daa87f",
+      "name": "search_book",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "name": "registros_de_livros_subsubsworkflow",
+        "description": "Call this tool to execute a query. Remember that it should be in a postgreSQL query structure.",
+        "workflowId": {
+          "__rl": true,
+          "value": "C4vqA0df7HzQKxYZ",
+          "mode": "list",
+          "cachedResultName": "querry_executor_sql"
+        },
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sql\": {\n      \"type\": \"string\",\n      \"description\": \"A SQL query based on the users question and database schema.\"\n    }\n  }\n}\n"
+      },
+      "id": "8151d6d8-78af-4c2d-9510-e23ada5ecad6",
+      "name": "existence_research",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        304,
+        1664
+      ]
+    },
+    {
+      "parameters": {
+        "name": "registros_de_livros_subsubsworkflow",
+        "description": "Call this tool to execute a query. Remember that it should be in a postgreSQL query structure.",
+        "workflowId": {
+          "__rl": true,
+          "value": "C4vqA0df7HzQKxYZ",
+          "mode": "list",
+          "cachedResultName": "querry_executor_sql"
+        },
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sql\": {\n      \"type\": \"string\",\n      \"description\": \"A SQL query based on the users question and database schema.\"\n    }\n  }\n}\n"
+      },
+      "id": "1616c31c-b2ef-4188-ad64-1b309265cda7",
+      "name": "Duplicates_research",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        256,
+        576
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_insert": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent_to_remove",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_remove": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_to_consult": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_consult",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Delete table or rows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent_to_consult",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent_to_remove",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Edit Fields10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        []
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent_to_remove",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search_book": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent_to_consult",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "existence_research": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent_to_remove",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Duplicates_research": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent_to_insert",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 30,
+    "timeSavedPerExecution": 3
+  },
+  "versionId": "ab0fc04d-feac-4379-a18c-1187a2c26f2a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c5ea7b474f1c706755550be5c08f3725ec0c4d919b2446cd90e4f509caa58fcb"
+  },
+  "id": "W69deqM2Tbn54Z0G",
+  "tags": []
+}
