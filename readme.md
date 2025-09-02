@@ -31,6 +31,7 @@ Agents focused on automating **ETL (Extract, Transform, Load)** tasks. These wor
 ### RAG_Agent
 Implementations of the **RAG (Retrieval-Augmented Generation)** architecture. This technique connects Large Language Models to private vector databases, enabling them to answer questions based on specific, reliable documents.
 * **Projects:** A legal assistant trained on Brazilian laws and a virtual academic advisor for university regulations, both using Supabase Vector DB to ensure factual answers.
+<br>
 * [Explore RAG Agents](./RAG_Agent)
 
 ### Web_Scraping
