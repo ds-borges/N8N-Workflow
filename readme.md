@@ -1,4 +1,4 @@
-v# Repositório de Agentes de IA e Automações 🤖
+# Repositório de Agentes de IA e Automações 🤖
 
 Bem-vindo ao meu portfólio de projetos práticos de Inteligência Artificial e automação. Este repositório é uma coleção de agentes desenvolvidos para resolver problemas reais, organizados em categorias que demonstram diferentes técnicas e aplicações de IA, desde o processamento de dados (ETL) até a extração de informações da web e a geração de respostas com base em conhecimento específico (RAG).
 
