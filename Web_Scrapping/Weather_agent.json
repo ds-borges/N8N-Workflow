@@ -1,0 +1,257 @@
+{
+  "name": "Periódico do clima",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://api.openweathermap.org/data/2.5/weather?q={your_location},ph&APPID={your_key}&units=metric&lang=pt_br",
+        "options": {}
+      },
+      "id": "877694b3-50ff-40ac-935d-60a082115511",
+      "name": "Get Weather Data from OpenWeatherMap",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        80,
+        144
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analise os seguintes dados meteorológicos para a cidade de {{ $json.name }} e crie um relatório formatado, seguindo as regras da sua persona \"Syan\".\n\n**Dados Brutos:**\n- Condição: {{ $json.weather[0].description }}\n- Temperatura Atual: {{ $json.main.temp }}°C\n- Sensação Térmica: {{ $json.main.feels_like }}°C\n- Umidade: {{ $json.main.humidity }}%\n- Velocidade do Vento: {{ $json.wind.speed }} m/s\n- Horário do Nascer do Sol (Unix): {{ $json.sys.sunrise }}\n- Horário do Pôr do Sol (Unix): {{ $json.sys.sunset }}\n\nAgora, gere o relatório completo no formato do \"Modelo 3\", como definido no seu System Message.",
+        "options": {
+          "systemMessage": "Persona e Identidade\nVocê é \"Syan\", seu assistente pessoal de meteorologia. Sua personalidade é amigável, clara e prestativa.\n\nMissão Principal\nSua missão é analisar os dados meteorológicos recebidos de uma API e, com base neles, criar um relatório completo e de fácil leitura sobre a previsão do tempo para um usuário chamado Diego. O objetivo é que ele saiba exatamente como será o dia.\n\nFonte dos Dados\nVocê receberá um objeto JSON contendo os dados brutos do tempo. Sua tarefa é extrair, formatar e apresentar as informações mais importantes, como:\n\nDescrição do céu (ex: \"céu limpo\")\n\nTemperatura atual e sensação termíca\n\nUmidade do ar\n\nVelocidade do vento\n\nHorários do nascer e pôr do sol\n\nRegras de Formatação e Tom (Modelo 3)\nTítulo: Comece sempre com um título chamativo usando emojis. Ex: ☀️ *Bom dia! Previsão do tempo para [Nome da Cidade]* ☀️\n\nClareza e Objetividade: Apresente a condição principal do tempo logo no início.\n\nUso de Emojis: Utilize emojis temáticos para cada informação, tornando o relatório visual e dinâmico.\n\nTemperatura: 🌡️\n\nUmidade: 💧\n\nVento: 💨\n\nNascer/Pôr do sol: 🌅\n\nEstrutura Detalhada: Organize a mensagem em tópicos claros (Temperatura, Umidade, Vento, etc.), usando negrito (*texto*) para destacar os títulos de cada tópico.\n\nEncerramento: Termine a mensagem com uma despedida positiva, como \"Aproveite o seu dia!\".\n\nExemplo de Saída (Baseado no Modelo 3)\n☀️ Bom dia! Previsão do tempo para Jataí ☀️\n\nHoje o dia será de céu limpo e muito sol!\n\n🌡️ Temperatura: A temperatura atual é de 20°C. A máxima prevista para hoje é de 20°C.\n\n💧 Umidade: O ar está relativamente seco, com umidade de 41%.\n\n💨 Vento: Uma brisa leve de 14 km/h.\n\n🌅 O sol nasce às 06:30 e se põe às 18:08.\n\nAproveite o seu dia!"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        352,
+        144
+      ],
+      "id": "80373508-584f-43b1-96f0-f38fcb1d2165",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        448,
+        336
+      ],
+      "id": "7cf03f87-2870-44cb-abd5-bb99c9c2e85a",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7cVvQtTUhKtlt9LH",
+          "name": "Google Gemini D97S"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Gera a mensagem de previsão do tempo",
+        "height": 480,
+        "width": 480,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        288,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "59a7b7f9-7bf1-493a-8336-1a5316323b79",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "chatId": "7006144067",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        880,
+        64
+      ],
+      "id": "1ffcfaa7-c49f-4544-86bc-4a6a39d435e5",
+      "name": "Send to Telegram",
+      "webhookId": "86fc6043-43c9-43d8-a75d-c4ece4111b72",
+      "credentials": {
+        "telegramApi": {
+          "id": "ckBftXPqYhF7h8hj",
+          "name": "Telegram Assistente Borges"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        144
+      ],
+      "id": "cf78d47e-fa74-4ed0-b20f-184f2144b319",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## Coleta informações do tempo para Jataí GO",
+        "height": 480,
+        "width": 256,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "65239e27-ff2f-4ec8-847b-4f53561fafc6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Manda para o Whatsapp",
+        "height": 240,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        784,
+        240
+      ],
+      "id": "43071ce8-e7da-4ae2-9791-a0526ad2ce0e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Manda para o Telegram",
+        "height": 224,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        784,
+        0
+      ],
+      "id": "07332770-c8a8-45d3-88b4-65b5d03a9f47",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://whatsapp-gerencia.dsbdocker.shop/message/sendText/whatsapp-diego",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "F7F37AF3F173-4309-9ED5-C8384E69CE8D"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "=json",
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "jsonBody": "={\n  \"number\": \"556493174450@s.whatsapp.net\",\n    \"text\": {{ JSON.stringify($json.output) }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        320
+      ],
+      "id": "50640abd-8851-4edb-a2db-9877fcbba6b5",
+      "name": "Send_text"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send to Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send_text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather Data from OpenWeatherMap": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Weather Data from OpenWeatherMap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "18de4b63-b3a7-4153-9dba-6fd1ddab040b",
+  "meta": {
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "8GcjiWvKOySxjRcs",
+  "tags": []
+}

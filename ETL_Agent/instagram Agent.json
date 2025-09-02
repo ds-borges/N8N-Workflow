@@ -1,0 +1,516 @@
+{
+  "name": "instagram Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2579c46d-780a-4d3c-87e8-f54f9de43cf8",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1408,
+        176
+      ],
+      "id": "6f334370-e7bd-4369-ba10-321f9c925536",
+      "name": "Webhook",
+      "webhookId": "2579c46d-780a-4d3c-87e8-f54f9de43cf8"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.query['hub.challenge'] }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/plain"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -1200,
+        -80
+      ],
+      "id": "294ef6cb-a3a6-46ba-88d7-38d31c82aab8",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.entry[0].messaging[0].message.text }}",
+        "options": {
+          "systemMessage": "=Horário de agora: {{ $now }}\n\nVocê é um agente de atendimento oficial da Jornada de Dados no Instagram.  \nSeu papel é responder todas as mensagens recebidas de forma educada, clara, curta e amigável.  \nSempre se apresente como Jornada de Dados e mantenha um tom humano e acolhedor.  \nUse emojis de forma leve (👋 🚀 ✅) quando fizer sentido.  \n\n### Regras de Conteúdo  \n1. Sempre que a mensagem for sobre a **Jornada de Dados** (cursos, trilhas, workshops, preços, benefícios, público, FAQ etc.), consulte SEMPRE a **tool do documento Word** com as informações oficiais e responda com base nesse conteúdo.  \n2. Sempre que a mensagem for especificamente sobre **n8n**, compartilhe também o link oficial do treinamento: https://suajornadadedados.com.br/trilha-n8n/  \n3. Se a dúvida não estiver clara, faça uma pergunta simples para entender melhor.  \n4. Caso não saiba responder mesmo após consultar o documento, oriente a pessoa a entrar em contato com nosso time comercial pelo WhatsApp do Thiago: **(21) 97171-7616**.  \n5. Evite respostas longas; prefira frases diretas e práticas que incentivem ação.  \n\n### Oferecer Call Comercial  \n6. Se o usuário fizer **mais de uma pergunta na mesma conversa**, ofereça marcar uma **call de 30 minutos** com nosso time comercial para explicar todos os benefícios da Jornada de Dados.  \n\n### Uso das Tools de Calendário (Google Calendar)  \n7. Para sugerir horários:  \n   - Use a tool **“Eventos atuais”** (operation: Get Many) para listar os eventos futuros do calendário configurado.  \n   - A partir da agenda, identifique os **próximos 2 horários livres de 30 minutos** dentro do horário comercial (09h–18h) nos próximos 7 dias.  \n   - Sugira esses dois horários para o usuário, por exemplo:  \n     “Tenho estes horários para uma call de 30 min:  \n      1) Ter 15:30–16:00  \n      2) Qua 10:00–10:30  \n      Qual prefere?”  \n\n8. Quando o usuário escolher um dos horários (ou sugerir outro):  \n   - Confirme o horário escolhido.  \n   - Use a tool **“Agendar evento”** (operation: Create) com os parâmetros:  \n     • **Summary/Título:** “Call comercial – Jornada de Dados (30 min)”  \n     • **Start:** exatamente o horário escolhido pelo usuário (formato ISO 8601, timezone do calendário)  \n     • **End:** Start + 30 minutos  \n     • **Description:** incluir o @username do Instagram do usuário e, se fornecido, WhatsApp/e-mail  \n     • Use default reminders = ON  \n   - ❌ Nunca use `$now` como horário de agendamento. Sempre respeite o horário escolhido pelo usuário.  \n   - Após criar, responda:  \n     “Pronto! ✅ Call confirmada em <data/hora>. Você receberá o convite no seu calendário. Precisa alterar algo?”  \n\n### Exemplos de Resposta  \n- Usuário: “Vocês têm curso de n8n?”  \n➡️ “Sim! 🚀 Temos um treinamento completo e prático de n8n. Veja aqui: https://suajornadadedados.com.br/trilha-n8n/”  \n\n- Usuário: “Quais são as trilhas da Jornada de Dados?”  \n➡️ (Consultar documento Word) “Nós temos diversas trilhas, incluindo Python, SQL, Cloud, n8n e muito mais. 👨‍💻 Quer que eu te mostre o roadmap completo?”  \n\n- Usuário envia várias perguntas (ex: “Quais trilhas? Quanto custa? Tem certificado?”)  \n➡️ (Consultar documento Word) + “Vejo que você tem várias dúvidas 👀. Quer que eu marque uma call de 30 min com nosso comercial? Assim ele explica tudo em detalhes. Posso te sugerir dois horários agora.”  \n\n- Usuário escolhe horário  \n➡️ (Agendar evento) “Pronto! ✅ Call confirmada em <data/hora>. Você receberá o convite no seu calendário.”\n\nSe perguntarem qualquer coisa que não for sobre a jornada de dados, mudar o assunto para a jornada de dados"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -864,
+        160
+      ],
+      "id": "3200c749-fb23-469c-8e11-8b21d239c89f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        400
+      ],
+      "id": "0c0f1b10-5600-451c-b316-277c4f335d52",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.instagram.com/v22.0/17841431938621895/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer IGAAcXIb0eZCxpBZAE5iaGFscUkwbXRSOWdPV0tHM3lzUlhUYURtSEN0M1RZAUGgxNHJzMjlHVWpKdldrOVNkQ2VKWW1yRDRQTW13eUFJOTNzWElGNDZAmVWFDejVMenhFdlNQM3hncjk0R2J0OTFCcV9lLV9SNjg1cTBhbTZAzOS1yOAZDZD"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "recipient.id",
+              "value": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}"
+            },
+            {
+              "name": "message.text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -512,
+        160
+      ],
+      "id": "98e8c95d-93f4-4278-ab60-76f862d72111",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "28e0921b-8208-4a70-a017-8238f8df4bc2",
+              "leftValue": "={{ $json.body.entry[0].messaging[0].sender.id }}",
+              "rightValue": "17841431938621895",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1200,
+        176
+      ],
+      "id": "bd19cb18-babf-4443-a441-1ce1c9ff1c33",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "get",
+        "documentURL": "1IaDN2SHaY6GqkvnFCQ4utbPQoD4jxzbsyu55OVl4sKw"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -704,
+        432
+      ],
+      "id": "1c8d7659-0145-43a8-8140-5ffb24ec36bc",
+      "name": "Jornada de dados",
+      "credentials": {
+        "googleApi": {
+          "id": "23vfwVxPHcbroooF",
+          "name": "Google D977 embedding"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "diegosousa977@gmail.com",
+          "mode": "list",
+          "cachedResultName": "diegosousa977@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}"
+          ],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -512,
+        416
+      ],
+      "id": "93056219-f68e-4802-b7e4-ad1c2bfa366b",
+      "name": "cria evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "wYHbsxdf3AuOr8xY",
+          "name": "Google Calendar D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "diegosousa977@gmail.com",
+          "mode": "list",
+          "cachedResultName": "diegosousa977@gmail.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -512,
+        544
+      ],
+      "id": "49324a8e-8709-4a46-b7e6-d62b36bff6f0",
+      "name": "consulta evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "wYHbsxdf3AuOr8xY",
+          "name": "Google Calendar D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.entry[0].id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -880,
+        544
+      ],
+      "id": "14ed2061-8722-4df2-a51d-e7047780dc5d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "content": "## Prevent auto-review of messages. Enter your Instagram ID.",
+        "height": 320,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        64
+      ],
+      "id": "f7a73f8f-d989-4310-a458-01bf86d85c03",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## To config",
+        "height": 208,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        -160
+      ],
+      "id": "2f3c6af8-02bb-40e0-9f04-ba0d2fef798e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Input",
+        "height": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1520,
+        64
+      ],
+      "id": "f2678df6-e828-44c7-97f4-b0a2dd784200",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Analyzing messages",
+        "height": 400,
+        "width": 208,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        304
+      ],
+      "id": "ff3605c1-a1b9-4a85-a287-3191f571d95c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## knowledge base",
+        "height": 352,
+        "width": 150,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        352
+      ],
+      "id": "604937f0-c49a-438a-933b-2e20b9e77290",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Create event",
+        "height": 352,
+        "width": 224,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        352
+      ],
+      "id": "4e74006f-3adb-4c60-b2f4-dd7fdc78ebfc",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Return user",
+        "height": 256,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        64
+      ],
+      "id": "22b5f38e-2df7-4bae-b627-3ef8bd15985f",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "connection": "keep-alive",
+            "host": "n8n-diego.dsbdocker.shop",
+            "x-forwarded-scheme": "http",
+            "x-forwarded-proto": "http",
+            "x-forwarded-for": "2a03:2880:22ff:1::, 172.18.0.3",
+            "x-real-ip": "172.18.0.3",
+            "content-length": "429",
+            "user-agent": "facebookexternalua",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "2a03:2880:22ff:1::",
+            "cf-ipcountry": "US",
+            "cf-ray": "9786d2d7defb87b0-IAD",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-warp-tag-id": "7d43070b-8d50-435b-8681-2fa7e0ba0087",
+            "content-type": "application/json",
+            "instagram-api-version": "v23.0",
+            "x-hub-signature": "sha1=0def68b0d1919bbbd06445b15cdcd9ea080d2dee",
+            "x-hub-signature-256": "sha256=0e7f4081799e1c1ed099c29027403a72a08727d345026d7b36525aa912d49ecf"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "object": "instagram",
+            "entry": [
+              {
+                "time": 1756751266457,
+                "id": "17841401653844884",
+                "messaging": [
+                  {
+                    "sender": {
+                      "id": "931257659222948"
+                    },
+                    "recipient": {
+                      "id": "17841401653844884"
+                    },
+                    "timestamp": 1756751265880,
+                    "message": {
+                      "mid": "aWdfZAG1faXRlbToxOklHTWVzc2FnZAUlEOjE3ODQxNDAxNjUzODQ0ODg0OjM0MDI4MjM2Njg0MTcxMDMwMTI0NDI2MDAxMDgyMjY0NDkwNTE3MTozMjQwNjM0MTAwMjg2MDQ0OTY3NzQxODM5ODQ4NjYyNjMwNAZDZD",
+                      "text": "ola quero falar com a equipe da jornada"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "webhookUrl": "https://n8n-diego.dsbdocker.shop/webhook/2579c46d-780a-4d3c-87e8-f54f9de43cf8",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jornada de dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cria evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consulta evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 90,
+    "timeSavedPerExecution": 5
+  },
+  "versionId": "1d4455bd-e03c-4070-a117-4581721b725b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
+  },
+  "id": "YMULQStclH6yXvyT",
+  "tags": []
+}
