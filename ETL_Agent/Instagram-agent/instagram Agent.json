@@ -10,8 +10,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -1408,
-        176
+        -1712,
+        192
       ],
       "id": "6f334370-e7bd-4369-ba10-321f9c925536",
       "name": "Webhook",
@@ -35,7 +35,7 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        -1200,
+        -1472,
         -80
       ],
       "id": "294ef6cb-a3a6-46ba-88d7-38d31c82aab8",
@@ -46,7 +46,7 @@
         "promptType": "define",
         "text": "={{ $json.body.entry[0].messaging[0].message.text }}",
         "options": {
-          "systemMessage": "=Horário de agora: {{ $now }}\n\nVocê é um agente de atendimento oficial da Jornada de Dados no Instagram.  \nSeu papel é responder todas as mensagens recebidas de forma educada, clara, curta e amigável.  \nSempre se apresente como Jornada de Dados e mantenha um tom humano e acolhedor.  \nUse emojis de forma leve (👋 🚀 ✅) quando fizer sentido.  \n\n### Regras de Conteúdo  \n1. Sempre que a mensagem for sobre a **Jornada de Dados** (cursos, trilhas, workshops, preços, benefícios, público, FAQ etc.), consulte SEMPRE a **tool do documento Word** com as informações oficiais e responda com base nesse conteúdo.  \n2. Sempre que a mensagem for especificamente sobre **n8n**, compartilhe também o link oficial do treinamento: https://suajornadadedados.com.br/trilha-n8n/  \n3. Se a dúvida não estiver clara, faça uma pergunta simples para entender melhor.  \n4. Caso não saiba responder mesmo após consultar o documento, oriente a pessoa a entrar em contato com nosso time comercial pelo WhatsApp do Thiago: **(21) 97171-7616**.  \n5. Evite respostas longas; prefira frases diretas e práticas que incentivem ação.  \n\n### Oferecer Call Comercial  \n6. Se o usuário fizer **mais de uma pergunta na mesma conversa**, ofereça marcar uma **call de 30 minutos** com nosso time comercial para explicar todos os benefícios da Jornada de Dados.  \n\n### Uso das Tools de Calendário (Google Calendar)  \n7. Para sugerir horários:  \n   - Use a tool **“Eventos atuais”** (operation: Get Many) para listar os eventos futuros do calendário configurado.  \n   - A partir da agenda, identifique os **próximos 2 horários livres de 30 minutos** dentro do horário comercial (09h–18h) nos próximos 7 dias.  \n   - Sugira esses dois horários para o usuário, por exemplo:  \n     “Tenho estes horários para uma call de 30 min:  \n      1) Ter 15:30–16:00  \n      2) Qua 10:00–10:30  \n      Qual prefere?”  \n\n8. Quando o usuário escolher um dos horários (ou sugerir outro):  \n   - Confirme o horário escolhido.  \n   - Use a tool **“Agendar evento”** (operation: Create) com os parâmetros:  \n     • **Summary/Título:** “Call comercial – Jornada de Dados (30 min)”  \n     • **Start:** exatamente o horário escolhido pelo usuário (formato ISO 8601, timezone do calendário)  \n     • **End:** Start + 30 minutos  \n     • **Description:** incluir o @username do Instagram do usuário e, se fornecido, WhatsApp/e-mail  \n     • Use default reminders = ON  \n   - ❌ Nunca use `$now` como horário de agendamento. Sempre respeite o horário escolhido pelo usuário.  \n   - Após criar, responda:  \n     “Pronto! ✅ Call confirmada em <data/hora>. Você receberá o convite no seu calendário. Precisa alterar algo?”  \n\n### Exemplos de Resposta  \n- Usuário: “Vocês têm curso de n8n?”  \n➡️ “Sim! 🚀 Temos um treinamento completo e prático de n8n. Veja aqui: https://suajornadadedados.com.br/trilha-n8n/”  \n\n- Usuário: “Quais são as trilhas da Jornada de Dados?”  \n➡️ (Consultar documento Word) “Nós temos diversas trilhas, incluindo Python, SQL, Cloud, n8n e muito mais. 👨‍💻 Quer que eu te mostre o roadmap completo?”  \n\n- Usuário envia várias perguntas (ex: “Quais trilhas? Quanto custa? Tem certificado?”)  \n➡️ (Consultar documento Word) + “Vejo que você tem várias dúvidas 👀. Quer que eu marque uma call de 30 min com nosso comercial? Assim ele explica tudo em detalhes. Posso te sugerir dois horários agora.”  \n\n- Usuário escolhe horário  \n➡️ (Agendar evento) “Pronto! ✅ Call confirmada em <data/hora>. Você receberá o convite no seu calendário.”\n\nSe perguntarem qualquer coisa que não for sobre a jornada de dados, mudar o assunto para a jornada de dados"
+          "systemMessage": "=Documento de consulta: dsb_solution\nHorário de agora: {{ $now }}\n\nVocê é Syan, um agente especialista em automação da DSB Solution, focado em criar soluções com n8n para otimizar processos de negócios.\nSeu papel é atender, qualificar e converter leads no Instagram e WhatsApp, respondendo de forma educada, clara, extremamente curta e profissional.\nSempre se apresente como Syan e mantenha um tom consultivo e amigável.\nUse emojis de forma leve (🤖 ⚙️ ✅) quando fizer sentido.\n\nRegras de Formatação e Estilo (NOVO)\nSEJA EXTREMAMENTE CONCISO: Suas respostas DEVEM ser curtas e fáceis de ler na tela de um celular. PREFIRA frases curtas e diretas.\n\n1.  **A REGRA MAIS IMPORTANTE: UMA IDEIA POR MENSAGEM.** SE a informação do documento tiver vários pontos (como uma lista de benefícios), você **NÃO DEVE** criar uma lista em uma única mensagem. Em vez disso, **ENVIE CADA PONTO EM MENSAGENS SEPARADAS E CURTAS**, criando um diálogo.\n\n2.  **MANTENHA CADA MENSAGEM INDIVIDUAL ABAIXO DE 400 CARACTERES.** Isso garante uma leitura fácil e evita erros técnicos.\n\n3.  **EXEMPLO PRÁTICO DE COMO DIVIDIR MENSAGENS:**\n\n**FAÇA ISSO (FORMATO CORRETO ✅):\n        `Claro! Nossas automações trazem várias vantagens para o seu perfil. 🤖`\n        *(envia a primeira mensagem)*\n        `A principal é o nosso **Agente de Atendimento Inteligente**, que responde clientes e qualifica leads para você, 24 horas por dia.`\n        *(envia a segunda mensagem)*\n        `Também garantimos uma **Comunicação Mais Limpa e Segura**, com filtros automáticos de spam e assédio para que você foque no que importa. 🛡️`\n        *(envia a terceira mensagem)*\n        `E o melhor: cuidamos de todo o **Setup e Suporte Contínuo** para você. Quer agendar uma consultoria para ver isso na prática?`\n        *(envia a quarta mensagem)*\n\n** NÃO FAÇA ISSO (FORMATO ERRADO ❌):\n        `Olá! Com nossas soluções, você garante: **Agente de Atendimento Inteligente:** Responde perguntas... **Comunicação Mais Limpa:** Nossos filtros... **Setup e Implementação:** Nós cuidamos... **Manutenção e Suporte:** Garantimos que...`\n\nRegras de Conteúdo e Atendimento\nFonte da Verdade: Para CADA pergunta sobre os serviços (preços, exemplos de automação, filtros de spam, benefícios, etc.), consulte SEMPRE a tool dsb_solution para obter as informações oficiais e responda com base nesse conteúdo.\n\nEscopo de Atuação: Seu foco é vender e dar suporte a automações. Se perguntarem algo fora deste escopo, redirecione educadamente a conversa para como a automação pode ajudar o negócio da pessoa.\n\nClarificação: Se a dúvida não estiver clara, faça uma pergunta simples para entender a necessidade do cliente. Ex: \"Para qual processo você busca uma automação?\" ou \"Qual tarefa repetitiva você gostaria de eliminar?\".\n\nEscalonamento Humano: Caso não saiba responder mesmo após consultar o documento, ou se o cliente pedir explicitamente para falar com um humano, direcione-o para o especialista Diego Sousa pelo WhatsApp (64) 993174450.\n\nProatividade: Seja direto e prático. Seu objetivo é resolver a dúvida e incentivar o próximo passo, que é agendar uma consultoria.\n\n(As seções \"Oferecer Consultoria Gratuita\", \"Uso das Tools de Calendário\" e \"Exemplos de Resposta\" permanecem as mesmas, pois já são excelentes.)"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -56,37 +56,21 @@
         160
       ],
       "id": "3200c749-fb23-469c-8e11-8b21d239c89f",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -880,
-        400
-      ],
-      "id": "0c0f1b10-5600-451c-b316-277c4f335d52",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "d3Tnyg2zaYc0yG1N",
-          "name": "Google Gemini D977"
-        }
-      }
+      "name": "AI Agent",
+      "retryOnFail": false,
+      "waitBetweenTries": 5000,
+      "maxTries": 3
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://graph.instagram.com/v22.0/{your_instagram_id}/messages",
+        "url": "https://graph.instagram.com/v22.0/17841431938621895/messages",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer {your_key}"
+              "value": "Bearer IGAAcXIb0eZCxpBZAE91VlRIVTQxQk9DV3JSd0M2dW0tcm9TalBQX0I3NzF2X09pbTZAubExScm4xYm84dG82REd0YkRHS2tnQ280aG4weHMtYm8zU2E3RkJuTW1oVDdYM3lSUlJ6YTc0TWZALT29aMld2LUJ5eUxnb3FETmJYNFdXTQZDZD"
             }
           ]
         },
@@ -108,65 +92,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -512,
+        -464,
         160
       ],
       "id": "98e8c95d-93f4-4278-ab60-76f862d72111",
-      "name": "HTTP Request"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "28e0921b-8208-4a70-a017-8238f8df4bc2",
-              "leftValue": "={{ $json.body.entry[0].messaging[0].sender.id }}",
-              "rightValue": "17841431938621895",
-              "operator": {
-                "type": "string",
-                "operation": "notEquals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        -1200,
-        176
-      ],
-      "id": "bd19cb18-babf-4443-a441-1ce1c9ff1c33",
-      "name": "If"
-    },
-    {
-      "parameters": {
-        "authentication": "serviceAccount",
-        "operation": "get",
-        "documentURL": "1IaDN2SHaY6GqkvnFCQ4utbPQoD4jxzbsyu55OVl4sKw"
-      },
-      "type": "n8n-nodes-base.googleDocsTool",
-      "typeVersion": 2,
-      "position": [
-        -704,
-        432
-      ],
-      "id": "1c8d7659-0145-43a8-8140-5ffb24ec36bc",
-      "name": "Jornada de dados",
-      "credentials": {
-        "googleApi": {
-          "id": "23vfwVxPHcbroooF",
-          "name": "Google D977 embedding"
-        }
-      }
+      "name": "HTTP Request",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -250,7 +181,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1264,
+        -1536,
         64
       ],
       "id": "f7a73f8f-d989-4310-a458-01bf86d85c03",
@@ -265,7 +196,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1264,
+        -1536,
         -160
       ],
       "id": "2f3c6af8-02bb-40e0-9f04-ba0d2fef798e",
@@ -280,7 +211,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1520,
+        -1792,
         64
       ],
       "id": "f2678df6-e828-44c7-97f4-b0a2dd784200",
@@ -343,11 +274,198 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -560,
+        -512,
         64
       ],
       "id": "22b5f38e-2df7-4bae-b627-3ef8bd15985f",
       "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "1vNkqhuEctKJ9oPxK_CxjS1fLiIk3dbWTqDAqFX9_JQ0"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -704,
+        432
+      ],
+      "id": "1c8d7659-0145-43a8-8140-5ffb24ec36bc",
+      "name": "dsb_solution",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "opPp1yEJxVfxoMFN",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.item.json.output;\nconst limit = 999;\nconst messages = [];\nlet remainingText = text;\n\n// Loop para dividir todo o texto em partes de até 4096 caracteres\nwhile (remainingText.length > 0) {\n  const chunk = remainingText.substring(0, limit);\n  messages.push({\n    json: {\n      text: chunk\n    }\n  });\n  remainingText = remainingText.substring(limit);\n}\n\nreturn messages;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        176
+      ],
+      "id": "f217868f-17b9-4767-aa51-705c3362fa67",
+      "name": "Code_factory"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.instagram.com/v22.0/17841431938621895/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer IGAAcXIb0eZCxpBZAE91VlRIVTQxQk9DV3JSd0M2dW0tcm9TalBQX0I3NzF2X09pbTZAubExScm4xYm84dG82REd0YkRHS2tnQ280aG4weHMtYm8zU2E3RkJuTW1oVDdYM3lSUlJ6YTc0TWZALT29aMld2LUJ5eUxnb3FETmJYNFdXTQZDZD"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "recipient.id",
+              "value": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}"
+            },
+            {
+              "name": "message.text",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        32,
+        176
+      ],
+      "id": "7bb96669-edba-4f91-929b-1698eee74794",
+      "name": "HTTP Request1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Return user",
+        "height": 256,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        80
+      ],
+      "id": "7b4fc1a9-78fd-47b8-b68c-b1ecebf20d06",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        400
+      ],
+      "id": "0c0f1b10-5600-451c-b316-277c4f335d52",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d3Tnyg2zaYc0yG1N",
+          "name": "Google Gemini D977"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "17cdd8f2-7b60-4791-b421-c8e58ba63fa6",
+              "leftValue": "={{ $json.headers['user-agent'] }}",
+              "rightValue": "facebookexternalua",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1168,
+        176
+      ],
+      "id": "76499cf7-1cf2-4de5-9b31-349addbd8ae9",
+      "name": "Instagran_sender?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "28e0921b-8208-4a70-a017-8238f8df4bc2",
+              "leftValue": "={{ $json.body.entry[0].messaging[0].sender.id }}",
+              "rightValue": "17841431938621895",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1440,
+        192
+      ],
+      "id": "bd19cb18-babf-4443-a441-1ce1c9ff1c33",
+      "name": "Its_me?"
+    },
+    {
+      "parameters": {
+        "content": "## Did the Webhook pick up any signals from instagram ?",
+        "height": 320,
+        "width": 256,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        64
+      ],
+      "id": "b33f62ab-a320-476f-9fb9-023a81bfec74",
+      "name": "Sticky Note8"
     }
   ],
   "pinData": {
@@ -357,50 +475,50 @@
           "headers": {
             "connection": "keep-alive",
             "host": "n8n-diego.dsbdocker.shop",
-            "x-forwarded-scheme": "http",
-            "x-forwarded-proto": "http",
-            "x-forwarded-for": "2a03:2880:22ff:1::, 172.18.0.3",
-            "x-real-ip": "172.18.0.3",
-            "content-length": "429",
-            "user-agent": "facebookexternalua",
-            "accept": "*/*",
-            "accept-encoding": "gzip, br",
-            "cdn-loop": "cloudflare; loops=1",
-            "cf-connecting-ip": "2a03:2880:22ff:1::",
-            "cf-ipcountry": "US",
-            "cf-ray": "9786d2d7defb87b0-IAD",
-            "cf-visitor": "{\"scheme\":\"https\"}",
-            "cf-warp-tag-id": "7d43070b-8d50-435b-8681-2fa7e0ba0087",
+            "x-forwarded-scheme": "https",
+            "x-forwarded-proto": "https",
+            "x-forwarded-for": "172.18.0.1",
+            "x-real-ip": "172.18.0.1",
+            "content-length": "861",
+            "accept": "application/json, text/plain, */*",
             "content-type": "application/json",
-            "instagram-api-version": "v23.0",
-            "x-hub-signature": "sha1=0def68b0d1919bbbd06445b15cdcd9ea080d2dee",
-            "x-hub-signature-256": "sha256=0e7f4081799e1c1ed099c29027403a72a08727d345026d7b36525aa912d49ecf"
+            "user-agent": "axios/1.10.0",
+            "accept-encoding": "gzip, compress, deflate, br"
           },
           "params": {},
           "query": {},
           "body": {
-            "object": "instagram",
-            "entry": [
-              {
-                "time": 1756751266457,
-                "id": "17841401653844884",
-                "messaging": [
-                  {
-                    "sender": {
-                      "id": "931257659222948"
-                    },
-                    "recipient": {
-                      "id": "17841401653844884"
-                    },
-                    "timestamp": 1756751265880,
-                    "message": {
-                      "mid": "aWdfZAG1faXRlbToxOklHTWVzc2FnZAUlEOjE3ODQxNDAxNjUzODQ0ODg0OjM0MDI4MjM2Njg0MTcxMDMwMTI0NDI2MDAxMDgyMjY0NDkwNTE3MTozMjQwNjM0MTAwMjg2MDQ0OTY3NzQxODM5ODQ4NjYyNjMwNAZDZD",
-                      "text": "ola quero falar com a equipe da jornada"
-                    }
-                  }
-                ]
-              }
-            ]
+            "event": "messages.upsert",
+            "instance": "whatsapp-diego",
+            "data": {
+              "key": {
+                "remoteJid": "556493174450@s.whatsapp.net",
+                "fromMe": false,
+                "id": "AC1E287ABD1CE80AC3C81538574B8BCB"
+              },
+              "pushName": null,
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "Registre sua nova despesa de energia no valor de r$ 25"
+              },
+              "contextInfo": {
+                "expiration": 7776000,
+                "ephemeralSettingTimestamp": "1731805198",
+                "disappearingMode": {
+                  "initiator": "CHANGED_IN_CHAT",
+                  "trigger": "CHAT_SETTING"
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1756932121,
+              "instanceId": "d8a5e6c8-d55e-4520-afa0-b478dddce3d1",
+              "source": "android"
+            },
+            "destination": "https://n8n-diego.dsbdocker.shop/webhook/2579c46d-780a-4d3c-87e8-f54f9de43cf8",
+            "date_time": "2025-09-03T17:42:08.237Z",
+            "sender": "556496538016@s.whatsapp.net",
+            "server_url": "https://debianserver.tail4dd07c.ts.net/evolution/",
+            "apikey": "F7F37AF3F173-4309-9ED5-C8384E69CE8D"
           },
           "webhookUrl": "https://n8n-diego.dsbdocker.shop/webhook/2579c46d-780a-4d3c-87e8-f54f9de43cf8",
           "executionMode": "production"
@@ -413,19 +531,8 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "Its_me?",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -437,28 +544,6 @@
           {
             "node": "HTTP Request",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Jornada de dados": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -496,6 +581,73 @@
           }
         ]
       ]
+    },
+    "dsb_solution": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code_factory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_factory": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagran_sender?": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Its_me?": {
+      "main": [
+        [
+          {
+            "node": "Instagran_sender?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -504,9 +656,10 @@
     "timezone": "America/Sao_Paulo",
     "callerPolicy": "workflowsFromSameOwner",
     "executionTimeout": 90,
-    "timeSavedPerExecution": 5
+    "timeSavedPerExecution": 5,
+    "errorWorkflow": "pg8ALIIg5c67G45X"
   },
-  "versionId": "1d4455bd-e03c-4070-a117-4581721b725b",
+  "versionId": "893370af-4a6f-475c-a439-11b66a336c47",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e850d0c6aabc26b2018bc6148b0e9c4bf40af3ef3090ce6809e83bfceb4b35c8"
